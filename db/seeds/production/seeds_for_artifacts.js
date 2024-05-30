@@ -1,0 +1,79 @@
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> } 
+ */
+exports.seed = async function(knex) {
+    // Deletes ALL existing entries
+    await knex('artifacts').del()
+    await knex('artifacts').insert([ 
+
+     {
+      BoxType: "Tools_big",
+      headline: "Standalone SIGMA-based detection tool",
+      description: "Correlation and pattern recognition algorithms",
+      Toolname: "Zircolite",
+      artifact_id: "1000102",
+      readMoreText: "Zircolite is now available on Pypi. You can install it with pip install zircolite. This version don't have the config files and rulesets so you will have to get them and provide them as command line arguments.",
+      isActive: true,
+      logoAddress_1: "./Logos/Zircolite.svg",
+      toolURL: "http://23.101.51.55:5601/",
+      readMoreAddress: "",
+      buttonTitle: "View",
+      Status: "blue",
+      ServicePackage: "",
+      threshold_time:24,
+     }, 
+     {
+      BoxType: "Tools_big",
+      headline: "Hardening Kitty",
+      description: "OS compliance check for Windows OS against 40 different baselines",
+      Toolname: "HardeningKitty",
+      artifact_id: "1000103",
+      readMoreText: "HardeningKitty supports hardening of a Windows system. The configuration of the system is retrieved and assessed using a finding list. In addition, the system can be hardened according to predefined values. HardeningKitty reads settings from the registry and uses other modules to read configurations outside the registry.The script was developed for English systems. It is possible that in other languages the analysis is incorrect. Please create an issue if this occurs.",
+      isActive: true,
+      logoAddress_1: "./Logos/Kitty.svg",
+      toolURL: "http://23.101.51.55:5601/",
+      readMoreAddress: "",
+      buttonTitle: "View",
+      Status: "blue",
+      ServicePackage: "",
+      threshold_time:24,
+     }, 
+
+     {
+      BoxType: "Tools_big",
+      headline: "Persistence Sniper",
+      description: "Incident Responders and System Administrators to hunt persistences implanted",
+      Toolname: "PersistenceSniper",
+      artifact_id: "1000104",
+      readMoreText: "PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident Responders and System Administrators to hunt persistences implanted in Windows machines. It is also available on Powershell Gallery and it is digitally signed with a valid code signing certificate. The tool is under active development with new releases coming out by the week, so make sure to use the up-to-date version.",
+      isActive: true,
+      logoAddress_1: "./Logos/PersistenceSniper.png",
+      toolURL: "http://23.101.51.55:5601/",
+      readMoreAddress: "",
+      buttonTitle: "View",
+      Status: "blue",
+      ServicePackage: "",
+      threshold_time:24,
+     }, 
+     {
+      BoxType: "Tools_big",
+      headline: "Hayabusa",
+      description: "Event log fast forensics timeline generator",
+      Toolname: "Hayabusa",
+      artifact_id: "1000105",
+      readMoreText: "Hayabusa currently has over 4000 Sigma rules and over 170 Hayabusa built-in detection rules with more rules being added regularly. It can be used for enterprise-wide proactive threat hunting as well as DFIR (Digital Forensics and Incident Response) for free with Velociraptor's Hayabusa artifact. By combining these two open-source tools, you can essentially retroactively reproduce a SIEM when there is no SIEM setup in the environment. You can learn about how to do this by watching Eric Capuano's Velociraptor walkthrough.",
+      isActive: true,
+      logoAddress_1: "./Logos/hayabusa.png",
+      toolURL: "http://23.101.51.55:5601/",
+      readMoreAddress: "",
+      buttonTitle: "View",
+      Status: "blue",
+      ServicePackage: "",
+      threshold_time:24,
+     }, 
+    ]);
+  };
+ 
+ 
+ 
