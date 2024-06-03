@@ -1,19 +1,82 @@
 // const DatabaseError = require('../errors/DatabaseError');
 const { log } = require('console');
 const fs = require('fs');
+const fs_promises = require('fs').promises; // Import 'fs' with Promise-based API
  const  path = require('path');
   const pathToTmpJson  = path.resolve(__dirname,'../tmpjsons/ResourceGroup-websites.json')
   const DBConnection = require('../db.js')
   const { exec } = require('child_process');
 
 
+  async function get_config_path_model(){
+
+    try {
+      const configFileName = `config.json`;
+
+      // let directory;
+      let path_to_config;
+    
+      if (process.env.NODE_ENV === 'development') {
+        path_to_config = path.join(__dirname, '..', '..', 'risx-mssp-front', `public`, configFileName);
+        return path_to_config;
+      } else if (process.env.NODE_ENV === 'production') {
+        path_to_config = path.join(__dirname, '..', '..', 'risx-mssp-front-build', configFileName);
+        return path_to_config;
+      }
+    
+    
+ 
+    } catch (err) {
+      console.error('Error reading or parsing file:', err);
+    }
+    
+    
+    
+    
+    
+    
+    } 
+    async function read_config_model(file_path ) {
+      try {
+       const data = await fs_promises.readFile(file_path, 'utf8');
+       const jsonData = JSON.parse(data);
+        
+       return jsonData;
+   } catch (err) {
+       console.error('Error reading file:', err);
+       throw err; // Rethrow the error
+   }
+   
+   
+    }
+
+
+
 
 async function get_All_Resources_model() {
-  console.log("get_All_Resources_model");
 
- 
+
+
+
+
   try {
- 
+
+// const file_path  = await  get_config_path_model();
+// const config_file  = await  read_config_model(file_path);
+
+// const all_assets = config_file?.ClientInfrastructure?.Assets;
+// const all_Modules = config_file?.Modules;
+
+//   all_assets.forEach((element) => {
+//     console.log("element", element);
+//     if (!element.hasOwnProperty('tools')) {
+//         element.tools = [];
+//     }
+// });
+
+//   console.log("mmmmmmmmmmmmmmm all_assets", all_assets);
+
+
 
     const resourcesQuery = DBConnection('all_resources')
     .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.group_name', 'all_resources.checked', 'all_resources.updatedAt',
@@ -31,6 +94,8 @@ async function get_All_Resources_model() {
   } catch (err) {
     console.log("get_All_Resources_model err",err);
   }
+
+
 
 
 
@@ -177,18 +242,6 @@ module.exports = {
   check_if_string_exist_in_db,
   check_if_id_exist_in_db,
   delete_single_resource_by_id,
-  // make_JSON_velociraptor_Artifact___kitty,
-
-
-
-  // get_Date_and_hour_string,
-
-
-  // getDefaultColumnsAndTables,
-  //  get_All_Resources_model ,
-  //  get_All_Resources_model_Async ,
-  //  addResource_Website ,
-  //  does_Website_Name_Exist_Model,
-  //  does_Website_Id_Exist_Model,
-  //  delete_resource_Website
+  get_config_path_model,
+  read_config_model
 };

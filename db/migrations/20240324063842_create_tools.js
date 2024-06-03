@@ -11,19 +11,20 @@ exports.up = function(knex) {
         table.string('BoxType',100);
         table.string('headline',100);
         table.boolean('isActive');
+        table.boolean('ShowInUi');
         table.string('logoAddress_1',150);
         table.string('logoAddress_2',150);
         table.string('iconAddress',150);
-
         table.string('description_short');
         table.text('description_long');
-
         table.string('Status',100);
         table.string('buttonTitle',50);
         table.string('toolURL',150);
         table.string('ServicePackage',50);
         table.timestamp('LastRun');
         table.integer('threshold_time',10);
+        table.json('arguments');
+        
         
  table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'))
     });

@@ -17,6 +17,43 @@ const { errorMonitor } = require('events');
 
   const parser2xml = new xml2js.Parser();
 
+  async function show_in_ui_module_model(module_id,set_ShowInUi_to){
+    console.log("  module_id", module_id,"set_ShowInUi_to",set_ShowInUi_to);
+        try{
+          const change_this  =
+          await DBConnection('tools')
+          .where('tool_id', module_id)
+          .update('ShowInUi', set_ShowInUi_to); 
+    
+      //     const Modules = await DBConnection('tools')
+      //     .select('tool_id', 'ShowInUi');
+      //         if (Modules) 
+      //  console.log(Modules);
+          
+          return{change_this}
+            }catch(err)
+            {console.log(err);}
+       }
+
+async function enable_disable_module_model(module_id,set_enable_disable_to){
+console.log("  module_id", module_id , typeof module_id,"set_enable_disable_to",set_enable_disable_to , typeof set_enable_disable_to) ;
+    try{
+
+      
+      const change_this  =
+      await DBConnection('tools')
+      .where('tool_id', module_id)
+      .update('isActive', set_enable_disable_to);
+
+//       const Modules = await DBConnection('tools')
+//       .select('tool_id', 'isActive');
+         
+//  console.log(Modules);
+      
+      return{change_this}
+        }catch(err)
+        {console.log(err);}
+   }
 
   async function get_all_Modules_model(){
 
@@ -73,7 +110,6 @@ console.log("dddddddddd" , module_id);
       
     }
 
-
     async function make_reponse_file_name(module_id, module_name) {
 
       try {
@@ -89,7 +125,6 @@ console.log("dddddddddd" , module_id);
     
       
     }
-
 
   async function make_JSON_Module_model(module_id, module_name, toolData) {
 
@@ -138,7 +173,6 @@ console.log("dddddddddd" , module_id);
       
     }
 
-    
 async function all_Modules_id_and_trashold(){
 try{
 const tools = await DBConnection('tools')
@@ -148,7 +182,6 @@ return{tools}
   }catch(err)
   {console.log(err);}
 }
-
 
 async function all_Artifacts_id_and_trashold(){
   try{
@@ -173,8 +206,7 @@ async function all_Artifacts_id_and_trashold(){
       {console.log(err);}
  }
 
-//  async function get_Artifact_path_config_file() {
-    function get_Artifact_path_config_file() {
+function get_Artifact_path_config_file() {
   const configFileName = `artifact_config.json`;
 
 
@@ -300,8 +332,6 @@ async function read_All_Artifacts_config_file(Artifact_path_config_file ) {
 
 }
 
-
-
 async function make_JSON_Artifact_to_velociraptor(artifact_id) {
   let toolData ={}
  const Artifact_path_config_file = await get_Artifact_path_config_file();
@@ -401,8 +431,6 @@ console.log("toolDataJSON",toolDataJSON);
   
 }
 
-
-
 async function get_Date_and_hour_string(additionalMinutes = 0) {
  
  
@@ -452,7 +480,6 @@ async function get_Date_and_hour_string(additionalMinutes = 0) {
   
 }
  
-
 async function active_JSON_in_py(request_file_Path_and_Name){
   const EXECUTABLE = process.env.PYTHON_EXECUTABLE
   
@@ -644,7 +671,9 @@ module.exports = {
   write_last_run_of_module,
   all_Modules_id_and_trashold , all_Artifacts_id_and_trashold,
   make_reponse_file_name,
-  write_to_csv_table
+  write_to_csv_table,
+  enable_disable_module_model,
+  show_in_ui_module_model
 };
 
 

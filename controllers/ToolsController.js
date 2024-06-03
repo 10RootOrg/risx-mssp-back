@@ -6,10 +6,10 @@ const {
 const { 
   make_toolData_model, make_JSON_Artifact_to_velociraptor, active_JSON_in_py, get_all_velociraptor_artifacts_model,
   make_JSON_Module_model, get_all_Modules_model, get_single_Module_by_id_model,write_last_run_of_module,
-  make_reponse_file_name,write_to_csv_table, get_Date_and_hour_string
+  make_reponse_file_name,write_to_csv_table, get_Date_and_hour_string,enable_disable_module_model,show_in_ui_module_model
 } = require('../models/ToolsModels');
 
-const { get_requests_csv_table_model , make_cool_object_from_csv_table} = require('../models/ResultsModels');
+const { get_requests_csv_table_model , make_cool_object_from_csv_table, } = require('../models/ResultsModels');
 
 
 const { exec } = require('child_process');
@@ -18,17 +18,44 @@ const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
-const DBConnection = require('../db.js')
-;
+const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
 const { log } = require('console');
 
-
-
-
-
  
+
+
+async function show_in_ui_module(req, res, next) {
  
+  const module_id =  req.body?.params?.module_id
+  const set_ShowInUi_to =  req.body?.params?.set_ShowInUi_to
+  console.log("module_id",module_id,"set_ShowInUi_to",set_ShowInUi_to);
+    try{
+      const enable_disable = await show_in_ui_module_model(module_id, set_ShowInUi_to)  
+   
+  
+  
+  
+  res.send(enable_disable)
+    }catch(err)
+    {console.log(err);}
+  }
+
+async function enable_disable_module(req, res, next) {
+ 
+const module_id =  req.body?.params?.module_id
+const set_enable_disable_to =  req.body?.params?.set_enable_disable_to
+ 
+  try{
+    const enable_disable = await enable_disable_module_model(module_id, set_enable_disable_to)  
+ 
+
+
+
+res.send(enable_disable)
+  }catch(err)
+  {console.log(err);}
+}
 
 async function Get_All_Tools(req, res, next) {
   try{
@@ -50,18 +77,6 @@ if (all_artifacts){
   }catch(err)
   {console.log(err);}
 }
-
-// async function get_all_modules(req, res, next){
-
-//   try{
-//     const all_modules = await  get_all_velociraptor_artifacts_model()
-// if (all_modules){
-  
-//   res.send("popo")}
- 
-//   }catch(err)
-//   {console.log(err);}
-// }
 
 async function Get_Dehashed_Json(req, res, next) {
   console.log("Get_Dehashed_Json");
@@ -146,8 +161,6 @@ for (const artifact of checkedArtifacts) {
  
 }
 
-
-
 async function active_modules(req,res,next){
 
 const Sub_Module = ""
@@ -203,7 +216,6 @@ console.log("write 777777777777777777777777", write);
  
 }
 
-
  
 module.exports = {
 
@@ -212,5 +224,7 @@ module.exports = {
   active_velocirapto_artifact,
   get_all_velociraptor_artifacts,
   active_modules,
+  enable_disable_module,
+  show_in_ui_module
  
 };

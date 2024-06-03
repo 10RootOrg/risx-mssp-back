@@ -6,29 +6,30 @@ exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('tools').del()
   await knex('tools').insert([  
-    // {
-    //   tool_id: 2000000, 
-    //   Tool_name: 'Velociraptor',
-    //   BoxType: 'Tools_a',
-    //   headline: 'AD security Platform',
-    //   isActive: true,
-    //   logoAddress_1: "./Logos/10Root.svg",
-    //   logoAddress_2: "",
-    //   iconAddress: './icons/General-icons-risx.svg',
-    //   description_short: 'All-In-One Holistic AD security Platform',
-    //   description_long: 'Risx is an All-In-One Holistic AD security Platform Risx consists of plug-ins based modules that can be easily customized or extended with new functionality. The Security posture analytics module is designed to discover, identify and prioritize cyber security threats on AD Service & the underline OS and Present them in a simple, intuitive way, in order to manage them intelligently.The KerbShield module designed to Detect & Prevent AD attacks in Real Time utilizing conditional access and contextual authorization',
-    //   Status: 'blue',
-    //   buttonTitle: 'Active',
-    //   toolURL: '',
-    //   ServicePackage: 'Standard',
-    //   threshold_time:24,
-    //  }, 
+    {
+      tool_id: 2000000, 
+      Tool_name: 'Velociraptor',
+      BoxType: 'Velociraptor',
+      headline: 'AD security Platform',
+      isActive: true,
+      logoAddress_1: "./Logos/10Root.svg",
+      logoAddress_2: "",
+      iconAddress: './icons/General-icons-risx.svg',
+      description_short: 'All-In-One Holistic AD security Platform',
+      description_long: 'Risx is an All-In-One Holistic AD security Platform Risx consists of plug-ins based modules that can be easily customized or extended with new functionality. The Security posture analytics module is designed to discover, identify and prioritize cyber security threats on AD Service & the underline OS and Present them in a simple, intuitive way, in order to manage them intelligently.The KerbShield module designed to Detect & Prevent AD attacks in Real Time utilizing conditional access and contextual authorization',
+      Status: 'blue',
+      buttonTitle: 'Active',
+      toolURL: '',
+      ServicePackage: 'Standard',
+      threshold_time:24,
+     }, 
     {
     tool_id: 2001000, 
     Tool_name: 'Risx',
     BoxType: 'Tools_a',
     headline: 'AD security Platform',
     isActive: true,
+    ShowInUi: true,
     logoAddress_1: "./Logos/10Root.svg",
     logoAddress_2: "",
     iconAddress: './icons/General-icons-risx.svg',
@@ -39,6 +40,7 @@ exports.seed = async function(knex) {
     toolURL: 'http://risxserverdev.westeurope.cloudapp.azure.com:3001/login/',
     ServicePackage: 'Standard',
     threshold_time:24,
+    arguments:{}
    }, 
     {
        tool_id: 2001001,
@@ -46,6 +48,7 @@ exports.seed = async function(knex) {
        BoxType: 'Tools_a',
        headline: 'Artifacts',
        isActive: true,
+       ShowInUi: true,
        logoAddress_1: "./Logos/ELK.svg",
        logoAddress_2: "",
        iconAddress: './icons/General-icons-b.svg',
@@ -56,6 +59,7 @@ exports.seed = async function(knex) {
        toolURL: 'https://10root.com/',
        ServicePackage: 'Standard',
        threshold_time:24,
+       arguments:{}
       }, 
          {
         tool_id: 2001002,
@@ -63,6 +67,7 @@ exports.seed = async function(knex) {
         BoxType: 'Tools_a',
         headline: 'Timesketch',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/Timesketch.svg",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-e.svg',
@@ -73,6 +78,7 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },
        {
         tool_id: 2001003,
@@ -80,8 +86,9 @@ exports.seed = async function(knex) {
         BoxType: 'Tools_a',
         headline: 'CTI DB & Dashboard',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/OPENCTI.png",
-        logoAddress_2: "./Logos/MISP.png",
+        logoAddress_2: "",
         iconAddress: './icons/General-icons-a.svg',
         description_short: 'Cyber threat intelligence knowledge and observables',
         description_long: 'OpenCTI is an open source platform allowing organizations to manage their cyber threat intelligence knowledge and observables. It has been created in order to structure, store, organize and visualize technical and non-technical information about cyber threats.The structuration of the data is performed using a knowledge schema based on the STIX2 standards. It has been designed as a modern web application including a GraphQL API and an UX oriented frontend. Also, OpenCTI can be integrated with other tools and applications such as MISP, TheHive, MITRE ATT&CK, etc.',
@@ -90,6 +97,7 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },
        {
         tool_id: 2001004,
@@ -97,6 +105,7 @@ exports.seed = async function(knex) {
         BoxType: 'Tools_a',
         headline: 'Open Source Intelligence',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/10Root.svg",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-i.svg',
@@ -107,6 +116,7 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },
        {
         tool_id: 2001010,
@@ -114,6 +124,7 @@ exports.seed = async function(knex) {
         BoxType: 'Tools_a',
         headline: 'DFIR-IRIS',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/Iris.png",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-h.svg',
@@ -124,6 +135,7 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },
 
 
@@ -137,6 +149,7 @@ exports.seed = async function(knex) {
         BoxType: 'Tools_b',
         headline: 'ASM',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/Nuclei.svg",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-b.svg',
@@ -147,12 +160,14 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },  {
         tool_id: 2001006,
         Tool_name: 'AnyRun',
         BoxType: 'Tools_b',
         headline: 'Sandbox',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/AnyRun.svg",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-d.svg',
@@ -163,12 +178,14 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },{
         tool_id: 2001007,
         Tool_name: 'HashR',
         BoxType: 'Tools_b',
         headline: 'Private Hashes DB',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/HashR.png",
         logoAddress_2: "",
         iconAddress: '',
@@ -179,12 +196,14 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
         BoxType: 'Tools_b',
         headline: 'Ail',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/ail.png",
         logoAddress_2: "",
         iconAddress: '',
@@ -195,12 +214,14 @@ exports.seed = async function(knex) {
         toolURL: "https://10root.com/",
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
        },{
         tool_id: 2001009,
         Tool_name: 'Dehashed',
         BoxType: 'Tools_b',
         headline: 'Credential Leaks',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/dehashed.svg",
         logoAddress_2: "",
         iconAddress: '',
@@ -211,13 +232,15 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Premium',
         threshold_time:24,
+        arguments:{}
        },
        {
         tool_id: 2001011,
         Tool_name: 'Shodan',
         BoxType: 'Tools_b',
-        headline: 'internet facing search engine',
+        headline: 'Net Facing Search Engine',
         isActive: true,
+        ShowInUi: true,
         logoAddress_1: "./Logos/Shodan.png",
         logoAddress_2: "",
         iconAddress: '',
@@ -228,6 +251,25 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
+        arguments:{}
+       },   {
+        tool_id: 2001012,
+        Tool_name: 'MISP',
+        BoxType: 'Tools_b',
+        headline: 'Threat Intelligence & IOCs Platform',
+        isActive: true,
+        ShowInUi: true,
+        logoAddress_1: "./Logos/MISP.png",
+        logoAddress_2: "",
+        iconAddress:  "",
+        description_short: 'MISP facilitates collaborative threat intelligence sharing, enabling effective detection and response to cyber threats.',
+        description_long: 'The MISP (Malware Information Sharing Platform & Threat Sharing) project fosters collaborative threat intelligence sharing among cybersecurity professionals. Through its open-source platform, MISP enables organizations to share, store, and analyze threat data, enhancing their ability to detect and respond to cyber threats effectively.',
+        Status: 'blue',
+        buttonTitle: 'Active',
+        toolURL: 'https://tenroot-misp.northeurope.cloudapp.azure.com/',
+        ServicePackage: 'Standard',
+        threshold_time:24,
+        arguments:{}
        },
   ]);
 };

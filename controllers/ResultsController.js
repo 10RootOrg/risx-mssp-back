@@ -1,7 +1,7 @@
 const { 
   // get_all_velociraptor_results_model,
   // get_all_request_and_response_model,
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table} = require('../models/ResultsModels');
+   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -26,32 +26,43 @@ const {v4: uuid} = require('uuid');
 //   }
 // }
 
-
-
 async function get_all_requests_table(req, res, next) {
 
  
   try {
-    const all_velociraptor_artifacts = await get_all_velociraptor_artifacts_model();
-    const all_Modules_model = await get_all_Modules_model();
-    const all_Modules =  all_Modules_model.Modules 
-
-    const filePath = await get_requests_csv_table_model();
-    const cool_object_from_csv_table = await make_cool_object_from_csv_table(filePath);
-
-    // const cool_object_from_csv_table = await make_cool_object_from_csv_table();
-
-    // requests_and_results_status = await read_();
-   
-    // const results  = await  get_all_request_and_response_model(all_velociraptor_artifacts , all_Modules);
-    // const results_and_threshold_time  = await  calculating_request_response_threshold_time(results,all_velociraptor_artifacts , all_Modules);
-
-    if(cool_object_from_csv_table){   res.send(cool_object_from_csv_table);}
+    const ReqestStatus = await get_ReqestStatus_from_config_file();
+// console.log("33333333333333333333333333333333333333333333" , ReqestStatus);
+    if(ReqestStatus){   res.send(ReqestStatus);}
   } catch (err) {
     res.send(err.message)
     next(err);
   }
 }
+
+// async function get_all_requests_table(req, res, next) {
+
+ 
+//   try {
+//     const all_velociraptor_artifacts = await get_all_velociraptor_artifacts_model();
+//     const all_Modules_model = await get_all_Modules_model();
+//     const all_Modules =  all_Modules_model.Modules 
+
+//     const filePath = await get_requests_csv_table_model();
+//     const cool_object_from_csv_table = await make_cool_object_from_csv_table(filePath);
+
+//     // const cool_object_from_csv_table = await make_cool_object_from_csv_table();
+
+//     // requests_and_results_status = await read_();
+   
+//     // const results  = await  get_all_request_and_response_model(all_velociraptor_artifacts , all_Modules);
+//     // const results_and_threshold_time  = await  calculating_request_response_threshold_time(results,all_velociraptor_artifacts , all_Modules);
+
+//     if(cool_object_from_csv_table){   res.send(cool_object_from_csv_table);}
+//   } catch (err) {
+//     res.send(err.message)
+//     next(err);
+//   }
+// }
 
 // async function get_all_request_and_response(req, res, next) {
  

@@ -13,6 +13,77 @@ const csv = require('csv-parser')
 const DBConnection = require('../db.js');
 const { loadavg } = require('os');
  
+async function get_ReqestStatus_from_config_file() {
+   
+  try {
+ 
+const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.ReqestStatus") as data FROM configjson;');
+
+//  console.log("ReqestStatus"  ,   ReqestStatus?.[0].data );
+  
+    return  ReqestStatus?.[0].data
+
+// const tmp = [
+//   {
+//     Error: '',
+//     HuntID: '',
+//     Status: 'Complete',
+//     ModuleID: '2000000',
+//     UniqueID: '',
+//     Arguments: {},
+//     RequestId: '',
+//     StartDate: '21-05-24-11-20-18',
+//     SubModule: 'HardeningKitty',
+//     ArtifactID: '1000103',
+//     ExpireDate: '22-05-24-11-20-18',
+//     ModuleName: 'Velociraptor',
+//     TimeInterval: '',
+//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000103.json',
+//     LastIntervalDate: '21-05-24-15-20-18'
+//   },
+//   {
+//     Error: '',
+//     HuntID: '',
+//     Status: 'Request',
+//     ModuleID: '2001005',
+//     UniqueID: '',
+//     Arguments: {},
+//     RequestId: '',
+//     StartDate: '30-05-24-10-57-07',
+//     SubModule: '',
+//     ArtifactID: '',
+//     ExpireDate: '30-06-24-10-57-07',
+//     ModuleName: 'Nuclei',
+//     TimeInterval: '',
+//     Response_Path: 'response_nuclei_30-05-24-10-57-07_module_id_2001005.json',
+//     LastIntervalDate: '04-06-24-10-57-07'
+//   },
+//   {
+//     Error: '',
+//     HuntID: '',
+//     Status: 'Complete',
+//     ModuleID: '2001005',
+//     UniqueID: '',
+//     Arguments: {},
+//     RequestId: '',
+//     StartDate: '21-05-24-11-20-18',
+//     SubModule: '',
+//     ArtifactID: '',
+//     ExpireDate: '21-05-24-14-20-18',
+//     ModuleName: 'Nuclei',
+//     TimeInterval: '',
+//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000105',
+//     LastIntervalDate: '21-05-24-15-20-18'
+//   }
+// ]
+
+    // return  tmp;
+  } catch (err) {
+    console.error('Error reading or parsing file:', err);
+    return []; // Return an empty array in case of error
+  }
+}
+
 
 async function get_requests_csv_table_model(){
 
@@ -619,4 +690,5 @@ module.exports = {
     get_requests_csv_table_model,
     make_cool_object_from_csv_table,
     // write_to_csv_table,
+    get_ReqestStatus_from_config_file,
 };

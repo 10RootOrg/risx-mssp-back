@@ -6,6 +6,8 @@ const {
   Make_Array_to_count_Resorce_by_type,
   check_if_id_exist_in_db,
   delete_single_resource_by_id,
+  get_config_path_model,
+  read_config_model
 } = require('../models/ResourcesModels');
 
 const DBConnection = require('../db.js')
@@ -13,18 +15,26 @@ const DBConnection = require('../db.js')
 const {v4: uuid} = require('uuid');
  
 
-
-
 async function get_All_Resources(req, res, next) {
 
-  console.log("get_All_Resources000000000000000000000");
   try {
+
+  
+  
     const All_Resources  = await  get_All_Resources_model();
-    if(All_Resources){   res.send(All_Resources);}
+    if(All_Resources){  
+      
+      // console.log("from sql -----------------" , All_Resources);
+      
+      res.send(All_Resources);}
   } catch (err) {
     res.sand(err.message)
     next(err);
   }
+
+ 
+
+
 }
 
 
