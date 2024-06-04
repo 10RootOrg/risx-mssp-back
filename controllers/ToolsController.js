@@ -191,13 +191,9 @@ const filePath = await get_requests_csv_table_model();
 
 const the_orginal_file = await make_cool_object_from_csv_table(filePath);
 
- 
 
 
  const write = await write_to_csv_table(filePath,the_orginal_file,module_name,Sub_Module,Start_Date,Expire_Date,examInnterval_minutes,Arguments,reponse_file_name,module_id);
-console.log("write 777777777777777777777777", write);
-
-
 
 
 // const request_file_Path_and_Name = await make_JSON_Module_model(module_id,module_name, toolData)  // make the JSON FILE
