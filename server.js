@@ -19,8 +19,11 @@ app.use((req, res, next) => {
 
  
 
-console.log('backend got this 1',`http://localhost:${front_port}` );
-console.log('backend got this 2',`http://${front_ip}:${front_port}` );
+console.log('backend got this front 1',`http://localhost:${front_port}` );
+console.log('backend got this front 2',`http://${front_ip}:${front_port}` );
+console.log('backend got this front 3',`${front_url}:${front_port}`);
+
+
 
 app.use(
   cors({
@@ -76,8 +79,8 @@ const port = process.env.PORT || 5001;
 
 
 app.listen(port, () => {
-  console.log(`Server run port ${port}`);
-  logger.info(`Server run port ${port}`);
+  console.log(`Backend Server run port ${port}`);
+  logger.info(`Backend Server run port ${port}`);
 });
 
 process.on("exit", (code) => {
