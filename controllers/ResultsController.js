@@ -1,7 +1,7 @@
 const { 
   // get_all_velociraptor_results_model,
   // get_all_request_and_response_model,
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file} = require('../models/ResultsModels');
+   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file,add_data_to_ReqestStatus} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -31,7 +31,11 @@ async function get_all_requests_table(req, res, next) {
  
   try {
     const ReqestStatus = await get_ReqestStatus_from_config_file();
-// console.log("33333333333333333333333333333333333333333333" , ReqestStatus);
+    // console.log("ReqestStatus",ReqestStatus);
+    const all_Modules = await get_all_Modules_model();
+    const ReqestStatus_and_data = await add_data_to_ReqestStatus(ReqestStatus,all_Modules);
+    
+
     if(ReqestStatus){   res.send(ReqestStatus);}
   } catch (err) {
     res.send(err.message)

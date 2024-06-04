@@ -140,13 +140,16 @@ async function post_new_resource (req, res, next) {
   const {description} = req.body
   const {monitoring} = req.body
 try{
-  const id = uuid()
-  const id_short = id.replace(/-/g, "").substring(0, 10);
+  // const id = uuid()
+  // const id_short = id.replace(/-/g, "").substring(0, 10);
 
+  const id = uuid();
+  const id_short = id.replace(/-/g, "").substring(0, 9);
+  const id_with_r = 'r' + id_short;
 
  const posted = await DBConnection('all_resources')
 .insert({
-  resource_id: id_short,
+  resource_id: id_with_r,
   resource_string:  req.body?.resource_string,
   type:item_types_list.toString(),
   tools: item_tool_list.toString(),
@@ -156,7 +159,7 @@ try{
 
 if (posted){
   console.log("posted" ,posted);
-  const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_short);
+  const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
 if(the_new_item){res.status(200).send(the_new_item);}
 
 

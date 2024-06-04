@@ -13,13 +13,59 @@ const csv = require('csv-parser')
 const DBConnection = require('../db.js');
 const { loadavg } = require('os');
  
+async function add_data_to_ReqestStatus(ReqestStatus,all_Modules){
+
+  const Modules = all_Modules.Modules
+ 
+
+
+  try{
+    for (let i = 0; i < ReqestStatus.length; i++) {
+    //  console.log("----3-----", ReqestStatus[i]?.ModuleID);
+    
+     for (let j = 0; j < Modules.length; j++) {
+      // console.log("-----5----", Modules[j]?.tool_id);
+   
+       if (Modules[j]?.tool_id === ReqestStatus[i]?.ModuleID) {
+        ReqestStatus[i].isInTime=true
+         console.log("bingo");
+
+
+
+       }
+     }
+
+
+
+    }
+
+
+
+ 
+
+       return  "ddddd"
+  
+  
+  }
+  catch(err){res.send(err)}
+  }
+
+
 async function get_ReqestStatus_from_config_file() {
    
   try {
- 
-const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.ReqestStatus") as data FROM configjson;');
+const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.RequestStatus") as data FROM configjson;');
 
-//  console.log("ReqestStatus"  ,   ReqestStatus?.[0].data );
+
+
+
+
+//    const [Nuclei] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Modules.Nuclei") as data FROM configjson;');
+//   console.log("ddddssssssssssssssssss Nuclei"  , Nuclei[0].data);
+
+// console.log("ReqestStatus1"  ,   ReqestStatus );
+
+//  console.log("ReqestStatus2"  ,   ReqestStatus?.[0].data );
   
     return  ReqestStatus?.[0].data
 
@@ -83,7 +129,6 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
     return []; // Return an empty array in case of error
   }
 }
-
 
 async function get_requests_csv_table_model(){
 
@@ -691,4 +736,5 @@ module.exports = {
     make_cool_object_from_csv_table,
     // write_to_csv_table,
     get_ReqestStatus_from_config_file,
+    add_data_to_ReqestStatus
 };

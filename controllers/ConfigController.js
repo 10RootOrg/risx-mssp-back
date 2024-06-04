@@ -12,18 +12,13 @@ async function Get_Config(req, res, next) {
  
 
 async function Put_Config(req, res, next) {
-
-
-  // const module_id =  req.body?.params?.module_id
-  // const set_ShowInUi_to =  req.body?.params?.set_ShowInUi_to
-
  const config = req.body.config
-console.log("config",config);
+// console.log("config",config);
  
   try{
  
-    // const file = await put_full_config_model()  
-//  res.send(file)
+    const put = await put_full_config_model(config)  
+ res.send(put)
   }catch(err)
   {console.log(err);}
 }
