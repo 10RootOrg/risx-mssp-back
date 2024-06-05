@@ -12,8 +12,9 @@ async function Get_Config(req, res, next) {
  
 
 async function Put_Config(req, res, next) {
+
+
  const config = req.body.config
-// console.log("config",config);
  
   try{
  

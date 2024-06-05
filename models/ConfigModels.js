@@ -6,24 +6,27 @@ const { DiscrError } = require('ajv/dist/vocabularies/discriminator/types.js')
  const config_column = "config"
  
  async function put_full_config_model(config) {
+console.log("the edited one:",config);
+ 
+// const real_config = await get_full_config_model();
+// console.log("real_config 000" ,          real_config );
+//  real_config.General.alon = "alon2"
 
-  console.log("put_full_config_model  "  , config?.config);
-
-  if (config?.config === undefined || config?.config === null ){console.log("config file is," , config?.config);return "Error in Put config file"}
-
-
+  if (config === undefined || config === null ){console.log("config file is," , config);return "Error in Put config file"}
 
     try {
-  
-      // const change_this = await DBConnection('configjson')
-      // .update({ config: config?.config }) 
-      // .limit(1); //   first row
 
-      
-//       const Modules = await DBConnection('tools')
-//       .select('tool_id', 'isActive');
-         
-//  console.log(Modules);
+      const stringified =  JSON.stringify( config) 
+      const change_this = await DBConnection('configjson')
+      .update({ config:stringified}) 
+      .limit(1); //   first row
+   console.log(change_this);
+
+  // const stringified =  JSON.stringify( real_config) 
+  //     const change_this = await DBConnection('configjson')
+  //     .update({ config:stringified}) 
+  //     .limit(1); //   first row
+  //  console.log(change_this);
       
    
 
@@ -32,14 +35,15 @@ const { DiscrError } = require('ajv/dist/vocabularies/discriminator/types.js')
   // console.log("ddddssssssssssssssssss Nuclei"  , Nuclei[0].data);
   // const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.ReqestStatus") as data FROM configjson;');
   //  console.log("ReqestStatus ReqestStatus"  , ReqestStatus[0] );
-  
-  return "koko"
+   
+  return change_this
   
             }
   
+
        catch (err) {
         const error_m = {
-          error:"Error find get_full_config_model",
+          error:"failed saving config",
           DiscrError:[err]
         }
         console.error('Error find get_full_config_model:', err);
@@ -48,120 +52,13 @@ const { DiscrError } = require('ajv/dist/vocabularies/discriminator/types.js')
   } 
 
  
+  // put_full_config_model({});
+
+
+
 async function get_full_config_model() {
 
-
-const tmpconfig = {
-  "General": {
-    "DefaultInter": ""
-  },
-  "ClientInfrastructure": {
-    "Assets": [
-      {
-        "AssetEnable": true,
-        "AssetType": ["Domain"],
-        "AssetString": "18.168.185.151",
-        "AssetModules": ["Velociraptor", "Nuclei"]
-      }
-    ],
-
-    "Population": [
-      {
-        "ComputerName": "SRV1",
-        "Label": ""
-      },
-      {
-        "ComputerName": "SRV3",
-        "Label": ""
-      }
-    ]
-  },
-
-  "ClientData": {
-    "API": {
-      "Shodan": "APIKey",
-      "Dehashed": "APIKey",
-      "OpenAI": "APIKey"
-    }
-  },
-
-  "Modules": {
-    "Velociraptor": {
-      "id": "",
-      "ModulName": "Velociraptor",
-      "Enable": true,
-      "LastRunDate": "",
-      "SubModules": {
-        "PersistenceSniper": {
-          "id": "",
-          "SubModulName": "PersistenceSniper",
-          "Enable": true,
-          "Expire_Date": "1D",
-          "Time_Interval": "15",
-          "LastRunDate": "",
-          "Arguments": {}
-        },
-        "HardeningKitty": {
-          "id": "",
-          "SubModulName": "HardeningKitty",
-          "Enable": true,
-          "ExpireDate": "1D",
-          "TimeInterval": "15",
-          "LastRunDate": "",
-          "Arguments": {
-            "TakeBackUp": "N",
-            "Baseline": "finding_list_0x6d69636b_machine"
-          }
-        },
-        "Zircolite": {
-          "id": "",
-          "SubModulName": "Zircolite",
-          "Enable": true,
-          "ExpireDate": "1D",
-          "TimeInterval": "15",
-          "LastRunDate": "",
-          "Arguments": {
-            "EVTXPath": "C:\\\\Windows\\\\System32\\\\winevt\\\\Logs",
-            "Rules": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\rules\\\\rules_windows_generic.json",
-            "Mappings": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\config\\\\fieldMappings.json"
-          }
-        },
-        "Hayabusa": {
-          "id": "",
-          "SubModulName": "Hayabusa",
-          "Enable": true,
-          "ExpireDate": "1D",
-          "TimeInterval": "15",
-          "LastRunDate": "",
-          "Arguments": {
-            "UTC": "Y",
-            "UpdateRules": "Y",
-            "NoisyRules": "N",
-            "OutputProfile": "standard",
-            "EIDFilter": "N",
-            "MinimalLevel": "informational",
-            "Threads": "2"
-          }
-        }
-      }
-    },
-    "Nuclei": {
-      "id": "",
-      "ModulName": "Velociraptor",
-      "ExpireDate": "1D",
-      "TimeInterval": "15",
-      "Enable": true,
-      "LastRunDate": "",
-      "Arguments": {
-        "nucleiTags": "",
-        "nucleiWorkflow": "",
-        "nucleiExcludeSeverity": "",
-        "nucleiTargets": "18.168.185.151"
-      }
-    }
-  }
-  ,"History":[]
-}
+ 
 
   try {
 
@@ -174,7 +71,7 @@ const [the_config_json] = await DBConnection(config_table).select(config_column)
 // const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.ReqestStatus") as data FROM configjson;');
 //  console.log("ReqestStatus ReqestStatus"  , ReqestStatus[0] );
 
-return the_config_json
+return the_config_json.config
 
           }
 
