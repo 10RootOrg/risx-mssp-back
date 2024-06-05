@@ -13,40 +13,142 @@ const csv = require('csv-parser')
 const DBConnection = require('../db.js');
 const { loadavg } = require('os');
  
-async function add_data_to_ReqestStatus(ReqestStatus,all_Modules){
 
-  const Modules = all_Modules.Modules
+function string_to_date(dateString){
+ try{
+  const dateStringArray = dateString.split("-");
+  const day = dateStringArray[0]
+  const month = dateStringArray[1]
+  const year = dateStringArray[2] 
+  const hour = dateStringArray[3] 
+  const minute = dateStringArray[4] 
+  const second = dateStringArray[5] 
+  const event = new Date(`${month} ${day}, ${year} ${hour}:${minute}:${second}`);
+
+return event
+}catch(err){console.log(err);return "error in date" }
+
+}
+function compare_dates(end_date, start_date){
+  try{
+  const compare = (end_date - start_date)/60000
+  if(compare>0){
+      // console.log("in time");
+      return "In Time"
+  }
+  if(compare<0){
+      //  console.log("not in time" ); 
+  
+   
+  
+      if(-compare <= 59){
+          // console.log("pass by", -compare, "Min"); 
+          const return_this = "+"+ -compare + " Min"
+       return return_this
+      }
+  
+      if(  59 < -compare &&   1439 > -compare){
+          const hours  = Math.floor(-compare / 60);
+          const minutes = -compare % 60;
+
+          let return_this_2
+
+            if (minutes===0 && hours != 1){ return_this_2 = "+"+hours + " Hrs";}
+            if (minutes===0 && hours === 1){ return_this_2 = "+"+hours + " Hr";}
+            else if(minutes !=0) {return_this_2 = "+"+hours + " Hrs " + minutes + " Mins";}    
+
+          return return_this_2;
+
+      }
+      if(   1440 <= -compare ){
+          const days  = Math.floor(-compare / 1440);
+          const remainingHours = Math.floor((-compare % 1440) / 60); // Calculate remaining hours
+          const return_this = "+"+days + " Days & " + remainingHours + " Hrs";
+          return return_this
+      
+  
+      }
+  }
+
+return  
+}catch(err){console.log(err);return "check compare_dates" }
+
+}
+
+
+
+
+// async function add_time_note(ReqestStatus,all_Modules){
+
+//   const Modules = all_Modules.Modules
  
 
 
+//   try{
+//     for (let i = 0; i < ReqestStatus.length; i++) {
+//     //  console.log("----3-----", ReqestStatus[i]?.ModuleID);
+    
+//      for (let j = 0; j < Modules.length; j++) {
+//       // console.log("-----5----", Modules[j]?.tool_id);
+   
+//        if (Modules[j]?.tool_id === ReqestStatus[i]?.ModuleID) {
+//         ReqestStatus[i].isInTime=true
+//          console.log("bingo");
+
+
+
+//        }
+//      }
+
+
+
+//     }
+
+
+
+ 
+
+//        return  "ddddd"
+  
+  
+//   }
+//   catch(err){res.send(err)}
+//   }
+
+
+
+async function add_time_note(ReqestStatus){
+
   try{
     for (let i = 0; i < ReqestStatus.length; i++) {
-    //  console.log("----3-----", ReqestStatus[i]?.ModuleID);
-    
-     for (let j = 0; j < Modules.length; j++) {
-      // console.log("-----5----", Modules[j]?.tool_id);
-   
-       if (Modules[j]?.tool_id === ReqestStatus[i]?.ModuleID) {
-        ReqestStatus[i].isInTime=true
-         console.log("bingo");
+
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunt"     ){
 
 
+ const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
+ const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
+const note = compare_dates(ExpireDate,LastIntervalDate)
+// console.log("note " , ReqestStatus[i]?.ModuleName                       ,note);  
+ReqestStatus[i].TimeNote =  note
 
-       }
+
+      }
+          // console.log("----Status----", ReqestStatus[i]?.Status);
+          // console.log("----ExpireDate----", ReqestStatus[i]?.ExpireDate);
+          // console.log("----LastIntervalDate----", ReqestStatus[i]?.LastIntervalDate);
+          
+          
+          
+    }
+        return  "ddddd"
      }
 
 
 
-    }
-
-
-
  
-
-       return  "ddddd"
   
   
-  }
+  
   catch(err){res.send(err)}
   }
 
@@ -736,5 +838,5 @@ module.exports = {
     make_cool_object_from_csv_table,
     // write_to_csv_table,
     get_ReqestStatus_from_config_file,
-    add_data_to_ReqestStatus
+    add_time_note
 };

@@ -63,10 +63,9 @@ exports.seed = async function(knex) {
       }, 
          {
         tool_id: 2001002,
-        Tool_name: 'Timeline',
+        Tool_name: 'TimeSketch',
         BoxType: 'Tools_a',
-        headline: 'Timesketch',
-        isActive: true,
+        headline: 'Timeline',
         ShowInUi: true,
         logoAddress_1: "./Logos/Timesketch.svg",
         logoAddress_2: "",
