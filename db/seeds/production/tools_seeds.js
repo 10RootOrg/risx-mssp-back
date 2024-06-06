@@ -164,7 +164,7 @@ exports.seed = async function(knex) {
         tool_id: 2001006,
         Tool_name: 'AnyRun',
         BoxType: 'Tools_b',
-        headline: 'Sandbox',
+        headline: 'Strelka Sandbox',
         isActive: true,
         ShowInUi: true,
         logoAddress_1: "./Logos/AnyRun.svg",

@@ -122,7 +122,7 @@ async function add_time_note(ReqestStatus){
   try{
     for (let i = 0; i < ReqestStatus.length; i++) {
 
-      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunt"     ){
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting"     ){
 
 
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
