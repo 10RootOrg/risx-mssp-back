@@ -22,6 +22,7 @@ exports.seed = async function(knex) {
       toolURL: '',
       ServicePackage: 'Standard',
       threshold_time:24,
+      arguments:{}
      }, 
     {
     tool_id: 2001000, 
