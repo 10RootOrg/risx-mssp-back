@@ -22,7 +22,8 @@ exports.seed = async function(knex) {
       toolURL: '',
       ServicePackage: 'Standard',
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
     {
     tool_id: 2001000, 
@@ -41,7 +42,8 @@ exports.seed = async function(knex) {
     toolURL: 'http://risxserverdev.westeurope.cloudapp.azure.com:3001/login/',
     ServicePackage: 'Standard',
     threshold_time:24,
-    arguments:{}
+    arguments:{},
+    useResourceType:""
    }, 
     {
        tool_id: 2001001,
@@ -60,7 +62,8 @@ exports.seed = async function(knex) {
        toolURL: 'https://10root.com/',
        ServicePackage: 'Standard',
        threshold_time:24,
-       arguments:{}
+       arguments:{},
+       useResourceType:""
       }, 
          {
         tool_id: 2001002,
@@ -78,7 +81,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001003,
@@ -97,7 +101,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001004,
@@ -116,7 +121,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001010,
@@ -135,7 +141,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
 
 
@@ -160,7 +167,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },  {
         tool_id: 2001006,
         Tool_name: 'AnyRun',
@@ -178,7 +186,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001007,
         Tool_name: 'HashR',
@@ -196,7 +205,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
@@ -214,7 +224,8 @@ exports.seed = async function(knex) {
         toolURL: "https://10root.com/",
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001009,
         Tool_name: 'Dehashed',
@@ -232,7 +243,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Premium',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001011,
@@ -251,7 +263,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },   {
         tool_id: 2001012,
         Tool_name: 'MISP',
@@ -269,7 +282,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://tenroot-misp.northeurope.cloudapp.azure.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
   ]);
 };
