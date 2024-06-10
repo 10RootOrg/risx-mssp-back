@@ -17,6 +17,43 @@ const { errorMonitor } = require('events');
 
   const parser2xml = new xml2js.Parser();
 
+
+  async function active_main_process_model(){
+    console.log("active_main_process_model");
+
+
+    try {
+      const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+      const PYTHON_ACTIVE_RELATIVE_PATH = process.env.PYTHON_ACTIVE_RELATIVE_PATH;
+      const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_ACTIVE_RELATIVE_PATH);
+  
+      const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
+  
+      pythonProcess.stdout.on('data', (data) => {
+          console.log(`stdout: ${data.toString()}`);
+          // You can return a response here if needed
+      });
+  
+      pythonProcess.stderr.on('data', (data) => {
+          console.error(`stderr: ${data.toString()}`);
+          // You can handle errors and return a response here if needed
+      });
+  
+      pythonProcess.on('close', (code) => {
+          if (code !== 0) {
+              console.log(`Child process exited with code ${code}, indicating a failure.`);
+              // You can handle process exit errors and return a response here if needed
+          }
+      });
+  } catch (error) {
+      console.error(`Error occurred: ${error.message}`);
+      // You can handle synchronous errors and return a response here if needed
+  }
+ 
+  }
+
+
+
   async function show_in_ui_module_model(module_id,set_ShowInUi_to){
     console.log("  module_id", module_id,"set_ShowInUi_to",set_ShowInUi_to);
         try{
@@ -261,37 +298,8 @@ async function read_All_Artifacts_config_file(Artifact_path_config_file ) {
     console.error('Error reading file:', err);
     throw err; // Rethrow the error
 }
-
-//   try {
-//     const data = await fs.readFile(Artifact_path_config_file, 'utf8');
-//     const jsonData = JSON.parse(data);
-//     return jsonData;
-// } catch (err) {
-//     console.error('Error reading file:', err);
-//     throw err; // Rethrow the error
-// }
-
-
-
-  
-
-  //   const artifact_item_json = jsonData.find(artifact => artifact.artifact_id === artifact_id);
-  //   if (artifact_item_json) {
-
-  //     const { comments, artifact_id, ...rest } = artifact_item_json;
-  //     // Create a modified object without 'comments' and 'artifact_id'
-  //     const modifiedData = { ...rest };
-  //     return modifiedData
-  
-  // } else {
-  //     console.log("No artifact found with ID:", artifact_id);
-  // }
- 
- 
-
-
-
  }
+
  async function read_Artifact_config(Artifact_config_file, artifact_id  ) {
 
   const find_this_id = artifact_id
@@ -308,27 +316,6 @@ async function read_All_Artifacts_config_file(Artifact_path_config_file ) {
    console.error('Error read_Artifact_config  :', err);
    throw err; // Rethrow the error
 }
-
- 
-
-
- 
-
- //   const artifact_item_json = jsonData.find(artifact => artifact.artifact_id === artifact_id);
- //   if (artifact_item_json) {
-
- //     const { comments, artifact_id, ...rest } = artifact_item_json;
- //     // Create a modified object without 'comments' and 'artifact_id'
- //     const modifiedData = { ...rest };
- //     return modifiedData
- 
- // } else {
- //     console.log("No artifact found with ID:", artifact_id);
- // }
-
-
-
-
 
 }
 
@@ -433,7 +420,6 @@ console.log("toolDataJSON",toolDataJSON);
 
 async function get_Date_and_hour_string(additionalMinutes = 0) {
  
- 
     try {
       const date = new Date();
       date.setTime(date.getTime() + additionalMinutes * 60000); // Convert minutes to milliseconds and add to current time
@@ -451,32 +437,6 @@ async function get_Date_and_hour_string(additionalMinutes = 0) {
     }
  
 
-
-
-  // try {
- 
-  // const date = new Date
-  // const day = String(date.getDate()).padStart(2, '0');
-  // const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
-  // const year = String(date.getFullYear()).slice(2); // Get the last two digits of the year
-  // const hours = String(date.getHours()).padStart(2, '0');
-  // const minutes = String(date.getMinutes()).padStart(2, '0');
-  // const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  // const formattedDate = `${day}-${month}-${year}-${hours}-${minutes}-${seconds}`;
-  
-
-  // return formattedDate
-
-
-    
-  // } catch (err) {
-  // console.log(err);
-  // return err
-  // }
-
-
-
   
 }
  
@@ -487,9 +447,6 @@ async function active_JSON_in_py(request_file_Path_and_Name){
   // const SCRIPT_PATH = process.env.PYTHON_VELOCIRAPTOR_SCRIPT_PATH
 
   const  PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH = process.env. PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH
-
-
-  
   const SCRIPT_RELATIE_PATH  = path.join(__dirname, '..','..', PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH);
 
 
@@ -586,7 +543,6 @@ async function write_last_run_of_module(module_id){
     .update({
       LastRun: newDate  // Updating 'date_last_run' to the new date
     });
-  
   console.log(write);  // This will log the number of rows updated
   
   }
@@ -609,11 +565,6 @@ async function write_to_csv_table(filePath,the_orginal_file,module_name,Sub_Modu
   console.log("write_to_csv_table 33333333333333333333333", the_orginal_file[0]);
  const headrs  = Object.keys(the_orginal_file[0]).map(a=>{return{id: a, title: a}} )
 
-
-
-
-
-//  console.log("write_to_csv_table 44444444444444444444444444", headrs);
     try {
       const csvWriter = createCsvWriter({
         // path: 'path/to/file.csv',
@@ -673,7 +624,8 @@ module.exports = {
   make_reponse_file_name,
   write_to_csv_table,
   enable_disable_module_model,
-  show_in_ui_module_model
+  show_in_ui_module_model,
+  active_main_process_model
 };
 
 

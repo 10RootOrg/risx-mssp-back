@@ -6,7 +6,7 @@ const {
 const { 
   make_toolData_model, make_JSON_Artifact_to_velociraptor, active_JSON_in_py, get_all_velociraptor_artifacts_model,
   make_JSON_Module_model, get_all_Modules_model, get_single_Module_by_id_model,write_last_run_of_module,
-  make_reponse_file_name,write_to_csv_table, get_Date_and_hour_string,enable_disable_module_model,show_in_ui_module_model
+  make_reponse_file_name,write_to_csv_table, get_Date_and_hour_string,enable_disable_module_model,show_in_ui_module_model,active_main_process_model
 } = require('../models/ToolsModels');
 
 const { get_requests_csv_table_model , make_cool_object_from_csv_table, } = require('../models/ResultsModels');
@@ -22,7 +22,25 @@ const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
 const { log } = require('console');
 
+async function active_main_process(req,res,next){
+
+  const param1 =  req.query.param1
+  // console.log("active_main_process",param1);
+
+// if(checkedArtifacts.length === 0 ||  checkedArtifacts === null || checkedArtifacts === undefined )
+
+// {console.log('None of the Artifacts Checked');      res.send('None of the Artifacts Checked') ;      return}
+  
+
+ const response = await active_main_process_model()  
  
+    res.send("response") 
+  } 
+
+
+
+ 
+
 
 
 async function show_in_ui_module(req, res, next) {
@@ -221,6 +239,7 @@ module.exports = {
   get_all_velociraptor_artifacts,
   active_modules,
   enable_disable_module,
-  show_in_ui_module
+  show_in_ui_module,
+  active_main_process
  
 };
