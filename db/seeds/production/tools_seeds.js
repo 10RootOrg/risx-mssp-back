@@ -10,19 +10,20 @@ exports.seed = async function(knex) {
       tool_id: 2000000, 
       Tool_name: 'Velociraptor',
       BoxType: 'Velociraptor',
-      headline: 'AD security Platform',
+      headline: 'Velociraptor',
       isActive: true,
-      logoAddress_1: "./Logos/10Root.svg",
+      logoAddress_1: "./Logos/Velociraptor.svg",
       logoAddress_2: "",
       iconAddress: './icons/General-icons-risx.svg',
-      description_short: 'All-In-One Holistic AD security Platform',
-      description_long: 'Risx is an All-In-One Holistic AD security Platform Risx consists of plug-ins based modules that can be easily customized or extended with new functionality. The Security posture analytics module is designed to discover, identify and prioritize cyber security threats on AD Service & the underline OS and Present them in a simple, intuitive way, in order to manage them intelligently.The KerbShield module designed to Detect & Prevent AD attacks in Real Time utilizing conditional access and contextual authorization',
+      description_short: 'Endpoint visibility and rapid response platform.',
+      description_long: 'Velociraptor is an innovative endpoint security solution offering extensive visibility and rapid response capabilities. It revolutionizes incident detection and mitigation by providing real-time insights into endpoint activities across the network. With its advanced features, Velociraptor enables security teams to efficiently monitor and analyze endpoint behavior, detect threats, and respond promptly to security incidents. Its flexible and modular architecture allows for seamless integration with existing security infrastructure, enhancing overall security posture. By automating investigative processes and facilitating proactive threat hunting, Velociraptor empowers organizations to stay ahead of emerging threats and protect their assets effectively.',
       Status: 'blue',
       buttonTitle: 'Active',
       toolURL: '',
       ServicePackage: 'Standard',
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
     {
     tool_id: 2001000, 
@@ -41,7 +42,8 @@ exports.seed = async function(knex) {
     toolURL: 'http://risxserverdev.westeurope.cloudapp.azure.com:3001/login/',
     ServicePackage: 'Standard',
     threshold_time:24,
-    arguments:{}
+    arguments:{},
+    useResourceType:""
    }, 
     {
        tool_id: 2001001,
@@ -60,7 +62,8 @@ exports.seed = async function(knex) {
        toolURL: 'https://10root.com/',
        ServicePackage: 'Standard',
        threshold_time:24,
-       arguments:{}
+       arguments:{},
+       useResourceType:""
       }, 
          {
         tool_id: 2001002,
@@ -78,7 +81,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001003,
@@ -97,7 +101,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001004,
@@ -116,7 +121,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001010,
@@ -135,7 +141,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
 
 
@@ -160,7 +167,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },  {
         tool_id: 2001006,
         Tool_name: 'AnyRun',
@@ -178,7 +186,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001007,
         Tool_name: 'HashR',
@@ -196,7 +205,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
@@ -214,7 +224,8 @@ exports.seed = async function(knex) {
         toolURL: "https://10root.com/",
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },{
         tool_id: 2001009,
         Tool_name: 'Dehashed',
@@ -232,7 +243,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Premium',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
        {
         tool_id: 2001011,
@@ -251,7 +263,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },   {
         tool_id: 2001012,
         Tool_name: 'MISP',
@@ -269,7 +282,8 @@ exports.seed = async function(knex) {
         toolURL: 'https://tenroot-misp.northeurope.cloudapp.azure.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
-        arguments:{}
+        arguments:{},
+        useResourceType:""
        },
   ]);
 };

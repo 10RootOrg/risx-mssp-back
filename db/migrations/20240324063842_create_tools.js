@@ -21,6 +21,7 @@ exports.up = function(knex) {
         table.string('buttonTitle',50);
         table.string('toolURL',150);
         table.string('ServicePackage',50);
+        table.string('useResourceType');
         table.timestamp('LastRun');
         table.integer('threshold_time',10);
         table.json('arguments');

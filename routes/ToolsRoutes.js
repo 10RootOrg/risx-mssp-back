@@ -15,8 +15,11 @@ router.put('/show-in-ui',              ToolsController.show_in_ui_module);
  
  //active modules 
  router.get('/dehashed-json',              ToolsController.Get_Dehashed_Json); 
-router.get('/active-velociraptor-artifact',ToolsController.active_velocirapto_artifact); 
-router.get('/active-module', Check_if_have_the_correct_data,   ToolsController.active_modules )
+
+ router.get('/active-main-process',ToolsController.active_main_process);  ///check to delete 
+
+router.get('/active-velociraptor-artifact',ToolsController.active_velocirapto_artifact);  ///check to delete 
+router.get('/active-module', Check_if_have_the_correct_data,   ToolsController.active_modules ) ///check to delete
 
 
 

@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx knex migrate:latest && npx knex seed:run --specific seeds_for_artifacts.js && npx knex seed:run --specific seeds_for_resource_type.js && npx knex seed:run --specific tools_seeds.js && node server.js",
+    "dev": "npx knex migrate:latest && npx knex seed:run --specific seeds_for_artifacts.js && npx knex seed:run --specific seeds_for_resource_type.js && npx knex seed:run --specific tools_seeds.js && node installs.js && node server.js",
+    "install_test": "  node installs.js  && node server.js",
+
     "start": "node server"
   },
   "keywords": [],

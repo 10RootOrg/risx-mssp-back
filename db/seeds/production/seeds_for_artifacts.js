@@ -24,7 +24,8 @@ exports.seed = async function(knex) {
       Status: "blue",
       ServicePackage: "",
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
      {
       BoxType: "Tools_big",
@@ -43,7 +44,8 @@ exports.seed = async function(knex) {
       Status: "blue",
       ServicePackage: "",
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
 
      {
@@ -63,7 +65,8 @@ exports.seed = async function(knex) {
       Status: "blue",
       ServicePackage: "",
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
      {
       BoxType: "Tools_big",
@@ -82,7 +85,8 @@ exports.seed = async function(knex) {
       Status: "blue",
       ServicePackage: "",
       threshold_time:24,
-      arguments:{}
+      arguments:{},
+      useResourceType:""
      }, 
     ]);
   };
