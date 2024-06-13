@@ -18,14 +18,14 @@ const { errorMonitor } = require('events');
   const parser2xml = new xml2js.Parser();
 
 
-  async function active_main_process_model(){
+  async function active_manual_process_model(){
     console.log("active_main_process_model");
 
 
     try {
       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
-      const PYTHON_ACTIVE_RELATIVE_PATH = process.env.PYTHON_ACTIVE_RELATIVE_PATH;
-      const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_ACTIVE_RELATIVE_PATH);
+      const PYTHON_MANUAL_ACTIVE_RELATIVE_PATH = process.env.PYTHON_MANUAL_ACTIVE_RELATIVE_PATH;
+      const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_MANUAL_ACTIVE_RELATIVE_PATH);
   
       const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
   
@@ -72,14 +72,34 @@ const { errorMonitor } = require('events');
             {console.log(err);}
        }
 
-async function enable_disable_module_model(module_id,set_enable_disable_to){
-console.log("  module_id", module_id , typeof module_id,"set_enable_disable_to",set_enable_disable_to , typeof set_enable_disable_to) ;
+       async function enable_disable_module_model(module_id,set_enable_disable_to){
+        console.log("  module_id", module_id , typeof module_id,"set_enable_disable_to",set_enable_disable_to , typeof set_enable_disable_to) ;
+            try{
+        
+              
+              const change_this  =
+              await DBConnection('tools')
+              .where('tool_id', module_id)
+              .update('isActive', set_enable_disable_to);
+        
+        //       const Modules = await DBConnection('tools')
+        //       .select('tool_id', 'isActive');
+                 
+        //  console.log(Modules);
+              
+              return{change_this}
+                }catch(err)
+                {console.log(err);}
+           }
+
+async function enable_disable_artifact_model(artifact_id,set_enable_disable_to){
+console.log("  artifact_id", artifact_id , typeof artifact_id,"set_enable_disable_to",set_enable_disable_to , typeof set_enable_disable_to) ;
     try{
 
       
       const change_this  =
-      await DBConnection('tools')
-      .where('tool_id', module_id)
+      await DBConnection('artifacts')
+      .where('artifact_id', artifact_id)
       .update('isActive', set_enable_disable_to);
 
 //       const Modules = await DBConnection('tools')
@@ -624,8 +644,9 @@ module.exports = {
   make_reponse_file_name,
   write_to_csv_table,
   enable_disable_module_model,
+  enable_disable_artifact_model,
   show_in_ui_module_model,
-  active_main_process_model
+  active_manual_process_model
 };
 
 

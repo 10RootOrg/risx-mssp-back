@@ -15,7 +15,7 @@ exports.seed = async function(knex) {
       logoAddress_1: "./Logos/Velociraptor.svg",
       logoAddress_2: "",
       iconAddress: './icons/General-icons-risx.svg',
-      description_short: 'Endpoint visibility and rapid response platform.',
+      description_short: 'Endpoint visibility and rapid response platform',
       description_long: 'Velociraptor is an innovative endpoint security solution offering extensive visibility and rapid response capabilities. It revolutionizes incident detection and mitigation by providing real-time insights into endpoint activities across the network. With its advanced features, Velociraptor enables security teams to efficiently monitor and analyze endpoint behavior, detect threats, and respond promptly to security incidents. Its flexible and modular architecture allows for seamless integration with existing security infrastructure, enhancing overall security posture. By automating investigative processes and facilitating proactive threat hunting, Velociraptor empowers organizations to stay ahead of emerging threats and protect their assets effectively.',
       Status: 'blue',
       buttonTitle: 'Active',
