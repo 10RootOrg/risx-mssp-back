@@ -1,13 +1,31 @@
 const { 
-  // get_all_velociraptor_results_model,
-  // get_all_request_and_response_model,
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file,add_time_note} = require('../models/ResultsModels');
+
+   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
-   
+  
 
+async function check_main_process_status(req, res, next) {
+console.log("5555555555555555555555555");
+
+  try {
+    console.log("check-main-process-status");
+    const process_status = await check_main_process_status_model();
+  //   await add_time_note(ReqestStatus);
+
+  //   // console.log("ReqestStatus",ReqestStatus);
+  //   // const all_Modules = await get_all_Modules_model();
+
+    
+
+   if(process_status){   res.send(process_status);}
+  } catch (err) {
+    res.send(err.message)
+    next(err);
+  }
+}
 
 async function get_all_requests_table(req, res, next) {
 
@@ -78,6 +96,7 @@ const latest = await find_latest_response_and_request(module_id)
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
+    check_main_process_status
     // write_to_csv
   };
   
