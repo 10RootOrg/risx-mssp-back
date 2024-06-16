@@ -1,56 +1,88 @@
 // const DatabaseError = require('../errors/DatabaseError');
 // const { log } = require('console');
+//   const { exec } = require('child_process');
+// const { log } = require('console');
+// const { errorMonitor } = require('events');
+  // const parser2xml = new xml2js.Parser();
+  // const util = require('util');
+  // const xml2js = require('xml2js');
+  // const pathToTmpJson  = path.resolve(__dirname,'../tmpjsons/ResourceGroup-websites.json')
+
 const fs = require('fs');  // Import 'fs' with Promise-based API
 const fs_promises = require('fs').promises; // Import 'fs' with Promise-based API
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-
- const  path = require('path');
-  const pathToTmpJson  = path.resolve(__dirname,'../tmpjsons/ResourceGroup-websites.json')
-  const DBConnection = require('../db.js')
-  const { exec } = require('child_process');
-  const { spawn } = require('child_process');
-
-  const util = require('util');
-  const xml2js = require('xml2js');
-const { log } = require('console');
-const { errorMonitor } = require('events');
-
-  const parser2xml = new xml2js.Parser();
+const  path = require('path');
+const DBConnection = require('../db.js')
+const { spawn } = require('child_process');
 
 
-  async function active_manual_process_model(){
-    console.log("active_main_process_model");
 
-
-    try {
+async function active_manual_process_model() {
+  console.log("active_manual_process_model");
+  try {
       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
       const PYTHON_MANUAL_ACTIVE_RELATIVE_PATH = process.env.PYTHON_MANUAL_ACTIVE_RELATIVE_PATH;
       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_MANUAL_ACTIVE_RELATIVE_PATH);
-  
-      const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
-  
-      pythonProcess.stdout.on('data', (data) => {
-          console.log(`stdout: ${data.toString()}`);
-          // You can return a response here if needed
+      
+      return new Promise((resolve, reject) => {
+          const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
+
+          pythonProcess.stdout.on('data', (data) => {
+              console.log(`stdout: ${data.toString()}`);
+              // Assuming success based on some condition in the output
+              resolve(true);
+          });
+
+          pythonProcess.stderr.on('data', (data) => {
+              console.error(`stderr: ${data.toString()}`);
+              reject(false);
+          });
+
+          pythonProcess.on('close', (code) => {
+              if (code !== 0) {
+                  console.log(`Child process exited with code ${code}, indicating a failure.`);
+                  reject(false);
+              } else {
+                  resolve(true);
+              }
+          });
       });
-  
-      pythonProcess.stderr.on('data', (data) => {
-          console.error(`stderr: ${data.toString()}`);
-          // You can handle errors and return a response here if needed
-      });
-  
-      pythonProcess.on('close', (code) => {
-          if (code !== 0) {
-              console.log(`Child process exited with code ${code}, indicating a failure.`);
-              // You can handle process exit errors and return a response here if needed
-          }
-      });
+
   } catch (error) {
       console.error(`Error occurred: ${error.message}`);
-      // You can handle synchronous errors and return a response here if needed
+      return false;
   }
+}
+
+
+  // async function active_manual_process_model(){
+  //   console.log("active_main_process_model 1");
+  //   try {
+  //     const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+  //     const PYTHON_MANUAL_ACTIVE_RELATIVE_PATH = process.env.PYTHON_MANUAL_ACTIVE_RELATIVE_PATH;
+  //     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_MANUAL_ACTIVE_RELATIVE_PATH);
+  //     const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
+  
+  //     pythonProcess.stdout.on('data', (data) => {
+  //         console.log(`stdout: ${data.toString()}`); return true;
+  //     });
+  
+  //     pythonProcess.stderr.on('data', (data) => {
+  //         console.error(`stderr: ${data.toString()}`); return false;
+  //     });
+  
+  //     pythonProcess.on('close', (code) => {
+  //         if (code !== 0) {
+  //             console.log(`Child process exited with code ${code}, indicating a failure.`); return false;
+  //         }
+  //     });
+
+      
+  // } catch (error) {
+  //     console.error(`Error occurred: ${error.message}`); return false
+  // }
  
-  }
+  // }
 
 
 
@@ -466,8 +498,8 @@ async function active_JSON_in_py(request_file_Path_and_Name){
  
   // const SCRIPT_PATH = process.env.PYTHON_VELOCIRAPTOR_SCRIPT_PATH
 
-  const  PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH = process.env. PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH
-  const SCRIPT_RELATIE_PATH  = path.join(__dirname, '..','..', PYTHON_VELOCIRAPTOR_SCRIPT_RELATIE_PATH);
+  const  PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH +  process.env.PYTHON_INTERVAL;
+  const SCRIPT_RELATIE_PATH  = path.join(__dirname, '..','..', PYTHON_SCRIPTS_RELATIVE_PATH);
 
 
 // console.log("111111",SCRIPT_PATH);

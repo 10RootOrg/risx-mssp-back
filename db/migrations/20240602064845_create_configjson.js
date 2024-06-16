@@ -6,7 +6,7 @@ exports.up = function(knex) {
     return knex.schema
     .createTable('configjson', table => {
         table.json('config');  
-        table.timestamp('updated');
+        table.timestamp('lastupdate');
 
     });
 };

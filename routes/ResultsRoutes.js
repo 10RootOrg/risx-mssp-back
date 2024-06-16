@@ -4,7 +4,7 @@ const ResultsController  = require('../controllers/ResultsController');
 
 
 router.get('/get_all_requests_table', ResultsController.get_all_requests_table);  
- router.get('/check-main-process-status', ResultsController.check_main_process_status);  
+
 
  
 // router.get('/all-request-and-response', ResultsController.get_all_request_and_response);  

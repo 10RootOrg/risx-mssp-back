@@ -49,13 +49,15 @@ res.send("response")
 
 
 async function active_manual_process(req,res,next){
+  console.log("active_manual_process"  );
   // const param1 =  req.query.param1
-  // console.log("active_main_process",param1);
-// if(checkedArtifacts.length === 0 ||  checkedArtifacts === null || checkedArtifacts === undefined )
-// {console.log('None of the Artifacts Checked');      res.send('None of the Artifacts Checked') ;      return}
- const response = await active_manual_process_model()  
+ const isActive = await active_manual_process_model();
+
  
-    res.send("response") 
+  console.log("isActive" , isActive);
+  res.send(isActive)  
+ 
+   
   } 
 
 

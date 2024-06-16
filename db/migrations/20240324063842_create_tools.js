@@ -20,6 +20,7 @@ exports.up = function(knex) {
         table.string('Status',100);
         table.string('buttonTitle',50);
         table.string('toolURL',150);
+        table.string('toolType',150);
         table.string('ServicePackage',50);
         table.string('useResourceType');
         table.timestamp('LastRun');
