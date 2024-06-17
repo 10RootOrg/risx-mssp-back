@@ -51,10 +51,6 @@ console.log("the edited one:",config);
      }
   } 
 
- 
-  // put_full_config_model({});
-
-
 
 async function get_full_config_model() {
 
@@ -85,52 +81,6 @@ return the_config_json.config
    }
 } 
 
-async function check_main_process_status_model() {
-  const file_name = process.env.PYTHON_INTERVAL;
+ 
 
-  try {
-      const isRunning = await new Promise((resolve, reject) => {
-          const command = `ps aux | grep '[p]ython'`;
-
-          exec(command, (error, stdout, stderr) => {
-              if (error) {
-                  console.error(`Error executing command: ${error.message}`);
-                  reject(false);
-                  return;
-              }
-
-              if (stderr) {
-                  console.error(`Error: ${stderr}`);
-                  reject(false);
-                  return;
-              }
-
-              // Check if any line contains the file name
-              const lines = stdout.trim().split('\n');
-              let isRunning = false;
-
-              for (let line of lines) {
-                  if (line.includes(file_name)) {
-                      isRunning = true;
-                      break;
-                  }
-              }
-
-              if (isRunning) {
-                  console.log(`${file_name} is running`);
-                  resolve(true);
-              } else {
-                  console.log(`${file_name} is not running`);
-                  resolve(false);
-              }
-          });
-      });
-
-      return isRunning;
-  } catch (error) {
-      console.error('Error checking process status:', error);
-      return false;
-  }
-}
-
-module.exports = { get_full_config_model,put_full_config_model,check_main_process_status_model};
+module.exports = { get_full_config_model,put_full_config_model};

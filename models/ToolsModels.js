@@ -17,42 +17,43 @@ const { spawn } = require('child_process');
 
 
 
-async function active_manual_process_model() {
-  console.log("active_manual_process_model");
-  try {
-      const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
-      const PYTHON_MANUAL_ACTIVE_RELATIVE_PATH = process.env.PYTHON_MANUAL_ACTIVE_RELATIVE_PATH;
-      const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_MANUAL_ACTIVE_RELATIVE_PATH);
+// async function active_manual_process_model() {
+//   console.log("active_manual_process_model");
+//   try {
+//       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+//       const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//       const PYTHON_INTERVAL = process.env.PYTHON_INTERVAL;
+//       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,PYTHON_INTERVAL);
       
-      return new Promise((resolve, reject) => {
-          const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
+//       return new Promise((resolve, reject) => {
+//           const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
 
-          pythonProcess.stdout.on('data', (data) => {
-              console.log(`stdout: ${data.toString()}`);
-              // Assuming success based on some condition in the output
-              resolve(true);
-          });
+//           pythonProcess.stdout.on('data', (data) => {
+//               console.log(`stdout: ${data.toString()}`);
+//               // Assuming success based on some condition in the output
+//               resolve(true);
+//           });
 
-          pythonProcess.stderr.on('data', (data) => {
-              console.error(`stderr: ${data.toString()}`);
-              reject(false);
-          });
+//           pythonProcess.stderr.on('data', (data) => {
+//               console.error(`stderr: ${data.toString()}`);
+//               reject(false);
+//           });
 
-          pythonProcess.on('close', (code) => {
-              if (code !== 0) {
-                  console.log(`Child process exited with code ${code}, indicating a failure.`);
-                  reject(false);
-              } else {
-                  resolve(true);
-              }
-          });
-      });
+//           pythonProcess.on('close', (code) => {
+//               if (code !== 0) {
+//                   console.log(`Child process exited with code ${code}, indicating a failure.`);
+//                   reject(false);
+//               } else {
+//                   resolve(true);
+//               }
+//           });
+//       });
 
-  } catch (error) {
-      console.error(`Error occurred: ${error.message}`);
-      return false;
-  }
-}
+//   } catch (error) {
+//       console.error(`Error occurred: ${error.message}`);
+//       return false;
+//   }
+// }
 
 
   // async function active_manual_process_model(){
@@ -678,7 +679,7 @@ module.exports = {
   enable_disable_module_model,
   enable_disable_artifact_model,
   show_in_ui_module_model,
-  active_manual_process_model
+  // active_manual_process_model
 };
 
 

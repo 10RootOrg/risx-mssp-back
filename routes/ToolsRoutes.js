@@ -27,7 +27,7 @@ router.get('/active-module', Check_if_have_the_correct_data,   ToolsController.a
 
 
  
- router.get('/active-manual-process',ToolsController.active_manual_process);  ///check to delete 
+//  router.get('/active-manual-process',ToolsController.active_manual_process);  ///check to delete 
   router.put('/tmp1',ToolsController.tmp1);  /// delete me
 
  
