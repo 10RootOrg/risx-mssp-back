@@ -87,22 +87,24 @@ async function add_time_note(ReqestStatus){
     for (let i = 0; i < ReqestStatus.length; i++) {
 
       if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting"     ){
+ 
+        // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
+   
 
 
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
  const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
-const note = compare_dates(ExpireDate,LastIntervalDate)
-// console.log("note " , ReqestStatus[i]?.ModuleName                       ,note);  
-ReqestStatus[i].TimeNote =  note
+
+  if(ReqestStatus[i]?.ExpireDate === "" || ReqestStatus[i]?.ExpireDate === undefined){
+      ReqestStatus[i].TimeNote =  "NoData"
+      return }
+else{
+  const note = compare_dates(ExpireDate,LastIntervalDate)
+  ReqestStatus[i].TimeNote =  note
+}
 
 
-      }
-          // console.log("----Status----", ReqestStatus[i]?.Status);
-          // console.log("----ExpireDate----", ReqestStatus[i]?.ExpireDate);
-          // console.log("----LastIntervalDate----", ReqestStatus[i]?.LastIntervalDate);
-          
-          
-          
+      }     
     }
         return  "ddddd"
      }
@@ -297,22 +299,20 @@ const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
   
 
  if(JSON_file){
+
+
+
   const parsed =JSON.parse(JSON_file)
 
-  console.log("eeee",parsed?.table );
-
+ 
+ if (parsed?.error === 'No data collected.') { return 'No data collected.'}
+  // console.log("parsed?.table   eeeeeeeeeeeeeeeeeeeeeeeeee",parsed?.table );
   if ( parsed?.table &&  parsed?.table.length != 0  ){
     parsed.table= JSON.parse(parsed.table)
   }
 
-
-
-  // parsed.table= JSON.parse(parsed.table)
-  // console.log(parsed.table,typeof parsed.table);
-
   return parsed
-  // console.log("--------------------11111---------------------",  JSON.parse(JSON_file));
- 
+
  }
 }
 

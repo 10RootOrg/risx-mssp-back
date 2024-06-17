@@ -49,13 +49,16 @@ async function get_all_requests_table(req, res, next) {
 }
 
   async function get_single_velociraptor_response(req, res, next) {
-console.log("get_single_velociraptor_response");
+
  const { file_name } = req.query;
- 
+ console.log("get_single_velociraptor_response" , file_name);
  
      try {
      const result = await get_single_velociraptor_result_model(file_name)
-     if (res){ res.send(result)}
+     if (result){
+      console.log("result",result);
+      
+      res.send(result)}
     } catch (err) {
       res.send(err.message)
       next(err);
