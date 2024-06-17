@@ -11,31 +11,11 @@ const csv = require('csv-parser')
  const  path = require('path');
 const DBConnection = require('../db.js');
 const { exec } = require('child_process');
+const { spawn } = require('child_process');
+ 
 
 
 
-
-async function check_main_process_status_model() {
-  console.log("check_main_process_status_model");
-  return "heck_main_process_status_model"
-  // const command = "ps aux | grep 'python3 main.py' | grep -v grep";
-
-  // exec(command, (error, stdout, stderr) => {
-  //     if (error) {
-  //         console.error(`Error executing command: ${error}`);
-  //         return;
-  //     }
-
-  //     // If stdout contains any output, it means the process is running
-  //     if (stdout.trim() !== "") {
-  //         console.log("The 'main.py' process is running.");
-  //         return true;
-  //     } else {
-  //         console.log("The 'main.py' process is not running."); return false;
-  //     }
-  // });
-
-}
 
 
 
@@ -433,7 +413,7 @@ module.exports = {
     // write_to_csv_table,
     get_ReqestStatus_from_config_file,
     add_time_note,
-    check_main_process_status_model
+ 
 };
 
 

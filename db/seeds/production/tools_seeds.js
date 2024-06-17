@@ -23,7 +23,8 @@ exports.seed = async function(knex) {
       ServicePackage: 'Standard',
       threshold_time:24,
       arguments:{},
-      useResourceType:""
+      useResourceType:"",
+      toolType:"module"
      }, 
     {
     tool_id: 2001000, 
@@ -43,7 +44,8 @@ exports.seed = async function(knex) {
     ServicePackage: 'Standard',
     threshold_time:24,
     arguments:{},
-    useResourceType:""
+    useResourceType:"",
+    toolType:"link"
    }, 
     {
        tool_id: 2001001,
@@ -63,7 +65,8 @@ exports.seed = async function(knex) {
        ServicePackage: 'Standard',
        threshold_time:24,
        arguments:{},
-       useResourceType:""
+       useResourceType:"",
+       toolType:"link"
       }, 
          {
         tool_id: 2001002,
@@ -82,7 +85,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"module"
        },
        {
         tool_id: 2001003,
@@ -102,7 +106,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },
        {
         tool_id: 2001004,
@@ -122,7 +127,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },
        {
         tool_id: 2001010,
@@ -142,7 +148,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },
 
 
@@ -168,7 +175,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"module"
        },  {
         tool_id: 2001006,
         Tool_name: 'AnyRun',
@@ -187,7 +195,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },{
         tool_id: 2001007,
         Tool_name: 'HashR',
@@ -206,7 +215,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
@@ -225,7 +235,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },{
         tool_id: 2001009,
         Tool_name: 'Dehashed',
@@ -244,7 +255,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Premium',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },
        {
         tool_id: 2001011,
@@ -264,7 +276,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },   {
         tool_id: 2001012,
         Tool_name: 'MISP',
@@ -283,7 +296,8 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:""
+        useResourceType:"",
+        toolType:"link"
        },
   ]);
 };

@@ -7,25 +7,27 @@ const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
   
 
-async function check_main_process_status(req, res, next) {
-console.log("5555555555555555555555555");
+// async function Check_Interval_Status(req, res, next) {
+//   console.log("check_main_process_status 111111111111111111111111111111111111111");
+//   const momo = "3333"
+//   res.send(momo);
+ 
+//   // try {
+ 
+//     // const process_status = await check_main_process_status_model();
 
-  try {
-    console.log("check-main-process-status");
-    const process_status = await check_main_process_status_model();
-  //   await add_time_note(ReqestStatus);
+//     const bobo =  await  check_main_process_status_model().then(isRunning => {
+//       console.log('Process running status:', isRunning);
+//       //  res.send(isRunning)
+//        ;
+//       if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
+//   }).catch(error => {
+//       console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
+//   });
 
-  //   // console.log("ReqestStatus",ReqestStatus);
-  //   // const all_Modules = await get_all_Modules_model();
 
-    
-
-   if(process_status){   res.send(process_status);}
-  } catch (err) {
-    res.send(err.message)
-    next(err);
-  }
-}
+ 
+// }
 
 async function get_all_requests_table(req, res, next) {
 
@@ -96,7 +98,7 @@ const latest = await find_latest_response_and_request(module_id)
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
-    check_main_process_status
+    // Check_Interval_Status
     // write_to_csv
   };
   
