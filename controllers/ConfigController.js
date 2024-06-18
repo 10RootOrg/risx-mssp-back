@@ -1,6 +1,7 @@
 
  const { get_full_config_model ,put_full_config_model } = require('../models/ConfigModels');
-
+ const DBConnection = require('../db.js')
+ 
 async function Get_Config(req, res, next) {
   try{
  

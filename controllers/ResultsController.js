@@ -7,27 +7,63 @@ const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
   
 
-// async function Check_Interval_Status(req, res, next) {
-//   console.log("check_main_process_status 111111111111111111111111111111111111111");
-//   const momo = "3333"
-//   res.send(momo);
- 
-//   // try {
- 
-//     // const process_status = await check_main_process_status_model();
-
-//     const bobo =  await  check_main_process_status_model().then(isRunning => {
-//       console.log('Process running status:', isRunning);
-//       //  res.send(isRunning)
-//        ;
-//       if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
-//   }).catch(error => {
-//       console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
-//   });
 
 
+
+async function get_all_latest_results_dates(req, res, next) {
+const results = req.query.results
+if (results === undefined){ console.log("---results--:-  ",results);return}
+
+try {
+
+let lastResults ={}
+ const filterd_Velociraptor = results.filter(element => element.ModuleName  === "Velociraptor");
+ const filterd_Hunting = results.filter(element => element.Status  === "Hunting");
+ const filterd_Complete = results.filter(element => element.Status  === "Complete");
+ const filterd_Failed = results.filter(element => element.Status  === "Failed");
  
-// }
+const check_last_resault =(filterd_array, filter_name) =>{
+
+if (filterd_array.length === 0 || filterd_array === undefined){
+  // console.log("filter_name",filter_name ,"is",filterd_array);
+  lastResults = { ...lastResults, [filter_name]: "NA" };
+  return }
+
+let latestDate = null;
+
+for (let index = 0; index < filterd_array.length; index++) {
+  const date = filterd_array[index]?.LastIntervalDatePrecise;
+  if (!latestDate || new Date(date) > new Date(latestDate)) {
+    latestDate = date;
+  }
+}
+
+lastResults = { ...lastResults, [filter_name]: latestDate };
+
+console.log(`Latest date in ${filter_name}:`, latestDate);
+};
+
+check_last_resault(filterd_Velociraptor, "Velociraptor");
+check_last_resault(filterd_Hunting, "Hunting");
+check_last_resault(filterd_Complete, "Complete");
+check_last_resault(filterd_Failed, "Failed");
+check_last_resault(results, "Total");  
+
+
+
+console.log("lastResults",lastResults);
+    // const ReqestStatus = await get_ReqestStatus_from_config_file();
+    // await add_time_note(ReqestStatus);
+ 
+
+ if(lastResults){   res.send(lastResults);}
+ 
+  } catch (err) {
+    res.send(err.message)
+    next(err);
+  }
+}
+
 
 async function get_all_requests_table(req, res, next) {
 
@@ -56,8 +92,6 @@ async function get_all_requests_table(req, res, next) {
      try {
      const result = await get_single_velociraptor_result_model(file_name)
      if (result){
-      console.log("result",result);
-      
       res.send(result)}
     } catch (err) {
       res.send(err.message)
@@ -95,14 +129,12 @@ const latest = await find_latest_response_and_request(module_id)
   }
 
   module.exports = {
-    // get_all_request_and_response,
-    // get_all_velociraptor_responses_file_list,
+
+    get_all_latest_results_dates,
     get_single_velociraptor_response,
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
-    // Check_Interval_Status
-    // write_to_csv
   };
   
 
@@ -190,4 +222,27 @@ const latest = await find_latest_response_and_request(module_id)
 //     res.send(err.message)
 //     next(err);
 //   }
+// }
+
+
+// async function Check_Interval_Status(req, res, next) {
+//   console.log("check_main_process_status 111111111111111111111111111111111111111");
+//   const momo = "3333"
+//   res.send(momo);
+ 
+//   // try {
+ 
+//     // const process_status = await check_main_process_status_model();
+
+//     const bobo =  await  check_main_process_status_model().then(isRunning => {
+//       console.log('Process running status:', isRunning);
+//       //  res.send(isRunning)
+//        ;
+//       if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
+//   }).catch(error => {
+//       console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
+//   });
+
+
+ 
 // }

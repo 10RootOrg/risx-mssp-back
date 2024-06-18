@@ -86,14 +86,17 @@ async function add_time_note(ReqestStatus){
   try{
     for (let i = 0; i < ReqestStatus.length; i++) {
 
+
+       const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
+         ReqestStatus[i].LastIntervalDatePrecise =  LastIntervalDate
+
+
       if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting"     ){
  
         // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
-   
-
-
+  
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
- const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
+
 
   if(ReqestStatus[i]?.ExpireDate === "" || ReqestStatus[i]?.ExpireDate === undefined){
       ReqestStatus[i].TimeNote =  "NoData"
@@ -340,6 +343,25 @@ return  number
 
 } 
  
+
+
+
+
+module.exports = {
+    // get_all_velociraptor_results_model,
+    get_all_velociraptor_artifacts_model,
+    get_single_velociraptor_result_model,
+    count_response_files_model,
+    find_latest_response_and_request,
+    // get_all_request_and_response_model,
+    get_requests_csv_table_model,
+    make_cool_object_from_csv_table,
+    // write_to_csv_table,
+    get_ReqestStatus_from_config_file,
+    add_time_note,
+ 
+};
+
 async function find_latest_response_and_request(module_id) {
 
  
@@ -398,25 +420,6 @@ return  {last_response:last_response , last_request:last_request}
 
 
 } 
-
-
-
-module.exports = {
-    // get_all_velociraptor_results_model,
-    get_all_velociraptor_artifacts_model,
-    get_single_velociraptor_result_model,
-    count_response_files_model,
-    find_latest_response_and_request,
-    // get_all_request_and_response_model,
-    get_requests_csv_table_model,
-    make_cool_object_from_csv_table,
-    // write_to_csv_table,
-    get_ReqestStatus_from_config_file,
-    add_time_note,
- 
-};
-
-
 
 
 

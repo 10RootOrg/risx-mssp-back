@@ -3,6 +3,7 @@ const DBConnection = require('../db.js')
 const { DiscrError } = require('ajv/dist/vocabularies/discriminator/types.js')
 const { exec } = require('child_process');
  const config_table = "configjson"
+  // const config_table = "tmp1"
  const config_column = "config"
  
  async function put_full_config_model(config) {
@@ -17,7 +18,7 @@ console.log("the edited one:",config);
     try {
 
       const stringified =  JSON.stringify( config) 
-      const change_this = await DBConnection('configjson')
+      const change_this = await DBConnection(config_table)
       .update({ config:stringified}) 
       .limit(1); //   first row
    console.log(change_this);
@@ -50,7 +51,6 @@ console.log("the edited one:",config);
         return error_m
      }
   } 
-
 
 async function get_full_config_model() {
 

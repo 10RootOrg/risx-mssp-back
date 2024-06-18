@@ -30,7 +30,7 @@ exports.seed = async function(knex) {
     tool_id: 2001000, 
     Tool_name: 'Risx',
     BoxType: 'Tools_a',
-    headline: 'AD security Platform',
+    headline: 'AD Security Platform',
     isActive: true,
     ShowInUi: true,
     logoAddress_1: "./Logos/10Root.svg",
