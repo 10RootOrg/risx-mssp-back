@@ -1,4 +1,4 @@
-delimiter $$
+
 
 DROP TRIGGER IF EXISTS ToolsChange$$
 CREATE TRIGGER ToolsChange BEFORE UPDATE ON tools
@@ -11,7 +11,7 @@ BEGIN
             CONCAT("$.Modules.", NEW.Tool_name, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", NEW.Tool_name, ".ExpireDate"), NEW.threshold_time,
             CONCAT("$.Modules.", NEW.Tool_name, ".LastRunDate"), NEW.LastRun),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end Tools table triger",now());
         else 	
@@ -33,7 +33,7 @@ BEGIN
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".ExpireDate"), NEW.threshold_time,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".LastRunDate"), NEW.LastRun),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end artifact table triger",now());
 		else 	
@@ -77,7 +77,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table update triger",now());
 		else 	
@@ -121,7 +121,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table insert triger",now());
 		else 	
@@ -194,4 +194,4 @@ BEGIN
 	END IF;
 END$$
 
-delimiter ;
+

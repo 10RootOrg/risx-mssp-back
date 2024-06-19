@@ -14,6 +14,9 @@ const DBConnection = require('../db.js')
  
 
 async function check_main_process_status_model() {
+
+
+    console.log("check_main_process_status_model");
   const file_name = process.env.PYTHON_INTERVAL;
 
   try {
@@ -60,55 +63,6 @@ async function check_main_process_status_model() {
       return false;
   }
 }
-
-
-
-async function active_manual_process_model() {
-    console.log("active_manual_process_model");
-
-    const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-    const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-    const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
-
-    const RELATIVE = path.resolve(__dirname, '..', '..');
-
-// const command = `
-// export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
-// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
-// `;
-
-    const command = `
-        export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
-        ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
-    `;
-
-    return new Promise((resolve, reject) => {
-        exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
-            console.log("stdout:", stdout);
-            console.log("stderr:", stderr);
-
-            if (error) {
-                console.error(`Error: ${error.message}`);
-                reject(false); // Reject with false indicating failure
-                return;
-            }
-
-            // Combine stdout and stderr for the message check
-            const combinedOutput = stdout + stderr;
-
-            if (combinedOutput.includes("Config updated successfully")) {
-                resolve(true); // Resolve with true indicating success
-            } else {
-                console.log("Python script did not indicate success.");
-                resolve(false); // Resolve with false indicating failure
-            }
-        });
-    });
-}
-
-
-
 
 // async function active_manual_process_model() {
 //     console.log("active_manual_process_model");
@@ -202,12 +156,21 @@ async function active_manual_process_model() {
 
 //     // const pythonScriptPath = path.join('/home', 'Bacteria5570', 'mssp', 'risx-mssp-python-script', 'main.py');
 //       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+
+
+
+
 //       const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 //       const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
 //       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,PYTHON_MANUAL_ACTIVE);
- 
 
 //     const command = `bash -c "source ~/miniconda3/etc/profile.d/conda.sh && conda activate mssp_env && python ${PYTHON_SCRIPT_PATH}"`;
+
+
+//     // export PATH="~/miniconda3/bin:~/mssp/risx-mssp-python-script/mssp_env/bin:$PATH"
+//     // source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate
+//     // conda activate mssp_e
+
 
 //     return new Promise((resolve, reject) => {
 //         exec(command, (error, stdout, stderr) => {
@@ -229,7 +192,44 @@ async function active_manual_process_model() {
 //         });
 //     });
 // }
+async function active_manual_process_model() {
+    const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+    const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
 
 
+
+    console.log("PYTHON_SCRIPT_PATH", PYTHON_SCRIPT_PATH);
+    const command2 = `
+        export PATH="~/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
+        python ${PYTHON_SCRIPT_PATH}
+    `;
+
+    const command = `
+    source ~/miniconda3/etc/profile.d/conda.sh && \
+    conda activate mssp_env && \
+    python ${PYTHON_SCRIPT_PATH}
+`;
+    
+    return new Promise((resolve, reject) => {
+        exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error: ${error.message}`);
+                reject(false); // Reject with false indicating failure
+                return;
+            }
+
+            // Combine stdout and stderr for the message check
+            const combinedOutput = stdout + stderr;
+
+            if (combinedOutput.includes("Config updated successfully")) {
+                resolve(true); // Resolve with true indicating success
+            } else {
+                console.log("Python script did not indicate success.");
+                resolve(false); // Resolve with false indicating failure
+            }
+        });
+    });
+}
 
 module.exports = {  check_main_process_status_model , active_manual_process_model};
