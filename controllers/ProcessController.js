@@ -1,5 +1,67 @@
 
- const { check_main_process_status_model , active_manual_process_model} = require('../models/ProcessModels');
+ const { check_main_process_status_model , active_manual_process_model,active_interval_process_model} = require('../models/ProcessModels');
+
+
+
+
+
+
+ async function check_and_active_interval(req, res, next) {
+
+ 
+  try{ 
+
+const checkRunning =  await  check_main_process_status_model().then(isRunning => {
+ console.log('Process running status:', isRunning)
+ return false
+  }).catch(error => {
+      console.error('Error:', error);   return error;  
+  });
+
+
+  if (checkRunning){      console.log("checkRunning === true",checkRunning );
+      return checkRunning
+  }
+  if (checkRunning === false){ 
+         console.log('checkRunning  === false , start running the interval'   );
+ 
+ const now_active = await  active_interval_process_model().then(isActive => {
+  console.log('isActive', isActive)
+if      (isActive === true) {res.send(true);}
+else if(isActive === false) { res.send("Error");}
+
+
+}).catch(error => {
+  console.error('Error:', error);res.send(false); next(error);
+});
+   
+  }
+
+ 
+
+
+
+
+
+  }catch(err)
+  {console.log(err);}
+
+  // try {
+ 
+    // const process_status = await check_main_process_status_model();
+
+  //   const bobo =  await  check_main_process_status_model().then(isRunning => {
+  //     console.log('Process running status:', isRunning);
+  //     //  res.send(isRunning)
+  //      ;
+  //     if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
+  // }).catch(error => {
+  //     console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
+  // });
+
+
+}
+
 
 
 
@@ -45,6 +107,9 @@ async function Check_Interval_Status(req, res, next) {
 
 }
 
+
+
+
 async function active_manual_process(req,res,next){
   console.log("active_manual_process"  );
   // const param1 =  req.query.param1
@@ -81,7 +146,8 @@ else if(isRunning === false) { res.send("Error");}
 module.exports = {
 
   Check_Interval_Status,
-  active_manual_process
+  active_manual_process,
+  check_and_active_interval
 };
 // const isActive =  await  active_manual_process_model().then(isRunning => {
 //   console.log('Process running status 22222222222222222222222222222222:', isRunning)

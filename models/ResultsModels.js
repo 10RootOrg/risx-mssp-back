@@ -59,9 +59,9 @@ function compare_dates(end_date, start_date){
 
           let return_this_2
 
-            if (minutes===0 && hours != 1){ return_this_2 = "+"+hours + " Hrs";}
-            if (minutes===0 && hours === 1){ return_this_2 = "+"+hours + " Hr";}
-            else if(minutes !=0) {return_this_2 = "+"+hours + " Hrs " + minutes + " Mins";}    
+            if ( hours != 1){ return_this_2 = "+"+hours + " Hrs";}
+          else  if (hours === 1){ return_this_2 = "+"+hours + " Hr";}
+            // else if(minutes !=0) {return_this_2 = "+"+hours + " Hrs " + minutes + " Mins";}    
 
           return return_this_2;
 
@@ -88,11 +88,15 @@ async function add_time_note(ReqestStatus){
 
 
        const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
+       console.log("LastIntervalDate",LastIntervalDate);
          ReqestStatus[i].LastIntervalDatePrecise =  LastIntervalDate
 
+        //  console.log("ddddddddddd 222"  ,ReqestStatus[i]?.Status       );
 
-      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting"     ){
- 
+
+      if (ReqestStatus[i]?.Status === "Finished" )  {ReqestStatus[i].Status = "Complete" }    
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "Finished"  ){
+ console.log("ddddddddddd 444"  ,ReqestStatus[i]?.ModuleName       );
         // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
   
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
@@ -103,6 +107,7 @@ async function add_time_note(ReqestStatus){
       return }
 else{
   const note = compare_dates(ExpireDate,LastIntervalDate)
+
   ReqestStatus[i].TimeNote =  note
 }
 

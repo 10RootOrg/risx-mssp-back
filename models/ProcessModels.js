@@ -61,156 +61,167 @@ async function check_main_process_status_model() {
   }
 }
 
-
-
-async function active_manual_process_model() {
-    console.log("active_manual_process_model");
-
+async function active_interval_process_model() {
+    console.log("active_interval_process_model");
+ 
     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
     const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
-
     const RELATIVE = path.resolve(__dirname, '..', '..');
 
-// const command = `
-// export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
-// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
-// `;
-
-    const command = `
-        export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
-        ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+   const command = `
+        source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+        python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
     `;
 
     return new Promise((resolve, reject) => {
-        exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
-            console.log("stdout:", stdout);
-            console.log("stderr:", stderr);
-
+        const process = exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
             if (error) {
-                console.error(`Error: ${error.message}`);
+                // console.error(`Error: ${error.message}`);
+                // console.log(`stderr: ${stderr}`);
                 reject(false); // Reject with false indicating failure
                 return;
             }
-
-            // Combine stdout and stderr for the message check
-            const combinedOutput = stdout + stderr;
-
-            if (combinedOutput.includes("Config updated successfully")) {
+            
+            if (stdout.includes("Start interval loop")) {
+                // console.log("stdout.includes(Start mssp):", stdout);
                 resolve(true); // Resolve with true indicating success
             } else {
-                console.log("Python script did not indicate success.");
+                // console.log("Python script did not indicate success.");
+                // console.log(`stdout: ${stdout}`);
+                // console.log(`stderr: ${stderr}`);
                 resolve(false); // Resolve with false indicating failure
             }
+        });
+        // Start interval loop
+        process.stdout.on('data', (data) => {
+            if(data.includes("Start interval loop")){ 
+                //  console.log(`yeaaa in process: `)
+                  resolve(true);
+                 ;}
+                // Resolve with true indicating success
+        });
+
+        // process.stderr.on('data', (data) => {
+        //     console.error(`stderr: ${data}`);
+        // });
+    });
+}
+ 
+
+ async function active_manual_process_model() {
+    console.log("active_manual_process_model");
+ 
+
+    const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+    const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
+    const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+    const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python3');
+
+    const command = `${PYTHON_EXECUTABLE}`;
+    const args = [PYTHON_SCRIPT_PATH];
+
+
+
+
+
+    return new Promise((resolve, reject) => {
+        const childProcess = spawn(command, args, {
+            shell: '/bin/bash',
+            env: { ...process.env },
+        });
+
+        let found = false;
+
+        childProcess.stdout.on('data', (data) => {
+            if (data.toString().includes("Start mssp")) {
+                found = true;
+                console.log("stdout.includes(Start mssp)");
+                resolve(true); // Resolve with true indicating success
+                // Do not kill the process, let it continue running
+            }
+        });
+
+        childProcess.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+        });
+
+        childProcess.on('close', (code) => {
+            if (!found) {
+                console.log("datadddddddddddddddcodeddddddddddd" , code);
+                if (code !== 0) {
+                    console.error(`Process exited with code ${code}`);
+                }
+                resolve(false); // Resolve with false indicating failure
+            }
+        });
+
+        childProcess.on('error', (error) => {
+            console.error(`Error: ${error.message}`);
+            reject(false); // Reject with false indicating failure
         });
     });
 }
 
 
 
+    // const command2 = `
+    //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+    //     python  ~/mssp/risx-mssp-python-script/main.py
+    // `;
+
+    // console.log("command0",command);
+    // console.log("command2",command2);
+
+    // const command = `
+    //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+    //     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
+    // `;
+
+
+// const command = `
+// export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
+// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// `;
+
+
+
+
+
+
+module.exports = {
+check_main_process_status_model ,
+active_manual_process_model,
+active_interval_process_model
+};
 
 // async function active_manual_process_model() {
 //     console.log("active_manual_process_model");
 
-    
-//     try {
-//         const pythonScriptPath = path.join('/home', 'Bacteria5570', 'mssp', 'risx-mssp-python-script', 'main.py');
-    
-//         const command = `bash -c "source ~/miniconda3/etc/profile.d/conda.sh && conda activate mssp_env && python ${pythonScriptPath}"`;
-        
-//         exec(command, (error, stdout, stderr) => {
-//             if (error) {
-//                 console.error(`Error: ${error.message}`);
-//                 return;
-//             }
-    
-//             if (stderr) {
-//                 // console.error(`Stderr: ${stderr}`);
-//             }
-    
-//             // console.log(`Output: ${stdout}`);
-    
-//             // Combine stdout and stderr for the message check
-//             const combinedOutput = stdout + stderr;
-    
-//             if (combinedOutput.includes("Config updated successfully")) {
-//                 console.log("Config updated successfully");
-//                 return true
-               
-//             } else {
-//                 console.log("Python script did not tell -- Start mssp!.");
-//                 return false
-//             }
-//         });
-//     } catch (error) {
-//         console.error(`Error occurred: ${error.message}`);
-//         return false;
-//     }
-    
+//     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//     const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
 
+//     const RELATIVE = path.resolve(__dirname, '..', '..');
 
+// // const command = `
+// // export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
+// // ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// // `;
 
-    
-// //   try {
-// //       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
-// //       const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-// //       const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-// //       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,PYTHON_MANUAL_ACTIVE);
-      
-
- 
-
-
-
-// //       return new Promise((resolve, reject) => {
-  
-// //           const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
-     
-// //           pythonProcess.stdout.on('data', (data) => {
-// //               console.log(`stdout: ${data.toString()}`);
-// //               // Assuming success based on some condition in the output
-// //               resolve(true);
-// //           });
-
-// //           pythonProcess.stderr.on('data', (data) => {
-// //               console.error(`stderr: ${data.toString()}`);
-// //               reject(false);
-// //           });
-
-// //           pythonProcess.on('close', (code) => {
-
-// //             console.log(`pythonProcess.on('close', (code): `,code);
-// //               if (code !== 0) {
-// //                   console.log(`Child process exited with code ${code}, indicating a failure.`);
-// //                   reject(false);
-// //               } else {
-// //                   resolve(true);
-// //               }
-// //           });
-// //       });
-
-// //   } catch (error) {
-// //       console.error(`Error occurred: ${error.message}`);
-// //       return false;
-// //   }
-// }
-
-
-// async function active_manual_process_model() {
-//     console.log("active_manual_process_model");
-
-//     // const pythonScriptPath = path.join('/home', 'Bacteria5570', 'mssp', 'risx-mssp-python-script', 'main.py');
-//       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
-//       const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-//       const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-//       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,PYTHON_MANUAL_ACTIVE);
- 
-
-//     const command = `bash -c "source ~/miniconda3/etc/profile.d/conda.sh && conda activate mssp_env && python ${PYTHON_SCRIPT_PATH}"`;
+//     const command = `
+//         export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
+//         ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+//     `;
 
 //     return new Promise((resolve, reject) => {
-//         exec(command, (error, stdout, stderr) => {
+//         exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
+//             console.log("stdout:", stdout);
+//             console.log("stderr:", stderr);
+
 //             if (error) {
 //                 console.error(`Error: ${error.message}`);
 //                 reject(false); // Reject with false indicating failure
@@ -232,4 +243,17 @@ async function active_manual_process_model() {
 
 
 
-module.exports = {  check_main_process_status_model , active_manual_process_model};
+// const command = `
+// export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
+// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// `;
+// const command = `
+// export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
+// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// `;
+
+//  source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate 
+//   python main.py
+
+// async function active_manual_process_model() {
+
