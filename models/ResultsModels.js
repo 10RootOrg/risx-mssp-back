@@ -15,7 +15,71 @@ const { spawn } = require('child_process');
  
 
 
+async function get_all_latest_results_dates(results) {
+  // console.log("get_all_latest_results_dates1", results);
+// console.log("get_all_latest_results_dates2", results?.length);
 
+
+  if (results === undefined){ console.log("---results--:-  ",results);return {};}
+  
+  try {
+  
+  let lastResults ={}
+   const filterd_Velociraptor = results.filter(element => element.ModuleName  === "Velociraptor");
+   const filterd_Hunting = results.filter(element => element.Status  === "Hunting");
+   const filterd_InProgress = results.filter(element => element.Status  === "inProgress");
+   const filterd_Complete = results.filter(element => element.Status  === "Complete");
+   const filterd_Failed = results.filter(element => element.Status  === "Failed");
+
+
+
+
+  const check_last_resault =(filterd_array, filter_name) =>{
+  
+  if (filterd_array.length === 0 || filterd_array === undefined){
+    // console.log("filter_name",filter_name ,"is",filterd_array);
+    lastResults = { ...lastResults, [filter_name]: "NA" };
+    return }
+  
+  let latestDate = null;
+  
+  for (let index = 0; index < filterd_array.length; index++) {
+
+    // console.log("filterd_array[index]",filterd_array[index]);
+    const date = filterd_array[index]?.LastIntervalDatePrecise;
+    if (!latestDate || new Date(date) > new Date(latestDate)) {
+      latestDate = date;
+    }
+  }
+  
+  lastResults = { ...lastResults, [filter_name]: latestDate };
+  
+  console.log(`Latest date in ${filter_name}:`, latestDate);
+  };
+  
+
+  check_last_resault(filterd_Velociraptor, "Velociraptor");
+  check_last_resault(filterd_Hunting, "Hunting");
+  check_last_resault(filterd_InProgress, "inProgress");
+  check_last_resault(filterd_Complete, "Complete");
+  check_last_resault(filterd_Failed, "Failed");
+  check_last_resault(results, "Total");  
+  
+  
+  
+  console.log("lastResults",lastResults);
+      // const ReqestStatus = await get_ReqestStatus_from_config_file();
+      // await add_time_note(ReqestStatus);
+   
+  
+   if(lastResults){   return(lastResults);}
+   
+    } catch (err) {
+    return(err.message)
+      next(err);
+    }
+  }
+  
 
 
 
@@ -69,7 +133,7 @@ function compare_dates(end_date, start_date){
       if(   1440 <= -compare ){
           const days  = Math.floor(-compare / 1440);
           const remainingHours = Math.floor((-compare % 1440) / 60); // Calculate remaining hours
-          const return_this = "+"+days + " Days & " + remainingHours + " Hrs";
+          const return_this = "+"+days + " Days";
           return return_this
       
   
@@ -87,16 +151,16 @@ async function add_time_note(ReqestStatus){
     for (let i = 0; i < ReqestStatus.length; i++) {
 
 
-       const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
-       console.log("LastIntervalDate",LastIntervalDate);
+       const LastIntervalDate = await string_to_date(ReqestStatus[i]?.LastIntervalDate);
+
+
+      //  console.log("LastIntervalDate --------  333",ReqestStatus[i].ModuleName,         LastIntervalDate);
+
+
          ReqestStatus[i].LastIntervalDatePrecise =  LastIntervalDate
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "inProgress"  ){
 
-        //  console.log("ddddddddddd 222"  ,ReqestStatus[i]?.Status       );
-
-
-      if (ReqestStatus[i]?.Status === "Finished" )  {ReqestStatus[i].Status = "Complete" }    
-      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "Finished"  ){
- console.log("ddddddddddd 444"  ,ReqestStatus[i]?.ModuleName       );
+  //  console.log("ddddddddddd 444"  ,ReqestStatus[i]?.ModuleName       );
         // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
   
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
@@ -364,6 +428,7 @@ module.exports = {
     // write_to_csv_table,
     get_ReqestStatus_from_config_file,
     add_time_note,
+    get_all_latest_results_dates
  
 };
 

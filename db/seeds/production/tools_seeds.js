@@ -127,7 +127,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2005,2006,2007",
         toolType:"link"
        },
        {
@@ -175,7 +175,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002",
         toolType:"module"
        },  {
         tool_id: 2001006,
@@ -235,7 +235,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2005,2006,2007",
         toolType:"link"
        },{
         tool_id: 2001009,
@@ -255,7 +255,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Premium',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2006,2007",
         toolType:"link"
        },
        {
@@ -276,7 +276,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002",
         toolType:"link"
        },   {
         tool_id: 2001012,

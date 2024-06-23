@@ -8,9 +8,9 @@ exports.seed = async function(knex) {
   await knex('resource_type').insert([
     {
       resource_type_id: 2001,
-      resource_type_name: 'URL',
-      description_short: 'URL security: HTTPS, encryption, firewalls, VPNs, multi-factor authentication.',
-      description_long: 'Cybersecurity in URLs can employ HTTPS, encryption, firewalls, VPNs, and multi-factor authentication for enhanced protection against cyber threats.',
+      resource_type_name: 'Domain',
+      description_short: 'Domain security: HTTPS, encryption, firewalls, VPNs, multi-factor authentication.',
+      description_long: 'Cybersecurity in Domains can employ HTTPS, encryption, firewalls, VPNs, and multi-factor authentication for enhanced protection against cyber threats.',
       }, 
         {
         resource_type_id: 2002,
@@ -20,7 +20,7 @@ exports.seed = async function(knex) {
         }, 
         {
           resource_type_id: 2003,
-          resource_type_name: 'User Name',
+          resource_type_name: 'Username (Social)',
           description_short: 'Usernames are unique identifiers used to access accounts or systems.',
           description_long: 'redential theft, social engineering attacks, unauthorized access, identity spoofing, and phishing scams.',
           }, 
@@ -30,5 +30,35 @@ exports.seed = async function(knex) {
             description_short: 'Risk in mobile phone numbers includes SIM swapping, phishing attacks, spamming, and identity theft..',
             description_long: 'Mobile phone numbers are susceptible to various risks, including SIM swapping, phishing attacks, identity theft, spam messages, unauthorized access, and location tracking..',
             }, 
+            {
+              resource_type_id: 2005,
+              resource_type_name: 'Full Name',
+              description_short: 'Ensuring the security of full names is vital for authentication.',
+              description_long: 'Verifying full names ensures accurate identification, prevents impersonation, and strengthens overall security measures against unauthorized access and fraud',
+              }, 
+              {
+                resource_type_id: 2006,
+                resource_type_name: 'Email Addresss',
+                description_short: 'Authenticate users and prevent phishing and email-based attacks.',
+                description_long: 'Email addresses serve as crucial identifiers in cybersecurity, used to authenticate users identities and facilitate secure communication within digital environments. Ensuring their validity and security helps prevent various email-based threats, including phishing attacks aimed at stealing sensitive information or spreading malware. By verifying and safeguarding email addresses, organizations can enhance their overall cybersecurity posture and protect against potential breaches and unauthorized access.',
+                }, 
+                {
+                  resource_type_id: 2007,
+                  resource_type_name: 'Company Name',
+                  description_short: 'verify business legitimacy and ensure secure business interactions.',
+                  description_long: 'The "Company Name" resource type enables users to verify the legitimacy of businesses and ensures secure interactions. This resource type provides comprehensive details and background information about companies, including their history, operational scope, financial health, and regulatory compliance. It serves as a vital tool for making informed decisions in business partnerships, investments, and transactions, fostering trust and confidence in business relationships.'
+                  }, 
+
   ]);
 };
+
+
+
+
+// OSINT, AIL,
+
+// Email Address
+
+// OSINT, AIL, Dehashed
+
+// Company Name

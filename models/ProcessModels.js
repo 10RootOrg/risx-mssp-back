@@ -110,22 +110,77 @@ async function active_interval_process_model() {
 }
  
 
- async function active_manual_process_model() {
-    console.log("active_manual_process_model");
+//  async function active_manual_process_model() {
+//     console.log("active_manual_process_model");
  
+
+//     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
+//     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//     const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
+
+//     const command = `${PYTHON_EXECUTABLE}`;
+//     const args = [PYTHON_SCRIPT_PATH];
+
+    
+
+
+//     console.log("command" , command);
+//     console.log("args" , args);
+//     return new Promise((resolve, reject) => {
+//         const childProcess = spawn(command, args, {
+//             shell: '/bin/bash',
+//             env: { ...process.env },
+//         });
+
+//         let found = false;
+
+//         childProcess.stdout.on('data', (data) => {
+//             if (data.toString().includes("Start mssp")) {
+//                 found = true;
+//                 console.log("stdout.includes(Start mssp)");
+//                 resolve(true); // Resolve with true indicating success
+//                 // Do not kill the process, let it continue running
+//             }
+//         });
+
+//         childProcess.stderr.on('data', (data) => {
+//             console.error(`stderr: ${data}`);
+//         });
+
+//         childProcess.on('close', (code) => {
+//             if (!found) {
+//                 console.log("datadddddddddddddddcodeddddddddddd" , code);
+//                 if (code !== 0) {
+//                     console.error(`Process exited with code ${code}`);
+//                 }
+//                 resolve(false); // Resolve with false indicating failure
+//             }
+//         });
+
+//         childProcess.on('error', (error) => {
+//             console.error(`Error: ${error.message}`);
+//             reject(false); // Reject with false indicating failure
+//         });
+//     });
+// }
+
+
+async function active_manual_process_model() {
+    console.log("active_manual_process_model");
 
     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python3');
+    const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
 
-    const command = `${PYTHON_EXECUTABLE}`;
+    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE}`;
     const args = [PYTHON_SCRIPT_PATH];
 
-
-
-
+    console.log("command", command);
+    console.log("args", args);
 
     return new Promise((resolve, reject) => {
         const childProcess = spawn(command, args, {
@@ -150,7 +205,7 @@ async function active_interval_process_model() {
 
         childProcess.on('close', (code) => {
             if (!found) {
-                console.log("datadddddddddddddddcodeddddddddddd" , code);
+                console.log("Process closed with code:", code);
                 if (code !== 0) {
                     console.error(`Process exited with code ${code}`);
                 }
@@ -164,6 +219,19 @@ async function active_interval_process_model() {
         });
     });
 }
+
+
+
+
+module.exports = {
+check_main_process_status_model ,
+active_manual_process_model,
+active_interval_process_model
+};
+
+
+
+
 
 
 
@@ -191,11 +259,6 @@ async function active_interval_process_model() {
 
 
 
-module.exports = {
-check_main_process_status_model ,
-active_manual_process_model,
-active_interval_process_model
-};
 
 // async function active_manual_process_model() {
 //     console.log("active_manual_process_model");

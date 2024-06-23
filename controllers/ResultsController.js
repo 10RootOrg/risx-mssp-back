@@ -1,6 +1,6 @@
 const { 
 
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
+   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -10,74 +10,27 @@ const {v4: uuid} = require('uuid');
 
 
 
-async function get_all_latest_results_dates(req, res, next) {
-const results = req.query.results
-if (results === undefined){ console.log("---results--:-  ",results);return}
-
-try {
-
-let lastResults ={}
- const filterd_Velociraptor = results.filter(element => element.ModuleName  === "Velociraptor");
- const filterd_Hunting = results.filter(element => element.Status  === "Hunting");
- const filterd_Complete = results.filter(element => element.Status  === "Complete");
- const filterd_Failed = results.filter(element => element.Status  === "Failed");
- 
-const check_last_resault =(filterd_array, filter_name) =>{
-
-if (filterd_array.length === 0 || filterd_array === undefined){
-  // console.log("filter_name",filter_name ,"is",filterd_array);
-  lastResults = { ...lastResults, [filter_name]: "NA" };
-  return }
-
-let latestDate = null;
-
-for (let index = 0; index < filterd_array.length; index++) {
-  const date = filterd_array[index]?.LastIntervalDatePrecise;
-  if (!latestDate || new Date(date) > new Date(latestDate)) {
-    latestDate = date;
-  }
-}
-
-lastResults = { ...lastResults, [filter_name]: latestDate };
-
-console.log(`Latest date in ${filter_name}:`, latestDate);
-};
-
-check_last_resault(filterd_Velociraptor, "Velociraptor");
-check_last_resault(filterd_Hunting, "Hunting");
-check_last_resault(filterd_Complete, "Complete");
-check_last_resault(filterd_Failed, "Failed");
-check_last_resault(results, "Total");  
-
-
-
-console.log("lastResults",lastResults);
-    // const ReqestStatus = await get_ReqestStatus_from_config_file();
-    // await add_time_note(ReqestStatus);
- 
-
- if(lastResults){   res.send(lastResults);}
- 
-  } catch (err) {
-    res.send(err.message)
-    next(err);
-  }
-}
 
 
 async function get_all_requests_table(req, res, next) {
-
+let results ={
+  results_list:[],
+  latest_dates:{},
+};
  
   try {
     const ReqestStatus = await get_ReqestStatus_from_config_file();
     await add_time_note(ReqestStatus);
+     const latest =   await get_all_latest_results_dates(ReqestStatus);
+  //  console.log("latest 555555555",latest);
 
-    // console.log("ReqestStatus",ReqestStatus);
+ 
+
     // const all_Modules = await get_all_Modules_model();
+    results.results_list = ReqestStatus
+    results.latest_dates = latest
 
-    
-
-    if(ReqestStatus){   res.send(ReqestStatus);}
+    if(ReqestStatus){   res.send(results);}
   } catch (err) {
     res.send(err.message)
     next(err);
@@ -130,7 +83,7 @@ const latest = await find_latest_response_and_request(module_id)
 
   module.exports = {
 
-    get_all_latest_results_dates,
+    // get_all_latest_results_dates,
     get_single_velociraptor_response,
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
