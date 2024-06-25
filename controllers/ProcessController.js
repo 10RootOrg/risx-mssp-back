@@ -1,5 +1,5 @@
 
- const { check_main_process_status_model , active_manual_process_model,active_interval_process_model} = require('../models/ProcessModels');
+ const { check_main_process_status_model , active_manual_process_model,active_interval_process_model,search_And_Kill_Process} = require('../models/ProcessModels');
 
 
 
@@ -61,7 +61,26 @@ else if(isActive === false) { res.send("Error");}
 
 
 }
+async function kill_interval_of_python(req, res, next) {
 
+
+  const file_name = process.env.PYTHON_INTERVAL; // Name of the Python process to search for
+
+  console.log("kill_interval_of_python 00" ,file_name);
+  try {
+    const success = await search_And_Kill_Process(file_name);
+    if (success) {
+    
+        res.status(200).json({ message: 'Process(es) killed successfully.' });
+    } else {
+        res.status(404).json({ message: 'No matching processes found to kill.' });
+    }
+} catch (err) {
+    res.status(500).json({ message: `Failed to kill process: ${err.message}` });
+}
+ 
+
+}
 
 
 
@@ -143,11 +162,18 @@ else if(isRunning === false) { res.send("Error");}
    
   } 
 
+
+
+
+
+
+
 module.exports = {
 
   Check_Interval_Status,
   active_manual_process,
-  check_and_active_interval
+  check_and_active_interval,
+  kill_interval_of_python
 };
 // const isActive =  await  active_manual_process_model().then(isRunning => {
 //   console.log('Process running status 22222222222222222222222222222222:', isRunning)

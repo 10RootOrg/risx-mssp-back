@@ -17,13 +17,14 @@ app.use((req, res, next) => {
   next();
 }); //
 
- 
+const { active_interval_process_model } = require('./models/ProcessModels');
+
 
 console.log('backend got this front 1',`http://localhost:${front_port}` );
 console.log('backend got this front 2',`http://${front_ip}:${front_port}` );
 console.log('backend got this front 3',`${front_url}:${front_port}`);
 
-
+active_interval_process_model(); //nof this is what you need to stop
 
 app.use(
   cors({

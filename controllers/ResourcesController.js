@@ -129,7 +129,6 @@ async function Count_From_Same_Type (req, res, next) {
   }
 }
 
-
 async function post_new_resource (req, res, next) {
 
 
@@ -139,6 +138,13 @@ async function post_new_resource (req, res, next) {
   const {item_types_list} = req.body
   const {description} = req.body
   const {monitoring} = req.body
+
+
+const item_types_list_toString =item_types_list.toString();
+const item_tool_list_toString =item_tool_list.toString();
+
+ 
+
 try{
   // const id = uuid()
   // const id_short = id.replace(/-/g, "").substring(0, 10);
@@ -151,8 +157,8 @@ try{
 .insert({
   resource_id: id_with_r,
   resource_string:  req.body?.resource_string,
-  type:item_types_list.toString(),
-  tools: item_tool_list.toString(),
+  type:item_types_list_toString,
+  tools: item_tool_list_toString,
   description: description,
   monitoring: monitoring
 });
@@ -242,7 +248,6 @@ catch (err) {
  
  
 }
-
 
 
 async function delete_single_resource(req, res, next) {

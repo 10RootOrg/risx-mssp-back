@@ -4,24 +4,8 @@
   },
   "ClientInfrastructure": {
     "Assets": {
-      "r4f18d96b1f": {
-        "AssetString": "18.101.185.151",
-        "AssetEnable": true,
-        "AssetType": ["IP"],
-        "AssetModules": ["Velociraptor", "Nuclei"]
-      },
-      "r7163318a77": {
-        "AssetString": "google.co.il",
-        "AssetEnable": true,
-        "AssetType": ["URL"],
-        "AssetModules": ["Shodan", "Dehashed"]
-      }
     },
     "Population": [
-      {
-        "ComputerName": "RisxServer",
-        "Label": ""
-      }
     ]
   },
 

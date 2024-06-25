@@ -27,7 +27,7 @@ async function get_all_latest_results_dates(results) {
   let lastResults ={}
    const filterd_Velociraptor = results.filter(element => element.ModuleName  === "Velociraptor");
    const filterd_Hunting = results.filter(element => element.Status  === "Hunting");
-   const filterd_InProgress = results.filter(element => element.Status  === "inProgress");
+   const filterd_InProgress = results.filter(element => element.Status  === "in Progress");
    const filterd_Complete = results.filter(element => element.Status  === "Complete");
    const filterd_Failed = results.filter(element => element.Status  === "Failed");
 
@@ -60,7 +60,7 @@ async function get_all_latest_results_dates(results) {
 
   check_last_resault(filterd_Velociraptor, "Velociraptor");
   check_last_resault(filterd_Hunting, "Hunting");
-  check_last_resault(filterd_InProgress, "inProgress");
+  check_last_resault(filterd_InProgress, "in Progress");
   check_last_resault(filterd_Complete, "Complete");
   check_last_resault(filterd_Failed, "Failed");
   check_last_resault(results, "Total");  
@@ -154,11 +154,11 @@ async function add_time_note(ReqestStatus){
        const LastIntervalDate = await string_to_date(ReqestStatus[i]?.LastIntervalDate);
 
 
-      //  console.log("LastIntervalDate --------  333",ReqestStatus[i].ModuleName,         LastIntervalDate);
+    console.log("LastIntervalDate --------  333",      ReqestStatus[i]?.Status);
 
 
          ReqestStatus[i].LastIntervalDatePrecise =  LastIntervalDate
-      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "inProgress"  ){
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "In Progress"  ){
 
   //  console.log("ddddddddddd 444"  ,ReqestStatus[i]?.ModuleName       );
         // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
@@ -268,6 +268,8 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
     return []; // Return an empty array in case of error
   }
 }
+
+
 
 async function get_requests_csv_table_model(){
 
