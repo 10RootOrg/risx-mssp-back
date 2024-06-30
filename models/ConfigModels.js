@@ -7,7 +7,7 @@ const { exec } = require('child_process');
  const config_column = "config"
  
  async function put_full_config_model(config) {
-console.log("the edited one:",config);
+console.log("put_full_config_model" );
  
 // const real_config = await get_full_config_model();
 // console.log("real_config 000" ,          real_config );
@@ -21,7 +21,7 @@ console.log("the edited one:",config);
       const change_this = await DBConnection(config_table)
       .update({ config:stringified}) 
       .limit(1); //   first row
-   console.log(change_this);
+   console.log("change_this sssssssss" , change_this);
 
   // const stringified =  JSON.stringify( real_config) 
   //     const change_this = await DBConnection('configjson')

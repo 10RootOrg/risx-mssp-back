@@ -71,11 +71,17 @@ async function active_interval_process_model() {
     const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
     const RELATIVE = path.resolve(__dirname, '..', '..');
 
-   const command = `
-        source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
-        python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
-    `;
 
+
+    const PYTHON_INTERVAL = process.env.PYTHON_INTERVAL;
+//    const command = `
+//         source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+//         python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
+//     `;
+    const command = `
+    source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+    python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/${PYTHON_INTERVAL}
+`;
     return new Promise((resolve, reject) => {
         const process = exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
             if (error) {

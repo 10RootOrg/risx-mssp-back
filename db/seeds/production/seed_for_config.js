@@ -16,6 +16,6 @@ const path = require('path');
     await knex('configjson').del()
     await knex('configjson').insert({
       config: JSON.stringify(configData),
-      lastupdate:new Date
+      lastupdated:new Date
     });  
   };

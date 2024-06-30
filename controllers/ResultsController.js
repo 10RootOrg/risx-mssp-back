@@ -1,6 +1,6 @@
 const { 
 
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -43,6 +43,11 @@ let results ={
  console.log("get_single_velociraptor_response" , file_name);
  
      try {
+
+      
+    const size = await check_file_size(file_name)
+     console.log("size",size);
+     
      const result = await get_single_velociraptor_result_model(file_name)
      if (result){
       res.send(result)}

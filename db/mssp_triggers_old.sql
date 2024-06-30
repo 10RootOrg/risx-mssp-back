@@ -11,7 +11,7 @@ BEGIN
             CONCAT("$.Modules.", NEW.Tool_name, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", NEW.Tool_name, ".ExpireDate"), NEW.threshold_time,
             CONCAT("$.Modules.", NEW.Tool_name, ".LastRunDate"), NEW.LastRun),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end Tools table triger",now());
         else 	
@@ -33,7 +33,7 @@ BEGIN
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".ExpireDate"), NEW.threshold_time,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".LastRunDate"), NEW.LastRun),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end artifact table triger",now());
 		else 	
@@ -77,7 +77,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table update triger",now());
 		else 	
@@ -121,7 +121,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
-            lastupdated = now();
+            lastupdate = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table insert triger",now());
 		else 	
@@ -135,9 +135,8 @@ DROP TRIGGER IF EXISTS ChangeFromConfig$$
 CREATE TRIGGER ChangeFromConfig AFTER UPDATE ON configjson
 FOR EACH ROW
 BEGIN
-	DECLARE json, jsonAsset, Assets, Asset, products, product, submods, submod ,AssetModulesList,AssetTypeList VARCHAR(4000);
-    declare ToolList,typelist json default "[]";
-	DECLARE i, z, q,w INT DEFAULT 0;
+	DECLARE json, jsonAsset, Assets, Asset, products, product, submods, submod VARCHAR(4000);
+	DECLARE i, z, q INT DEFAULT 0;
     IF @trigger_disabled IS NULL THEN
         SET @trigger_disabled = TRUE;
 		insert logtable values("JSON Trigger Start",now());
@@ -177,33 +176,14 @@ BEGIN
 
         WHILE q < JSON_LENGTH(Assets) DO
             SELECT JSON_EXTRACT(jsonAsset, CONCAT("$.", JSON_EXTRACT(Assets, CONCAT('$[', q, ']')))) INTO Asset;
-			select JSON_EXTRACT(asset,'$.AssetModules') into AssetModulesList;
-			select JSON_EXTRACT(asset,'$.AssetType') into AssetTypeList;
-            
-            while w <JSON_LENGTH(AssetModulesList) do
-				SET ToolList = JSON_ARRAY_APPEND(ToolList, "$", (SELECT tool_id from tools where
-                Tool_name= JSON_EXTRACT(AssetModulesList, CONCAT('$[', w, ']'))));
-				set w=w+1;
-            end while;
-            
-            set w = 0 ; 
-            
-			while w <JSON_LENGTH(AssetTypeList) do
-				SET typelist = JSON_ARRAY_APPEND(typelist, "$", (SELECT resource_type_id from resource_type where
-                resource_type_name= JSON_EXTRACT(AssetTypeList, CONCAT('$[', w, ']'))));
-				set w=w+1;
-            end while;
-            
             UPDATE all_resources SET monitoring = JSON_EXTRACT(Asset, "$.AssetEnable"),
-                resource_string = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetString")),
-                type = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(typelist, "$[*]"
+                resource_string = JSON_EXTRACT(Asset, "$.AssetString"),
+                type = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(JSON_EXTRACT(Asset, "$.AssetType"), "$[*]"
                     COLUMNS (rowid FOR ORDINALITY, item VARCHAR(300) PATH "$")) AS json_parsed1),
-                tools = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(ToolList, "$[*]"
+                tools = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(JSON_EXTRACT(Asset, "$.AssetModules"), "$[*]"
                     COLUMNS (rowid FOR ORDINALITY, item VARCHAR(300) PATH "$")) AS json_parsed)
                 WHERE resource_id = JSON_EXTRACT(Assets, CONCAT('$[', q, ']'));
-			SET w = 0;
-            set ToolList = "[]";
-            set typelist = "[]";
+
             SET q = q + 1;
         END WHILE;
 
@@ -214,4 +194,4 @@ BEGIN
 	END IF;
 END$$
 
- 
+

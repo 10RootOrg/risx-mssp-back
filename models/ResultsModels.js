@@ -208,67 +208,52 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
   
     return  ReqestStatus?.[0].data
 
-// const tmp = [
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Complete',
-//     ModuleID: '2000000',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '21-05-24-11-20-18',
-//     SubModule: 'HardeningKitty',
-//     ArtifactID: '1000103',
-//     ExpireDate: '22-05-24-11-20-18',
-//     ModuleName: 'Velociraptor',
-//     TimeInterval: '',
-//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000103.json',
-//     LastIntervalDate: '21-05-24-15-20-18'
-//   },
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Request',
-//     ModuleID: '2001005',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '30-05-24-10-57-07',
-//     SubModule: '',
-//     ArtifactID: '',
-//     ExpireDate: '30-06-24-10-57-07',
-//     ModuleName: 'Nuclei',
-//     TimeInterval: '',
-//     Response_Path: 'response_nuclei_30-05-24-10-57-07_module_id_2001005.json',
-//     LastIntervalDate: '04-06-24-10-57-07'
-//   },
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Complete',
-//     ModuleID: '2001005',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '21-05-24-11-20-18',
-//     SubModule: '',
-//     ArtifactID: '',
-//     ExpireDate: '21-05-24-14-20-18',
-//     ModuleName: 'Nuclei',
-//     TimeInterval: '',
-//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000105',
-//     LastIntervalDate: '21-05-24-15-20-18'
-//   }
-// ]
-
-    // return  tmp;
+  
   } catch (err) {
     console.error('Error reading or parsing file:', err);
     return []; // Return an empty array in case of error
   }
 }
 
+
+
+
+
+
+
+async function check_file_size(file_name) {
+
+  // var stats = fs.statSync("myfile.txt")
+  // var fileSizeInMb = filesize(stats.size, {round: 0});
+      try {
+
+  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const directoryPath = path.join(__dirname, '..','..', relativePath);
+  const fullPath = path.join(directoryPath,file_name);
+
+
+    // Check if the directory exists (will throw if it doesn't)
+    await fs.access(directoryPath);
+
+
+    const stats = await  fs.statSync(directoryPath)
+    console.log("stats",stats);
+
+    const fileSizeInBytes = stats?.size;
+    const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
+    console.log("fileSizeInBytes",fileSizeInBytes);
+    console.log("fileSizeInMegabytes",fileSizeInMegabytes);
+
+  
+return fileSizeInMegabytes
+
+
+
+  } catch (err) {
+    console.error('check_file_size:', err);
+  }
+ 
+}
 
 
 async function get_requests_csv_table_model(){
@@ -418,21 +403,7 @@ return  number
 
 
 
-module.exports = {
-    // get_all_velociraptor_results_model,
-    get_all_velociraptor_artifacts_model,
-    get_single_velociraptor_result_model,
-    count_response_files_model,
-    find_latest_response_and_request,
-    // get_all_request_and_response_model,
-    get_requests_csv_table_model,
-    make_cool_object_from_csv_table,
-    // write_to_csv_table,
-    get_ReqestStatus_from_config_file,
-    add_time_note,
-    get_all_latest_results_dates
- 
-};
+
 
 async function find_latest_response_and_request(module_id) {
 
@@ -629,3 +600,20 @@ return  {last_response:last_response , last_request:last_request}
 //   }
 //   catch(err){res.send(err)}
 //   }
+
+
+module.exports = {
+  // get_all_velociraptor_results_model,
+  get_all_velociraptor_artifacts_model,
+  get_single_velociraptor_result_model,
+  count_response_files_model,
+  find_latest_response_and_request,
+  // get_all_request_and_response_model,
+  get_requests_csv_table_model,
+  make_cool_object_from_csv_table,
+  check_file_size,
+  get_ReqestStatus_from_config_file,
+  add_time_note,
+  get_all_latest_results_dates
+
+};

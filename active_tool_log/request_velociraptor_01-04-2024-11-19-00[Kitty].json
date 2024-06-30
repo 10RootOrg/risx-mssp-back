@@ -1,8 +1,0 @@
-{
-    "action": "runartifact",
-    "artifactname": "Exchange.Windows.HardeningKitty",
-    "arguments": "TakeBackUp= 'N', Baseline= 'finding_list_0x6d69636b_machine'",
-    "expiretime": "30",
-    "organizationid": "OCHL0",
-    "label": "iris"
-}
