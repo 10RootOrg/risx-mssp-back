@@ -1,5 +1,9 @@
 
- const { check_main_process_status_model , active_manual_process_model,active_interval_process_model,search_And_Kill_Process} = require('../models/ProcessModels');
+ const { check_main_process_status_model , active_manual_process_model,
+  active_interval_process_model,
+  
+  
+  search_And_Kill_Process} = require('../models/ProcessModels');
 
 
 
@@ -25,6 +29,7 @@ const checkRunning =  await  check_main_process_status_model().then(isRunning =>
   if (checkRunning === false){ 
          console.log('checkRunning  === false , start running the interval'   );
  
+         console.log(' go to active_interval_process_model' )      
  const now_active = await  active_interval_process_model().then(isActive => {
   console.log('isActive', isActive)
 if      (isActive === true) {res.send(true);}
@@ -32,6 +37,7 @@ else if(isActive === false) { res.send("Error");}
 
 
 }).catch(error => {
+  console.log("out of active_interval_process_model");
   console.error('Error:', error);res.send(false); next(error);
 });
    
@@ -46,21 +52,11 @@ else if(isActive === false) { res.send("Error");}
   }catch(err)
   {console.log(err);}
 
-  // try {
  
-    // const process_status = await check_main_process_status_model();
-
-  //   const bobo =  await  check_main_process_status_model().then(isRunning => {
-  //     console.log('Process running status:', isRunning);
-  //     //  res.send(isRunning)
-  //      ;
-  //     if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
-  // }).catch(error => {
-  //     console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
-  // });
 
 
 }
+
 async function kill_interval_of_python(req, res, next) {
 
 
@@ -81,8 +77,6 @@ async function kill_interval_of_python(req, res, next) {
  
 
 }
-
-
 
 async function Check_Interval_Status(req, res, next) {
   try{
@@ -126,15 +120,12 @@ async function Check_Interval_Status(req, res, next) {
 
 }
 
-
-
-
 async function active_manual_process(req,res,next){
   console.log("active_manual_process"  );
   // const param1 =  req.query.param1
-
+try{ 
  
-
+ 
   await  active_manual_process_model().then(isRunning => {
   console.log('active_manual_process_model:', isRunning)
 if      (isRunning === true) {res.send(true);}
@@ -146,22 +137,14 @@ else if(isRunning === false) { res.send("Error");}
   console.error('Error:', error);res.send(false); next(error);
 });
 
-
-// if (doit === false){
-//   console.log("active_manual_process_model 1" ,doit);
-//   res.send("Error")
-// }
-  
-
-//  const isActive = await active_manual_process_model();
-
- 
-//   console.log("isActive" , isActive);
-//   res.send(isActive)  
  
    
   } 
+  catch(err)
+  {console.log("err in active_manual_process" , err);}
 
+
+}
 
 
 
