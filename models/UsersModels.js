@@ -16,7 +16,7 @@ console.log("Get_all_users_model");
   try{
    
     const allusers  = await DBConnection('users')
-    .select('email','user_id','type','user_name','name','last_login','state')
+    .select('email','user_id','type','user_name','name','last_login','state',"createdAt" ,"updatedAt")
    if (allusers){return allusers}
  
 }catch(err)

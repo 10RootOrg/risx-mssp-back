@@ -5,6 +5,7 @@ const ResultsController  = require('../controllers/ResultsController');
 
 router.get('/get_all_requests_table', ResultsController.get_all_requests_table);  
  router.get('/velociraptor-single-result', ResultsController.get_single_velociraptor_response);  
+ router.get('/velociraptor-aggregate-macro', ResultsController.get_velociraptor_aggregate_macro);  
  router.get('/check_last_req_and_res_for_module', ResultsController.check_last_req_and_res_for_module);  /// check to delete
 
 

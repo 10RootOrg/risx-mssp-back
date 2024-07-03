@@ -1,6 +1,6 @@
 const { 
 
-  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -8,9 +8,53 @@ const {v4: uuid} = require('uuid');
   
 
 
+ 
+
+async function get_single_velociraptor_response(req, res, next) {
+
+  const { file_name } = req.query;
+  console.log("get_single_velociraptor_response" , file_name);
+  
+      try {
+ 
+       
+     const size = await check_file_size(file_name)
+      console.log("size --------------------------------- --- ",size);
+      
+      const result = await get_single_velociraptor_result_model(file_name)
+      if (result){
+       res.send(result)}
+     } catch (err) {
+       res.send(err.message)
+       next(err);
+     }
+   }
+
+async function get_velociraptor_aggregate_macro(req, res, next) {
+// console.log();
+ const { SubModuleName ,ResponseFile } = req.query;
+ 
+ 
+  console.log("get_velociraptor_aggregate_macro  ResponseFile" , ResponseFile);
+  console.log("get_velociraptor_aggregate_macro SubModuleName" , SubModuleName);
+if(ResponseFile === undefined || SubModuleName === undefined){
+  res.status(400 ).json({ success: false, message: `'ResponseFile is ${ResponseFile} ,SubModuleName is ${SubModuleName}`});
+}
 
 
+try {
+  const result =       await get_velociraptor_aggregate_macro_model(SubModuleName, ResponseFile);
+  const order_result = await order_result_aggregate_macro_model(result);
 
+  if (order_result){ 
+    console.log("result", order_result);
+    res.json({ success: true, data: order_result });}
+
+} catch (err) {
+  res.status(400).json({ success: false, message: err.message });
+}
+
+   }
 
 async function get_all_requests_table(req, res, next) {
 let results ={
@@ -37,26 +81,7 @@ let results ={
   }
 }
 
-  async function get_single_velociraptor_response(req, res, next) {
 
- const { file_name } = req.query;
- console.log("get_single_velociraptor_response" , file_name);
- 
-     try {
-
-      
-    const size = await check_file_size(file_name)
-     console.log("size",size);
-     
-     const result = await get_single_velociraptor_result_model(file_name)
-     if (result){
-      res.send(result)}
-    } catch (err) {
-      res.send(err.message)
-      next(err);
-    }
-  }
-  
   async function count_velociraptor_responses(req,res,next){
     try{
       const number = await count_response_files_model()
@@ -93,6 +118,7 @@ const latest = await find_latest_response_and_request(module_id)
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
+    get_velociraptor_aggregate_macro
   };
   
 

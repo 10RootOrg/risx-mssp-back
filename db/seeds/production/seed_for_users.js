@@ -9,13 +9,13 @@ exports.seed = async function(knex) {
     [ 
     // parent_id
    {
-    user_id: "ScTgY23fa3",
+     user_id: "u1130b77b8",
     type: "type1",
     email: "admin@admin",
     Address:"Harechev st. 4, Tel-Aviv",
     state: "Israel",
     user_name: "Admin",
-    user_password: "12345678",
+    user_password: "$2b$10$qtYXhl4Qmg6DCaFUDS8/He8QeoNbhiOT1V/eR1ORcM.YJ8yWdPz9q",
     // can_watch: true,
     // can_edit: true,
     phone_number: "+972-37763688",

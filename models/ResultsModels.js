@@ -12,6 +12,7 @@ const csv = require('csv-parser')
 const DBConnection = require('../db.js');
 const { exec } = require('child_process');
 const { spawn } = require('child_process');
+const { log } = require('console');
  
 
 
@@ -322,6 +323,135 @@ catch(err){res.send(err)}
 }
 
 
+
+
+async function get_velociraptor_aggregate_macro_model(SubModuleName,ResponseFile) {
+
+console.log("get_velociraptor_aggregate_macro_model",SubModuleName,ResponseFile);
+
+
+let macro_file_name = ""
+
+// console.log("nnnnnnnnnnnnnnnnnnnnnnn",ResponseFile);
+
+ try{ 
+
+    // if(  ResponseFile.includes("response_")){  macro_file_name = ResponseFile.replace("response", "macro");}
+    if (ResponseFile.includes("response_")) {
+
+
+      const fileName = ResponseFile.split("/").pop();
+
+      // משנים את "response" ל-"macro"
+      macro_file_name  = fileName.replace("response", "macro");
+   
+
+ 
+
+      // const parts = ResponseFile.split("/");
+      // const filename = parts.pop(); // Remove the last part (filename)
+      
+      // // Replace "response" with "macro" in the filename part only
+      // const newFilename = filename.replace("response", "macro");
+      
+      // // Reconstruct the path with the updated filename
+      // parts.push(newFilename);
+      // const updatedPath = parts.join("/");
+      // macro_file_name =updatedPath
+      // console.log("ccccccccccccccccccccccc",updatedPath); // Output: response_folder/macro_VelociraptorHardeningKitty_02-07-2024-07-28-19.json
+    }
+
+
+
+  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const directoryPath = path.join(__dirname, '..','..', relativePath,"response_folder");
+  // const directoryPath = path.join(__dirname, '..','..', relativePath);
+  // const fullPath = path.join(directoryPath, `${macro_file_name}.json`);
+  const fullPath = path.join(directoryPath,macro_file_name);
+
+
+  console.log("sssssssssssssssssssssssssssss",fullPath);
+    await fs.access(directoryPath);
+
+const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
+  if (err) {
+ 
+  console. error(err);
+  return;
+  }
+ 
+  });
+  
+ if(JSON_file){
+// console.log("JSON_file", JSON_file);
+  const [parsed] = await JSON.parse(JSON_file)
+
+  return parsed
+
+ }
+
+
+} catch (err) {
+  console.error('Error get_velociraptor_aggregate_macro_model:', err);
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+async function order_result_aggregate_macro_model(result) {
+
+  if (result === undefined) {
+    return false
+  }
+  
+try{
+
+
+    console.log("result jjjjjjjjjj0", result);
+    // console.log(result['Failed Test/Number of tests']);
+   const string =  result['Failed Test/Number of tests']
+   const Failed_Test_Number_of_tests = string.split("/");
+   const convertedNumbers = Failed_Test_Number_of_tests.map(numStr => Number(numStr));
+   result.Failed_Test_Number_of_tests = convertedNumbers
+  
+
+
+  //  const severityOrder = ['Critical', 'High', 'Medium', 'Low'];
+
+  //  const severities = severityOrder;
+  //  const counts = severityOrder.map(severity => inputObject[`Count of ${severity}`]);
+   
+  //  console.log('const severities =', JSON.stringify(severities), ';');
+  //  console.log('const counts =', JSON.stringify(counts), ';');
+
+
+  const severityOrder = ['Critical', 'High', 'Medium', 'Low'];
+  const severities = severityOrder;
+  const counts = severityOrder.map(severity => result[`Count of ${severity}`]);
+  console.log('const severities =', JSON.stringify(severities), ';');
+  console.log('const counts =', JSON.stringify(counts), ';');
+  result.severity_Order  = severities
+  result.severity_Counts = counts
+
+
+
+
+
+
+  
+    return result
+}catch(err){console.log("order_result_aggregate_macro_model",err);return  err}  
+ 
+  }
+
 async function get_single_velociraptor_result_model(file_name) {
 
 
@@ -614,6 +744,8 @@ module.exports = {
   check_file_size,
   get_ReqestStatus_from_config_file,
   add_time_note,
-  get_all_latest_results_dates
+  get_all_latest_results_dates,
+  get_velociraptor_aggregate_macro_model,
+  order_result_aggregate_macro_model
 
 };
