@@ -1,31 +1,11 @@
 {
   "General": {
-    "DefaultInter": ""
+    "DefaultInter": "2"
   },
   "ClientInfrastructure": {
     "Assets": {
-      "r4f18d96b1f": {
-        "AssetString": "18.168.185.151",
-        "AssetEnable": true,
-        "AssetType": ["IP"],
-        "AssetModules": ["Velociraptor", "Nuclei"]
-      },
-      "r7163318a77": {
-        "AssetString": "google.co.il",
-        "AssetEnable": true,
-        "AssetType": ["URL"],
-        "AssetModules": ["Shodan", "Dehashed"]
-      }
     },
     "Population": [
-      {
-        "ComputerName": "SRV1",
-        "Label": ""
-      },
-      {
-        "ComputerName": "SRV2",
-        "Label": ""
-      }
     ]
   },
 
@@ -41,7 +21,7 @@
     "Velociraptor": {
       "id": "2000000",
       "ModuleName": "Velociraptor",
-      "Enable": true,
+      "Enable": false,
       "LastRunDate": "2024-06-02 10:15:17",
       "ExpireDate": "0",
 
@@ -49,7 +29,7 @@
         "PersistenceSniper": {
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
-          "Enable": true,
+          "Enable": false,
           "ExpireDate": "2000",
           "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -58,7 +38,7 @@
         "HardeningKitty": {
           "id": "1000103",
           "ModuleName": "HardeningKitty",
-          "Enable": true,
+          "Enable": false,
           "ExpireDate": "2000",
           "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -70,7 +50,7 @@
         "Zircolite": {
           "id": "1000102",
           "ModuleName": "Zircolite",
-          "Enable": true,
+          "Enable": false,
           "ExpireDate": "2000",
           "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -83,7 +63,7 @@
         "Hayabusa": {
           "id": "1000105",
           "ModuleName": "Hayabusa",
-          "Enable": true,
+          "Enable": false,
           "ExpireDate": "2000",
           "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -113,63 +93,12 @@
     },
     "TimeSketch": {
       "id": "2001002",
-      "Enable": true,
+      "Enable": false,
       "Arguments": {},
       "ModuleName": "TimeSketch",
       "ExpireDate": "0",
-
       "LastRunDate": "2024-06-02 10:15:17"
     }
   },
-  "RequestStatus": [ {
-    "ModuleName": "Velociraptor",
-    "SubModule": "HardeningKitty",
-    "StartDate": "21-05-24-11-20-18",
-    "ExpireDate": "22-05-24-11-20-18",
-    "LastIntervalDate": "21-05-24-15-20-18",
-    "TimeInterval": "",
-    "Arguments": {},
-    "Status": "Complete",
-    "ResponsePath": "response_velociraptor_21-05-24-11-20-18_artifact_id_1000103.json",
-    "HuntID": "",
-    "Error": "",
-    "UniqueID": "",
-    "ModuleID": "2000000",
-    "ArtifactID": "1000103",
-    "RequestId": ""
-  },
-  {
-    "ModuleName": "Nuclei",
-    "SubModule": "",
-    "StartDate": "30-05-24-10-57-07",
-    "ExpireDate": "30-06-24-10-57-07",
-    "LastIntervalDate": "04-06-24-10-57-07",
-    "TimeInterval": "",
-    "Arguments": {},
-    "Status": "Request",
-    "ResponsePath": "response_nuclei_30-05-24-10-57-07_module_id_2001005.json",
-    "HuntID": "",
-    "Error": "",
-    "UniqueID": "",
-    "ModuleID": "2001005",
-    "ArtifactID": "",
-    "RequestId": ""
-  },
-  {
-    "ModuleName": "Nuclei",
-    "SubModule": "",
-    "StartDate": "21-05-24-11-20-18",
-    "ExpireDate": "21-05-24-14-20-18",
-    "LastIntervalDate": "21-05-24-15-20-18",
-    "TimeInterval": "",
-    "Arguments": {},
-    "Status": "Complete",
-    "ResponsePath": "response_velociraptor_21-05-24-11-20-18_artifact_id_1000105",
-    "HuntID": "",
-    "Error": "",
-    "UniqueID": "",
-    "ModuleID": "2001005",
-    "ArtifactID": "",
-    "RequestId": ""
-  }]
+  "RequestStatus": []
 }

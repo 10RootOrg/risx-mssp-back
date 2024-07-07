@@ -12,7 +12,7 @@ return (req, res, next)=>{
 
   const valid = ajv.validate(schema, req.body)
 
-console.log("start   validation body", req.body);
+// console.log("start   validation body", req.body);
 
   if (!valid) {console.log(ajv?.errors[0]?.message)
 

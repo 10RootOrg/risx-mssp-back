@@ -1,70 +1,146 @@
 const { 
 
-   get_all_velociraptor_artifacts_model ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,make_cool_object_from_csv_table,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model} = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model } = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
+const  path = require('path');
+const fs = require('fs').promises;
+const fs_non_promises = require('fs');
+
+async function download_json_file(req, res, next) {
+    try {
+
+
+ const { ResponsePath } = req.query;
+if (ResponsePath === undefined){console.log("ResponsePath is" ,ResponsePath);}
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+const directoryPath = path.join(__dirname, '..','..', relativePath);
+const fullPath = path.join(directoryPath,ResponsePath);
+
+console.log("fullPath ---------------------------" , fullPath);
+await fs.access(directoryPath);
+
+// const result = await download_file_model(fullPath)
+ 
   
 
-// async function Check_Interval_Status(req, res, next) {
-//   console.log("check_main_process_status 111111111111111111111111111111111111111");
-//   const momo = "3333"
-//   res.send(momo);
- 
-//   // try {
- 
-//     // const process_status = await check_main_process_status_model();
-
-//     const bobo =  await  check_main_process_status_model().then(isRunning => {
-//       console.log('Process running status:', isRunning);
-//       //  res.send(isRunning)
-//        ;
-//       if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
-//   }).catch(error => {
-//       console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
-//   });
 
 
+if (fs_non_promises.existsSync(fullPath)) {
+  // Set headers to force download
+  res.setHeader('Content-disposition', 'attachment; filename=example.json');
+  res.setHeader('Content-type', 'application/json');
+
+  // Create a read stream from the file and pipe it to the response
+  const fileStream = fs_non_promises.createReadStream(fullPath);
+  fileStream.pipe(res);
+} else {
+  res.status(404).send('File not found');
+}
+
+
+
+      // if (result){
+
  
-// }
+      //   return    res.send(result)}
+     } catch (err) {
+       res.send(err.message)
+       next(err);
+     }
+   }
+
+
+
+
+
+
+
+
+
+   
+async function get_single_velociraptor_response(req, res, next) {
+  const { file_name } = req.query;
+  console.log("get_single_velociraptor_response" , file_name);
+  
+      try {
+     const size = await check_file_size(file_name)
+    //  const MB_limit = 0.002
+     const MB_limit = 1
+if (size    >  MB_limit ){ 
+  console.log("json file too big",size);
+ 
+  return  res.status(200).json({ success: false, fileSize:"Too big", message: `File is too big. Maximum size allowed is ${MB_limit} MB.` });
+
+ }
+
+
+    
+      
+
+      const result = await get_single_velociraptor_result_model(file_name)
+      if (result){
+        return    res.send(result)}
+     } catch (err) {
+       res.send(err.message)
+       next(err);
+     }
+   }
+
+async function get_velociraptor_aggregate_macro(req, res, next) {
+// console.log();
+ const { SubModuleName ,ResponseFile } = req.query;
+ 
+ 
+  console.log("get_velociraptor_aggregate_macro  ResponseFile" , ResponseFile);
+  console.log("get_velociraptor_aggregate_macro SubModuleName" , SubModuleName);
+if(ResponseFile === undefined || SubModuleName === undefined){
+  res.status(400 ).json({ success: false, message: `'ResponseFile is ${ResponseFile} ,SubModuleName is ${SubModuleName}`});
+}
+
+
+try {
+  const result =       await get_velociraptor_aggregate_macro_model(SubModuleName, ResponseFile);
+  const order_result = await order_result_aggregate_macro_model(result);
+
+  if (order_result){ 
+    console.log("result", order_result);
+    res.json({ success: true, data: order_result });}
+
+} catch (err) {
+  res.status(400).json({ success: false, message: err.message });
+}
+
+   }
 
 async function get_all_requests_table(req, res, next) {
-
+let results ={
+  results_list:[],
+  latest_dates:{},
+};
  
   try {
     const ReqestStatus = await get_ReqestStatus_from_config_file();
     await add_time_note(ReqestStatus);
+     const latest =   await get_all_latest_results_dates(ReqestStatus);
+  //  console.log("latest 555555555",latest);
 
-    // console.log("ReqestStatus",ReqestStatus);
+ 
+
     // const all_Modules = await get_all_Modules_model();
+    results.results_list = ReqestStatus
+    results.latest_dates = latest
 
-    
-
-    if(ReqestStatus){   res.send(ReqestStatus);}
+    if(ReqestStatus){   res.send(results);}
   } catch (err) {
     res.send(err.message)
     next(err);
   }
 }
 
-  async function get_single_velociraptor_response(req, res, next) {
 
- const { file_name } = req.query;
- console.log("get_single_velociraptor_response" , file_name);
- 
-     try {
-     const result = await get_single_velociraptor_result_model(file_name)
-     if (result){
-      console.log("result",result);
-      
-      res.send(result)}
-    } catch (err) {
-      res.send(err.message)
-      next(err);
-    }
-  }
-  
   async function count_velociraptor_responses(req,res,next){
     try{
       const number = await count_response_files_model()
@@ -95,14 +171,14 @@ const latest = await find_latest_response_and_request(module_id)
   }
 
   module.exports = {
-    // get_all_request_and_response,
-    // get_all_velociraptor_responses_file_list,
+
+    // get_all_latest_results_dates,
     get_single_velociraptor_response,
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
-    // Check_Interval_Status
-    // write_to_csv
+    get_velociraptor_aggregate_macro,
+    download_json_file
   };
   
 
@@ -190,4 +266,27 @@ const latest = await find_latest_response_and_request(module_id)
 //     res.send(err.message)
 //     next(err);
 //   }
+// }
+
+
+// async function Check_Interval_Status(req, res, next) {
+//   console.log("check_main_process_status 111111111111111111111111111111111111111");
+//   const momo = "3333"
+//   res.send(momo);
+ 
+//   // try {
+ 
+//     // const process_status = await check_main_process_status_model();
+
+//     const bobo =  await  check_main_process_status_model().then(isRunning => {
+//       console.log('Process running status:', isRunning);
+//       //  res.send(isRunning)
+//        ;
+//       if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );}
+//   }).catch(error => {
+//       console.error('Error:', error);res.send("sssssssssssssssssss"); next(error);
+//   });
+
+
+ 
 // }

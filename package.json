@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx knex migrate:latest && npx knex seed:run --specific seeds_for_artifacts.js && npx knex seed:run --specific seeds_for_resource_type.js && npx knex seed:run --specific tools_seeds.js && node installs.js && node server.js",
-    "install_test": "  node installs.js  && node server.js",
+    "dev_old": "npx knex migrate:latest && npx knex seed:run --specific seeds_for_artifacts.js && npx knex seed:run --specific seeds_for_resource_type.js  && npx knex seed:run --specific seed_for_users.js && npx knex seed:run --specific tools_seeds.js  && npx knex seed:run --specific seed_for_config.js && node server.js",
+    "dev": "npx knex migrate:latest --knexfile ./knexfile.js --env development && npx knex seed:run --specific seeds_for_artifacts.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific seeds_for_resource_type.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific tools_seeds.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific seed_for_config.js --knexfile ./knexfile.js --env development && node server.js",
+
     "start": "node server"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^8.12.0",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
@@ -22,7 +24,7 @@
     "express": "^4.19.1",
     "knex": "^3.1.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.9.2",
+    "mysql2": "^3.10.1",
     "pg": "^8.11.3",
     "uuid": "^9.0.1",
     "xml2js": "^0.6.2"

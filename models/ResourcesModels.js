@@ -8,6 +8,15 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
   const { exec } = require('child_process');
 
 
+  
+
+
+
+
+
+
+
+
   async function get_config_path_model(){
 
     try {
@@ -61,22 +70,7 @@ async function get_All_Resources_model() {
 
   try {
 
-// const file_path  = await  get_config_path_model();
-// const config_file  = await  read_config_model(file_path);
-
-// const all_assets = config_file?.ClientInfrastructure?.Assets;
-// const all_Modules = config_file?.Modules;
-
-//   all_assets.forEach((element) => {
-//     console.log("element", element);
-//     if (!element.hasOwnProperty('tools')) {
-//         element.tools = [];
-//     }
-// });
-
-//   console.log("mmmmmmmmmmmmmmm all_assets", all_assets);
-
-
+ 
 
     const resourcesQuery = DBConnection('all_resources')
     .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.group_name', 'all_resources.checked', 'all_resources.updatedAt',
@@ -101,7 +95,31 @@ async function get_All_Resources_model() {
 
   
 }
- 
+
+// async function get_All_Resources_model() {
+
+
+
+
+//   try{
+   
+//     const All_Resources  = await DBConnection('all_resources')
+//     .select('*')
+//    if (All_Resources){return All_Resources}
+//  console.log("All_Resources",All_Resources);
+// }catch(err)
+  
+// {console.log("get_All_Resource_Type_model", err);}
+
+
+
+
+
+
+  
+// }
+
+
 async function get_All_Resource_Type_model() {
   console.log("get_All_Resource_Type_model 11111111111111");
 

@@ -30,7 +30,7 @@ exports.seed = async function(knex) {
     tool_id: 2001000, 
     Tool_name: 'Risx',
     BoxType: 'Tools_a',
-    headline: 'AD security Platform',
+    headline: 'AD Security Platform',
     isActive: true,
     ShowInUi: true,
     logoAddress_1: "./Logos/10Root.svg",
@@ -80,7 +80,7 @@ exports.seed = async function(knex) {
         description_short: 'collaborative forensic timeline analysis',
         description_long: 'Timesketch is an open-source tool for collaborative forensic timeline analysis. Using sketches you and your collaborators can organize and work together.',
         Status: 'blue',
-        buttonTitle: 'Create',
+        buttonTitle: 'Timelines',
         toolURL: 'https://10root.com/',
         ServicePackage: 'Standard',
         threshold_time:24,
@@ -127,13 +127,13 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2005,2006,2007",
         toolType:"link"
        },
        {
         tool_id: 2001010,
         Tool_name: 'IRIS',
-        BoxType: 'Tools_a',
+        BoxType: 'Tools_b',
         headline: 'DFIR-IRIS',
         isActive: true,
         ShowInUi: true,
@@ -160,13 +160,13 @@ exports.seed = async function(knex) {
        {
         tool_id: 2001005,
         Tool_name: 'Nuclei',
-        BoxType: 'Tools_b',
+        BoxType: 'Tools_a',
         headline: 'ASM',
         isActive: true,
         ShowInUi: true,
         logoAddress_1: "./Logos/Nuclei.svg",
         logoAddress_2: "",
-        iconAddress: './icons/General-icons-b.svg',
+        iconAddress: './icons/General-icons-h.svg',
         description_short: 'External Assets Vulnerability Scan',
         description_long: 'Worldwide digital change has accelerated the size, scope, and composition of an organizations attack surface. The size of an attack surface may fluctuate over time, adding and subtracting assets and digital systems (e.g. websites, hosts, cloud and mobile apps, etc.). Attack surface sizes can change rapidly as well. Digital assets eschew the physical requirements of traditional network devices, servers, data centers, and on-premise networks. This leads to attack surfaces changing rapidly, based on the organizations needs and the availability of digital services to accomplish it. Attack surface scope also varies from organization to organization. With the rise of digital supply chains, interdependencies, and globalization, an organizations attack surface has a broader scope of concern (viz. vectors for cyberattacks). Lastly, the composition of an organizations attack surface consists of small entities linked together in digital relationships and connections to the rest of the internet and organizational infrastructure, including the scope of third-parties, digital supply chain, and even adversary-threat infrastructure.',
         Status: 'blue',
@@ -175,7 +175,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002",
         toolType:"module"
        },  {
         tool_id: 2001006,
@@ -235,7 +235,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2005,2006,2007",
         toolType:"link"
        },{
         tool_id: 2001009,
@@ -255,7 +255,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Premium',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002,2003,2004,2006,2007",
         toolType:"link"
        },
        {
@@ -276,7 +276,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2001,2002",
         toolType:"link"
        },   {
         tool_id: 2001012,

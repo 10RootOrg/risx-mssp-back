@@ -1,5 +1,5 @@
 const post_resource_schema = {
- 
+
     type: "object",
     properties: {
       // resource_id: {type: "string"},

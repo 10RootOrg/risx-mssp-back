@@ -129,58 +129,197 @@ async function Count_From_Same_Type (req, res, next) {
   }
 }
 
+// async function post_new_resource (req, res, next) {
 
-async function post_new_resource (req, res, next) {
+
+//   console.log(req.body);
+
+//   const {item_tool_list} = req.body
+//   const {item_types_list} = req.body
+//   const {description} = req.body
+//   const {monitoring} = req.body
 
 
-  console.log(req.body);
+// // const item_types_list_toString =item_types_list.toString();
+// // const item_tool_list_toString =item_tool_list.toString();
 
-  const {item_tool_list} = req.body
-  const {item_types_list} = req.body
-  const {description} = req.body
-  const {monitoring} = req.body
-try{
-  // const id = uuid()
-  // const id_short = id.replace(/-/g, "").substring(0, 10);
+ 
 
-  const id = uuid();
-  const id_short = id.replace(/-/g, "").substring(0, 9);
-  const id_with_r = 'r' + id_short;
+// try{
+//   // const id = uuid()
+//   // const id_short = id.replace(/-/g, "").substring(0, 10);
 
- const posted = await DBConnection('all_resources')
-.insert({
-  resource_id: id_with_r,
-  resource_string:  req.body?.resource_string,
-  type:item_types_list.toString(),
-  tools: item_tool_list.toString(),
-  description: description,
-  monitoring: monitoring
-});
+//   const id = uuid();
+//   const id_short = id.replace(/-/g, "").substring(0, 9);
+//   const id_with_r = 'r' + id_short;
 
-if (posted){
-  console.log("posted" ,posted);
-  const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
-if(the_new_item){res.status(200).send(the_new_item);}
+//  const posted = await DBConnection('all_resources')
+// .insert({
+//   resource_id: id_with_r,
+//   resource_string:  req.body?.resource_string,
+//   type:item_types_list.toString(),
+//   tools: item_tool_list.toString(),
+//   description: description,
+//   monitoring: monitoring
+// });
+
+// if (posted){
+//   console.log("posted" ,posted);
+//   const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
+// if(the_new_item){res.status(200).send(the_new_item);}
 
 
  
-}
+// }
 
 
-}
+// }
 
-catch (err) {
-    res.send(err.message)
-    return res.status(500).send(err.message);
+// catch (err) {
+//     res.send(err.message)
+//     return res.status(500).send(err.message);
 
-    // console.log(err.message);
-    // next(err);
+//     // console.log(err.message);
+//     // next(err);
+//   }
+
+
+ 
+ 
+// }
+// async function post_new_resource(req, res, next) {
+//   console.log(req.body);
+
+//   const { item_tool_list, item_types_list, description, monitoring } = req.body;
+
+//   try {
+//     const id = uuid();
+//     const id_short = id.replace(/-/g, "").substring(0, 9);
+//     const id_with_r = 'r' + id_short;
+
+//     // Insert new resource into the database
+//     const posted = await DBConnection('all_resources').insert({
+//       resource_id: id_with_r,
+//       resource_string: req.body?.resource_string,
+//       type: item_types_list.toString(),
+//       tools: item_tool_list.toString(),
+//       description: description,
+//       monitoring: monitoring
+//     });
+
+//     if (posted) {
+//       console.log("Resource posted:", posted);
+
+//       // Fetch the newly inserted resource from the database
+//       const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
+
+//       if (the_new_item.length > 0) {
+//         // Respond with the newly inserted resource
+//         res.status(200).json(the_new_item);
+//       } else {
+//         // If the_new_item is empty, respond with a 404 Not Found or appropriate error
+//         res.status(404).json({ error: 'Resource not found after insertion' });
+//       }
+//     } else {
+//       // If posted is false or undefined, respond with an error
+//       res.status(500).json({ error: 'Failed to insert resource' });
+//     }
+//   } catch (error) {
+//     // Catch any errors that occur during database operations or processing
+//     console.error('Error posting resource:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// }
+
+
+
+// async function post_new_resource (req, res, next) {
+
+
+//   console.log("dddddddddddddddd post_new_resource dddddddddddddddddddddddd",req.body);
+
+//   const {item_tool_list} = req.body
+//   const {item_types_list} = req.body
+//   const {description} = req.body
+//   const {monitoring} = req.body
+// try{
+//   // const id = uuid()
+//   // const id_short = id.replace(/-/g, "").substring(0, 10);
+
+//   const id = uuid();
+//   const id_short = id.replace(/-/g, "").substring(0, 9);
+//   const id_with_r = 'r' + id_short;
+
+//  const posted = await DBConnection('all_resources')
+// .insert({
+//   resource_id: id_with_r,
+//   resource_string:  req.body?.resource_string,
+//   type:item_types_list.toString(),
+//   tools: item_tool_list.toString(),
+//   description: description,
+//   monitoring: monitoring
+// });
+
+// if (posted){
+//   console.log("posted" ,posted);
+//   const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
+// if(the_new_item){res.status(200).send(the_new_item);}
+
+
+ 
+// }
+
+
+// }
+
+// catch (err) {
+//     res.send(err.message)
+//     return res.status(500).send(err.message);
+
+//     // console.log(err.message);
+//     // next(err);
+//   }
+
+
+ 
+ 
+// }
+
+async function post_new_resource(req, res, next) {
+  console.log(" post_new_resource", req.body);
+
+  const { item_tool_list, item_types_list, description, monitoring } = req.body;
+  try {
+    const id = uuid();
+    const id_short = id.replace(/-/g, "").substring(0, 9);
+    const id_with_r = 'r' + id_short;
+
+    const posted = await DBConnection('all_resources')
+      .insert({
+        resource_id: id_with_r,
+        resource_string: req.body?.resource_string,
+        type: item_types_list.toString(),
+        tools: item_tool_list.toString(),
+        description: description,
+        monitoring: monitoring
+      });
+
+    if (posted) {
+      console.log("posted", posted);
+      const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
+      if (the_new_item) {
+        return res.status(200).send(the_new_item);
+      }
+    }
+
+    // If posted is false or any other issue, you can send an error response
+    res.status(500).send("Error in inserting resource");
+  } catch (err) {
+    console.log(err.message);
+    next(err); // Call next with the error to handle it in a centralized error handler
   }
-
-
- 
- 
 }
+
 
 async function edit_resource (req, res, next) {
 
@@ -242,7 +381,6 @@ catch (err) {
  
  
 }
-
 
 
 async function delete_single_resource(req, res, next) {

@@ -4,7 +4,7 @@
 // const { log } = require('console');
 // const {assert} = require('assert');
 // const { loadavg } = require('os');
-
+ 
 const fs = require('fs').promises;
 const fs_non_promises = require('fs');
 const csv = require('csv-parser')
@@ -12,11 +12,75 @@ const csv = require('csv-parser')
 const DBConnection = require('../db.js');
 const { exec } = require('child_process');
 const { spawn } = require('child_process');
+const { log } = require('console');
  
 
 
+async function get_all_latest_results_dates(results) {
+  // console.log("get_all_latest_results_dates1", results);
+// console.log("get_all_latest_results_dates2", results?.length);
 
 
+  if (results === undefined){ console.log("---results--:-  ",results);return {};}
+  
+  try {
+  
+  let lastResults ={}
+   const filterd_Velociraptor = results.filter(element => element.ModuleName  === "Velociraptor");
+   const filterd_Hunting = results.filter(element => element.Status  === "Hunting");
+   const filterd_InProgress = results.filter(element => element.Status  === "in Progress");
+   const filterd_Complete = results.filter(element => element.Status  === "Complete");
+   const filterd_Failed = results.filter(element => element.Status  === "Failed");
+
+
+
+
+  const check_last_resault =(filterd_array, filter_name) =>{
+  
+  if (filterd_array.length === 0 || filterd_array === undefined){
+    // console.log("filter_name",filter_name ,"is",filterd_array);
+    lastResults = { ...lastResults, [filter_name]: "NA" };
+    return }
+  
+  let latestDate = null;
+  
+  for (let index = 0; index < filterd_array.length; index++) {
+
+    // console.log("filterd_array[index]",filterd_array[index]);
+    const date = filterd_array[index]?.LastIntervalDatePrecise;
+    if (!latestDate || new Date(date) > new Date(latestDate)) {
+      latestDate = date;
+    }
+  }
+  
+  lastResults = { ...lastResults, [filter_name]: latestDate };
+  
+  console.log(`Latest date in ${filter_name}:`, latestDate);
+  };
+  
+
+  check_last_resault(filterd_Velociraptor, "Velociraptor");
+  check_last_resault(filterd_Hunting, "Hunting");
+  check_last_resault(filterd_InProgress, "in Progress");
+  check_last_resault(filterd_Complete, "Complete");
+  check_last_resault(filterd_Failed, "Failed");
+  check_last_resault(results, "Total");  
+  
+  
+  
+  console.log("lastResults",lastResults);
+      // const ReqestStatus = await get_ReqestStatus_from_config_file();
+      // await add_time_note(ReqestStatus);
+   
+  
+   if(lastResults){   return(lastResults);}
+   
+    } catch (err) {
+    return(err.message)
+      next(err);
+    }
+  }
+  
 
 
 function string_to_date(dateString){
@@ -59,9 +123,9 @@ function compare_dates(end_date, start_date){
 
           let return_this_2
 
-            if (minutes===0 && hours != 1){ return_this_2 = "+"+hours + " Hrs";}
-            if (minutes===0 && hours === 1){ return_this_2 = "+"+hours + " Hr";}
-            else if(minutes !=0) {return_this_2 = "+"+hours + " Hrs " + minutes + " Mins";}    
+            if ( hours != 1){ return_this_2 = "+"+hours + " Hrs";}
+          else  if (hours === 1){ return_this_2 = "+"+hours + " Hr";}
+            // else if(minutes !=0) {return_this_2 = "+"+hours + " Hrs " + minutes + " Mins";}    
 
           return return_this_2;
 
@@ -69,7 +133,7 @@ function compare_dates(end_date, start_date){
       if(   1440 <= -compare ){
           const days  = Math.floor(-compare / 1440);
           const remainingHours = Math.floor((-compare % 1440) / 60); // Calculate remaining hours
-          const return_this = "+"+days + " Days & " + remainingHours + " Hrs";
+          const return_this = "+"+days + " Days";
           return return_this
       
   
@@ -86,20 +150,28 @@ async function add_time_note(ReqestStatus){
   try{
     for (let i = 0; i < ReqestStatus.length; i++) {
 
-      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting"     ){
- 
+
+       const LastIntervalDate = await string_to_date(ReqestStatus[i]?.LastIntervalDate);
+
+
+    console.log("LastIntervalDate --------  333",      ReqestStatus[i]?.Status);
+
+
+         ReqestStatus[i].LastIntervalDatePrecise =  LastIntervalDate
+      if (ReqestStatus[i]?.Status === "Complete"  || ReqestStatus[i]?.Status === "Hunting" || ReqestStatus[i]?.Status === "In Progress"  ){
+
+  //  console.log("ddddddddddd 444"  ,ReqestStatus[i]?.ModuleName       );
         // console.log("----ReqestStatus[i]?.ExpireDate----", ReqestStatus[i]?.ExpireDate);
-   
-
-
+  
  const ExpireDate = string_to_date(ReqestStatus[i]?.ExpireDate);
- const LastIntervalDate = string_to_date(ReqestStatus[i]?.LastIntervalDate);
+
 
   if(ReqestStatus[i]?.ExpireDate === "" || ReqestStatus[i]?.ExpireDate === undefined){
       ReqestStatus[i].TimeNote =  "NoData"
       return }
 else{
   const note = compare_dates(ExpireDate,LastIntervalDate)
+
   ReqestStatus[i].TimeNote =  note
 }
 
@@ -136,66 +208,44 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
   
     return  ReqestStatus?.[0].data
 
-// const tmp = [
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Complete',
-//     ModuleID: '2000000',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '21-05-24-11-20-18',
-//     SubModule: 'HardeningKitty',
-//     ArtifactID: '1000103',
-//     ExpireDate: '22-05-24-11-20-18',
-//     ModuleName: 'Velociraptor',
-//     TimeInterval: '',
-//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000103.json',
-//     LastIntervalDate: '21-05-24-15-20-18'
-//   },
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Request',
-//     ModuleID: '2001005',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '30-05-24-10-57-07',
-//     SubModule: '',
-//     ArtifactID: '',
-//     ExpireDate: '30-06-24-10-57-07',
-//     ModuleName: 'Nuclei',
-//     TimeInterval: '',
-//     Response_Path: 'response_nuclei_30-05-24-10-57-07_module_id_2001005.json',
-//     LastIntervalDate: '04-06-24-10-57-07'
-//   },
-//   {
-//     Error: '',
-//     HuntID: '',
-//     Status: 'Complete',
-//     ModuleID: '2001005',
-//     UniqueID: '',
-//     Arguments: {},
-//     RequestId: '',
-//     StartDate: '21-05-24-11-20-18',
-//     SubModule: '',
-//     ArtifactID: '',
-//     ExpireDate: '21-05-24-14-20-18',
-//     ModuleName: 'Nuclei',
-//     TimeInterval: '',
-//     Response_Path: 'response_velociraptor_21-05-24-11-20-18_artifact_id_1000105',
-//     LastIntervalDate: '21-05-24-15-20-18'
-//   }
-// ]
-
-    // return  tmp;
+  
   } catch (err) {
     console.error('Error reading or parsing file:', err);
     return []; // Return an empty array in case of error
   }
 }
+
+
+
+
+
+
+
+async function check_file_size(file_name) {
+console.log("-------check_file_size-----");
+      try {
+
+  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+  const directoryPath = path.join(__dirname, '..','..', relativePath);
+  const fullPath = path.join(directoryPath,file_name);
+
+
+    // Check if the directory exists (will throw if it doesn't)
+    await fs.access(directoryPath);
+    const stats = await  fs_non_promises.statSync(directoryPath);
+    const fileSizeInBytes = stats?.size;
+    const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
+
+return fileSizeInMegabytes
+
+
+
+  } catch (err) {
+    console.error('check_file_size:', err);
+  }
+ 
+}
+
 
 async function get_requests_csv_table_model(){
 
@@ -263,6 +313,173 @@ catch(err){res.send(err)}
 }
 
 
+
+
+async function get_velociraptor_aggregate_macro_model(SubModuleName,ResponseFile) {
+
+console.log("get_velociraptor_aggregate_macro_model",SubModuleName,ResponseFile);
+
+
+let macro_file_name = ""
+
+// console.log("nnnnnnnnnnnnnnnnnnnnnnn",ResponseFile);
+
+ try{ 
+
+    // if(  ResponseFile.includes("response_")){  macro_file_name = ResponseFile.replace("response", "macro");}
+    if (ResponseFile.includes("response_")) {
+
+
+      const fileName = ResponseFile.split("/").pop();
+
+      // משנים את "response" ל-"macro"
+      macro_file_name  = fileName.replace("response", "macro");
+   
+
+ 
+
+      // const parts = ResponseFile.split("/");
+      // const filename = parts.pop(); // Remove the last part (filename)
+      
+      // // Replace "response" with "macro" in the filename part only
+      // const newFilename = filename.replace("response", "macro");
+      
+      // // Reconstruct the path with the updated filename
+      // parts.push(newFilename);
+      // const updatedPath = parts.join("/");
+      // macro_file_name =updatedPath
+      // console.log("ccccccccccccccccccccccc",updatedPath); // Output: response_folder/macro_VelociraptorHardeningKitty_02-07-2024-07-28-19.json
+    }
+
+
+
+  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const directoryPath = path.join(__dirname, '..','..', relativePath,"response_folder");
+  // const directoryPath = path.join(__dirname, '..','..', relativePath);
+  // const fullPath = path.join(directoryPath, `${macro_file_name}.json`);
+  const fullPath = path.join(directoryPath,macro_file_name);
+
+
+  console.log("sssssssssssssssssssssssssssss",fullPath);
+    await fs.access(directoryPath);
+
+const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
+  if (err) {
+ 
+  console. error(err);
+  return;
+  }
+ 
+  });
+  
+ if(JSON_file){
+// console.log("JSON_file", JSON_file);
+  const [parsed] = await JSON.parse(JSON_file)
+
+  return parsed
+
+ }
+
+
+} catch (err) {
+  console.error('Error get_velociraptor_aggregate_macro_model:', err);
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+async function order_result_aggregate_macro_model(result) {
+
+  if (result === undefined) {
+    return false
+  }
+  
+try{
+
+
+    console.log("result jjjjjjjjjj0", result);
+    // console.log(result['Failed Test/Number of tests']);
+   const string =  result['Failed Test/Number of tests']
+   const Failed_Test_Number_of_tests = string.split("/");
+   const convertedNumbers = Failed_Test_Number_of_tests.map(numStr => Number(numStr));
+   result.Failed_Test_Number_of_tests = convertedNumbers
+  
+
+
+  //  const severityOrder = ['Critical', 'High', 'Medium', 'Low'];
+
+  //  const severities = severityOrder;
+  //  const counts = severityOrder.map(severity => inputObject[`Count of ${severity}`]);
+   
+  //  console.log('const severities =', JSON.stringify(severities), ';');
+  //  console.log('const counts =', JSON.stringify(counts), ';');
+
+
+  const severityOrder = ['Critical', 'High', 'Medium', 'Low'];
+  const severities = severityOrder;
+  const counts = severityOrder.map(severity => result[`Count of ${severity}`]);
+  console.log('const severities =', JSON.stringify(severities), ';');
+  console.log('const counts =', JSON.stringify(counts), ';');
+  result.severity_Order  = severities
+  result.severity_Counts = counts
+
+
+
+
+
+
+  
+    return result
+}catch(err){console.log("order_result_aggregate_macro_model",err);return  err}  
+ 
+  }
+
+  // async function download_file_model(fullPath) {
+ 
+    
+  //       // Check if the directory exists (will throw if it doesn't)
+      
+    
+  //   const file = await fs. readFile(fullPath, 'utf8', (err, data) => {
+  //     if (err) {
+     
+  //     console. error(err);
+  //     return;
+  //     }
+     
+  //     });
+      
+    
+  //    if(file){
+  //     return file
+    
+  //    }
+  //   }
+
+//   async function download_file_model(fullPath) {
+ 
+    
+//     if (fs_non_promises.existsSync(fullPath)) {
+//       // Set headers to force download
+//       res.setHeader('Content-disposition', 'attachment; filename=example.json');
+//       res.setHeader('Content-type', 'application/json');
+
+//       // Create a read stream from the file and pipe it to the response
+//       const fileStream = fs.createReadStream(jsonFilePath);
+//       fileStream.pipe(res);
+//   } else {
+//       res.status(404).send('File not found');
+//   }
+// }
+
 async function get_single_velociraptor_result_model(file_name) {
 
 
@@ -274,20 +491,9 @@ async function get_single_velociraptor_result_model(file_name) {
 
 
 
-
-
-//   console.log("directoryPath" , directoryPath);
-//   console.log("file_name" , file_name);
-//  console.log("fullPath" , fullPath);
-
-
     // Check if the directory exists (will throw if it doesn't)
     await fs.access(directoryPath);
-// const sss="ddd"
-    // Read directory contents
-//     const allfiles = await fs.readdir(directoryPath);
-//     const files = allfiles.filter(file => file === sss );
-// console.log(files);
+
 const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
   if (err) {
  
@@ -340,6 +546,12 @@ return  number
 
 } 
  
+
+
+
+
+
+
 async function find_latest_response_and_request(module_id) {
 
  
@@ -398,25 +610,6 @@ return  {last_response:last_response , last_request:last_request}
 
 
 } 
-
-
-
-module.exports = {
-    // get_all_velociraptor_results_model,
-    get_all_velociraptor_artifacts_model,
-    get_single_velociraptor_result_model,
-    count_response_files_model,
-    find_latest_response_and_request,
-    // get_all_request_and_response_model,
-    get_requests_csv_table_model,
-    make_cool_object_from_csv_table,
-    // write_to_csv_table,
-    get_ReqestStatus_from_config_file,
-    add_time_note,
- 
-};
-
-
 
 
 
@@ -554,3 +747,23 @@ module.exports = {
 //   }
 //   catch(err){res.send(err)}
 //   }
+
+
+module.exports = {
+  // get_all_velociraptor_results_model,
+  get_all_velociraptor_artifacts_model,
+  get_single_velociraptor_result_model,
+  count_response_files_model,
+  find_latest_response_and_request,
+  // get_all_request_and_response_model,
+  get_requests_csv_table_model,
+  make_cool_object_from_csv_table,
+  check_file_size,
+  get_ReqestStatus_from_config_file,
+  add_time_note,
+  get_all_latest_results_dates,
+  get_velociraptor_aggregate_macro_model,
+  order_result_aggregate_macro_model,
+  // download_file_model
+
+};
