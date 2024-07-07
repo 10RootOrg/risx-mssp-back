@@ -10,7 +10,7 @@
 
 
 
- async function check_and_active_interval(req, res, next) {
+async function check_and_active_interval(req, res, next) {
 
  
   try{ 

@@ -286,7 +286,7 @@ async function Count_From_Same_Type (req, res, next) {
 // }
 
 async function post_new_resource(req, res, next) {
-  console.log("dddddddddddddddd post_new_resource dddddddddddddddddddddddd", req.body);
+  console.log(" post_new_resource", req.body);
 
   const { item_tool_list, item_types_list, description, monitoring } = req.body;
   try {

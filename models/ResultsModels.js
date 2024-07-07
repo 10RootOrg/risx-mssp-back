@@ -4,7 +4,7 @@
 // const { log } = require('console');
 // const {assert} = require('assert');
 // const { loadavg } = require('os');
-
+ 
 const fs = require('fs').promises;
 const fs_non_promises = require('fs');
 const csv = require('csv-parser')
@@ -81,7 +81,6 @@ async function get_all_latest_results_dates(results) {
     }
   }
   
-
 
 
 function string_to_date(dateString){
@@ -223,29 +222,20 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
 
 
 async function check_file_size(file_name) {
-
-  // var stats = fs.statSync("myfile.txt")
-  // var fileSizeInMb = filesize(stats.size, {round: 0});
+console.log("-------check_file_size-----");
       try {
 
-  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
   const directoryPath = path.join(__dirname, '..','..', relativePath);
   const fullPath = path.join(directoryPath,file_name);
 
 
     // Check if the directory exists (will throw if it doesn't)
     await fs.access(directoryPath);
-
-
-    const stats = await  fs.statSync(directoryPath)
-    console.log("stats",stats);
-
+    const stats = await  fs_non_promises.statSync(directoryPath);
     const fileSizeInBytes = stats?.size;
     const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
-    console.log("fileSizeInBytes",fileSizeInBytes);
-    console.log("fileSizeInMegabytes",fileSizeInMegabytes);
 
-  
 return fileSizeInMegabytes
 
 
@@ -452,6 +442,44 @@ try{
  
   }
 
+  // async function download_file_model(fullPath) {
+ 
+    
+  //       // Check if the directory exists (will throw if it doesn't)
+      
+    
+  //   const file = await fs. readFile(fullPath, 'utf8', (err, data) => {
+  //     if (err) {
+     
+  //     console. error(err);
+  //     return;
+  //     }
+     
+  //     });
+      
+    
+  //    if(file){
+  //     return file
+    
+  //    }
+  //   }
+
+//   async function download_file_model(fullPath) {
+ 
+    
+//     if (fs_non_promises.existsSync(fullPath)) {
+//       // Set headers to force download
+//       res.setHeader('Content-disposition', 'attachment; filename=example.json');
+//       res.setHeader('Content-type', 'application/json');
+
+//       // Create a read stream from the file and pipe it to the response
+//       const fileStream = fs.createReadStream(jsonFilePath);
+//       fileStream.pipe(res);
+//   } else {
+//       res.status(404).send('File not found');
+//   }
+// }
+
 async function get_single_velociraptor_result_model(file_name) {
 
 
@@ -463,20 +491,9 @@ async function get_single_velociraptor_result_model(file_name) {
 
 
 
-
-
-//   console.log("directoryPath" , directoryPath);
-//   console.log("file_name" , file_name);
-//  console.log("fullPath" , fullPath);
-
-
     // Check if the directory exists (will throw if it doesn't)
     await fs.access(directoryPath);
-// const sss="ddd"
-    // Read directory contents
-//     const allfiles = await fs.readdir(directoryPath);
-//     const files = allfiles.filter(file => file === sss );
-// console.log(files);
+
 const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
   if (err) {
  
@@ -746,6 +763,7 @@ module.exports = {
   add_time_note,
   get_all_latest_results_dates,
   get_velociraptor_aggregate_macro_model,
-  order_result_aggregate_macro_model
+  order_result_aggregate_macro_model,
+  // download_file_model
 
 };

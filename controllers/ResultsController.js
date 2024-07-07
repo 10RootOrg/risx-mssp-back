@@ -1,29 +1,88 @@
 const { 
 
-  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model} = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model } = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
 const {v4: uuid} = require('uuid');
+const  path = require('path');
+const fs = require('fs').promises;
+const fs_non_promises = require('fs');
+
+async function download_json_file(req, res, next) {
+    try {
+
+
+ const { ResponsePath } = req.query;
+if (ResponsePath === undefined){console.log("ResponsePath is" ,ResponsePath);}
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+const directoryPath = path.join(__dirname, '..','..', relativePath);
+const fullPath = path.join(directoryPath,ResponsePath);
+
+console.log("fullPath ---------------------------" , fullPath);
+await fs.access(directoryPath);
+
+// const result = await download_file_model(fullPath)
+ 
   
 
 
+
+if (fs_non_promises.existsSync(fullPath)) {
+  // Set headers to force download
+  res.setHeader('Content-disposition', 'attachment; filename=example.json');
+  res.setHeader('Content-type', 'application/json');
+
+  // Create a read stream from the file and pipe it to the response
+  const fileStream = fs_non_promises.createReadStream(fullPath);
+  fileStream.pipe(res);
+} else {
+  res.status(404).send('File not found');
+}
+
+
+
+      // if (result){
+
  
+      //   return    res.send(result)}
+     } catch (err) {
+       res.send(err.message)
+       next(err);
+     }
+   }
 
+
+
+
+
+
+
+
+
+   
 async function get_single_velociraptor_response(req, res, next) {
-
   const { file_name } = req.query;
   console.log("get_single_velociraptor_response" , file_name);
   
       try {
- 
-       
      const size = await check_file_size(file_name)
-      console.log("size --------------------------------- --- ",size);
+    //  const MB_limit = 0.002
+     const MB_limit = 1
+if (size    >  MB_limit ){ 
+  console.log("json file too big",size);
+ 
+  return  res.status(200).json({ success: false, fileSize:"Too big", message: `File is too big. Maximum size allowed is ${MB_limit} MB.` });
+
+ }
+
+
+    
       
+
       const result = await get_single_velociraptor_result_model(file_name)
       if (result){
-       res.send(result)}
+        return    res.send(result)}
      } catch (err) {
        res.send(err.message)
        next(err);
@@ -118,7 +177,8 @@ const latest = await find_latest_response_and_request(module_id)
     count_velociraptor_responses,
     check_last_req_and_res_for_module,
     get_all_requests_table,
-    get_velociraptor_aggregate_macro
+    get_velociraptor_aggregate_macro,
+    download_json_file
   };
   
 

@@ -62,55 +62,51 @@ async function check_main_process_status_model() {
   }
 }
 
-
- 
 async function active_interval_process_model() {
-    console.log("log auto in start  -- active_interval_process_model")
- 
+    console.log("start active_interval_process_model")
 
-    const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-    const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-    const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
-    const RELATIVE = path.resolve(__dirname, '..', '..');
+    // const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+    // const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+    // const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
+    // const RELATIVE = path.resolve(__dirname, '..', '..');
 
-    const PYTHON_INTERVAL = process.env.PYTHON_INTERVAL;
- 
-    const command = `
-    source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
-    python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/${PYTHON_INTERVAL}
+const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
+
+const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'modules', 'Velociraptor')
+const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
+
+const command = `
+source ${PYTHON_ENVIRONMENT} && \
+${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 `;
 
-
+//     const command = `
+//     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+//     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
+// `;
 
  try{
 
-
-console.log(" return new Promise 333");
     return new Promise((resolve, reject) => {
         const process = exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
 
- 
 
-
-
-            console.log(" return new Promise 444");
+            console.log(" return new Promise active_interval_process_model");
             if (error) {
-                console.log(" return new Promise error");
+                console.log(" return new Promise error",error);
                 // console.error(`Error: ${error.message}`);
                 // console.log(`stderr: ${stderr}`);
                 reject(false); // Reject with false indicating failure
-                return;
+                return error;
             }
             
             if (stdout.includes("Start interval loop")) {
-
                 console.log("Start interval loop");
                 // console.log("stdout.includes(Start mssp):", stdout);
                 resolve(true); // Resolve with true indicating success
             } else {
-
-              
                 console.log("Python script did not indicate success.");
                 // console.log(`stdout: ${stdout}`);
                 // console.log(`stderr: ${stderr}`);
@@ -144,6 +140,166 @@ console.log(" return new Promise 333");
 
 
 }
+ 
+// async function active_interval_process_model() {
+//     console.log("start active_interval_process_model")
+
+//     // const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//     // const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//     // const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
+//     // const RELATIVE = path.resolve(__dirname, '..', '..');
+
+// const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+// const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
+
+// const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'modules', 'Velociraptor')
+// const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+// const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
+
+// const command = `
+// source ${PYTHON_ENVIRONMENT} && \
+// ${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+// `;
+
+// //     const command = `
+// //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+// //     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
+// // `;
+
+//  try{
+
+//     return new Promise((resolve, reject) => {
+//         const process = exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
+
+
+//             console.log(" return new Promise active_interval_process_model");
+//             if (error) {
+//                 console.log(" return new Promise error",error);
+//                 // console.error(`Error: ${error.message}`);
+//                 // console.log(`stderr: ${stderr}`);
+//                 reject(false); // Reject with false indicating failure
+//                 return error;
+//             }
+            
+//             if (stdout.includes("Start interval loop")) {
+//                 console.log("Start interval loop");
+//                 // console.log("stdout.includes(Start mssp):", stdout);
+//                 resolve(true); // Resolve with true indicating success
+//             } else {
+//                 console.log("Python script did not indicate success.");
+//                 // console.log(`stdout: ${stdout}`);
+//                 // console.log(`stderr: ${stderr}`);
+//                 resolve(false); // Resolve with false indicating failure
+//             }
+//         });
+
+        
+//         // Start interval loop
+//         process.stdout.on('data', (data) => {
+//             if(data.includes("Start interval loop")){ 
+//                 //  console.log(`yeaaa in process: `)
+//                   resolve(true);
+//                  ;}
+//                 // Resolve with true indicating success
+//         });
+
+//         // process.stderr.on('data', (data) => {
+//         //     console.error(`stderr: ${data}`);
+//         // });
+
+
+
+
+//     });
+
+// }catch (error) {
+//     console.error('Error active_interval_process_model', error);
+//     return false;
+// }
+
+
+// }
+ 
+// async function active_interval_process_model() {
+//     console.log("log auto in start  -- active_interval_process_model")
+ 
+
+//     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//     const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
+//     const RELATIVE = path.resolve(__dirname, '..', '..');
+
+//     const PYTHON_INTERVAL = process.env.PYTHON_INTERVAL;
+ 
+//     const command = `
+//     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+//     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/${PYTHON_INTERVAL}
+// `;
+
+
+
+//  try{
+
+
+// console.log(" return new Promise 333");
+//     return new Promise((resolve, reject) => {
+//         const process = exec(command, { shell: '/bin/bash' }, (error, stdout, stderr) => {
+
+ 
+
+
+
+//             console.log(" return new Promise 444");
+//             if (error) {
+//                 console.log(" return new Promise error");
+//                 // console.error(`Error: ${error.message}`);
+//                 // console.log(`stderr: ${stderr}`);
+//                 reject(false); // Reject with false indicating failure
+//                 return;
+//             }
+            
+//             if (stdout.includes("Start interval loop")) {
+
+//                 console.log("Start interval loop");
+//                 // console.log("stdout.includes(Start mssp):", stdout);
+//                 resolve(true); // Resolve with true indicating success
+//             } else {
+
+              
+//                 console.log("Python script did not indicate success.");
+//                 // console.log(`stdout: ${stdout}`);
+//                 // console.log(`stderr: ${stderr}`);
+//                 resolve(false); // Resolve with false indicating failure
+//             }
+//         });
+
+        
+//         // Start interval loop
+//         process.stdout.on('data', (data) => {
+//             if(data.includes("Start interval loop")){ 
+//                 //  console.log(`yeaaa in process: `)
+//                   resolve(true);
+//                  ;}
+//                 // Resolve with true indicating success
+//         });
+
+//         // process.stderr.on('data', (data) => {
+//         //     console.error(`stderr: ${data}`);
+//         // });
+
+
+
+
+//     });
+
+// }catch (error) {
+//     console.error('Error active_interval_process_model', error);
+//     return false;
+// }
+
+
+// }
  
 
 //  async function active_manual_process_model() {
@@ -210,7 +366,11 @@ try{
     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
+    // const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
+
+    const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+    
+
 
     const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE}`;
     const args = [PYTHON_SCRIPT_PATH];
