@@ -85,7 +85,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"",
+        useResourceType:"2008",
         toolType:"module"
        },
        {

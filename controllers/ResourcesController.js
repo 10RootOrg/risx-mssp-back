@@ -103,7 +103,7 @@ async function getAllResourceType (req, res, next) {
 }
 
 async function Count_From_Same_Type (req, res, next) {
-  console.log("gggggggggggggggggggggggggggggggggggggg");
+  console.log("Count_From_Same_Type");
 
   try {
     const AllResourceType  = await  get_All_Resource_Type_model(); // bring the Resource Types 

@@ -5,9 +5,12 @@ const ConfigController  = require('../controllers/ConfigController');
 router.get('/',               ConfigController.Get_Config);  //get the config file
 router.put('/',               ConfigController.Put_Config);  //get the config file
 
+router.get('/from_env',        ConfigController.Get_From_ENV);  //get from env to front
 
 
-router.get('/from_env',               ConfigController.Get_From_ENV);  //get from env to front
+router.put('/mssp-config-json-links',    ConfigController.Update_mssp_config_json_links);  //get the config file
+
+
 module.exports = router;
 
 
