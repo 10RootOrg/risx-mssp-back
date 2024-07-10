@@ -1,5 +1,5 @@
 
- const { get_full_config_model ,put_full_config_model  } = require('../models/ConfigModels');
+ const { get_full_config_model ,put_full_config_model ,Update_mssp_config_json_links_model } = require('../models/ConfigModels');
  const DBConnection = require('../db.js')
  
 async function Get_Config(req, res, next) {
@@ -37,19 +37,23 @@ else{
   }
 }
  
-
 async function Get_From_ENV(req, res, next) {
 
   let data ={
     FRONT_IP:"",
+    FRONT_URL:"",
     other:"",
   }
 
   try{
-    const FRONT_IP = process.env.FRONT_IP;
- 
+    const FRONT_IP  = process.env.FRONT_IP;
+    const FRONT_URL = process.env.FRONT_URL;
+    
+
+
     data ={
       FRONT_IP:FRONT_IP,
+      FRONT_URL:FRONT_URL,
       other:"",
     }
 
@@ -59,7 +63,23 @@ async function Get_From_ENV(req, res, next) {
   {console.log(err);}
 }
  
+async function Update_mssp_config_json_links(req, res, next) {
+
+  const body = req.body 
+ if(body === undefined){console.log("Update_mssp_config_json_links", body); return}
+
+try{
+
+const put = await Update_mssp_config_json_links_model(body)  
+if(put === true){ res.status(200).send('mssp_config.json updated successfully.'); }
+else{ res.status(500).send('Error updating mssp_config.json:');}
  
+
+   } catch (err) {
+     console.error(err);
+     res.status(500).send("Internal Server Error");
+   }
+ }
 
  
 
@@ -67,5 +87,6 @@ module.exports = {
 
   Get_Config,
   Put_Config,
-  Get_From_ENV
+  Get_From_ENV,
+  Update_mssp_config_json_links
 };

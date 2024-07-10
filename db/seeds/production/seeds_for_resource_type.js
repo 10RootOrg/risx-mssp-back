@@ -47,7 +47,12 @@ exports.seed = async function(knex) {
                   resource_type_name: 'Company Name',
                   description_short: 'verify business legitimacy and ensure secure business interactions.',
                   description_long: 'The "Company Name" resource type enables users to verify the legitimacy of businesses and ensures secure interactions. This resource type provides comprehensive details and background information about companies, including their history, operational scope, financial health, and regulatory compliance. It serves as a vital tool for making informed decisions in business partnerships, investments, and transactions, fostering trust and confidence in business relationships.'
-                  }, 
+                  },{
+                    resource_type_id: 2008,
+                    resource_type_name: 'Computer',
+                    description_short: 'Essential for safeguarding data, preventing breaches, ensuring network security.',
+                    description_long: 'The "Computer" IS crucial, preventing breaches, and ensuring network integrity through robust encryption and stringent access controls.'
+                    }, 
 
   ]);
 };
