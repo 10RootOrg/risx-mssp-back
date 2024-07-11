@@ -1,9 +1,4 @@
-// const DatabaseError = require('../errors/DatabaseError');
-// const { log } = require('console');
-// const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-// const { log } = require('console');
-// const {assert} = require('assert');
-// const { loadavg } = require('os');
+ 
  
 const fs = require('fs').promises;
 const fs_non_promises = require('fs');
@@ -17,9 +12,7 @@ const { log } = require('console');
 
 
 async function get_all_latest_results_dates(results) {
-  // console.log("get_all_latest_results_dates1", results);
-// console.log("get_all_latest_results_dates2", results?.length);
-
+ 
 
   if (results === undefined){ console.log("---results--:-  ",results);return {};}
   
@@ -196,15 +189,7 @@ async function get_ReqestStatus_from_config_file() {
 const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.RequestStatus") as data FROM configjson;');
 
 
-
-
-
-//    const [Nuclei] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Modules.Nuclei") as data FROM configjson;');
-//   console.log("ddddssssssssssssssssss Nuclei"  , Nuclei[0].data);
-
-// console.log("ReqestStatus1"  ,   ReqestStatus );
-
-//  console.log("ReqestStatus2"  ,   ReqestStatus?.[0].data );
+ 
   
     return  ReqestStatus?.[0].data
 
@@ -222,26 +207,32 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
 
 
 async function check_file_size(file_name) {
-console.log("-------check_file_size-----");
-      try {
+  console.log("-------check_file_size-----");
+  try {
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const directoryPath = path.join(__dirname, '..', '..', relativePath);
+    const fullPath = path.join(directoryPath, file_name);
 
-  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-  const directoryPath = path.join(__dirname, '..','..', relativePath);
-  const fullPath = path.join(directoryPath,file_name);
-
+    console.log("check_file_size directoryPath - ", directoryPath);
 
     // Check if the directory exists (will throw if it doesn't)
     await fs.access(directoryPath);
-    const stats = await  fs_non_promises.statSync(directoryPath);
-    const fileSizeInBytes = stats?.size;
-    const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
 
-return fileSizeInMegabytes
+    // Get file stats asynchronously
+    const stats = await fs.stat(fullPath);
+    console.log("check_file_size stats - file_name: ", file_name, stats);
 
+    const fileSizeInBytes = stats.size;
+    console.log("check_file_size fileSizeInBytes - ", fileSizeInBytes);
 
+    const fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024);
+    console.log("check_file_size fileSizeInMegabytes - ", fileSizeInMegabytes);
+
+    return fileSizeInMegabytes; // Return the size in megabytes
 
   } catch (err) {
     console.error('check_file_size:', err);
+    throw err; // Propagate the error to handle it further up the call stack
   }
  
 }
@@ -249,7 +240,7 @@ return fileSizeInMegabytes
 
 async function get_requests_csv_table_model(){
 
-const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 const directoryPath = path.join(__dirname, '..','..', relativePath);
 const filePath = path.join(__dirname, '..','..', relativePath,'RequestsTable.csv');
 
@@ -336,24 +327,11 @@ let macro_file_name = ""
       macro_file_name  = fileName.replace("response", "macro");
    
 
- 
-
-      // const parts = ResponseFile.split("/");
-      // const filename = parts.pop(); // Remove the last part (filename)
-      
-      // // Replace "response" with "macro" in the filename part only
-      // const newFilename = filename.replace("response", "macro");
-      
-      // // Reconstruct the path with the updated filename
-      // parts.push(newFilename);
-      // const updatedPath = parts.join("/");
-      // macro_file_name =updatedPath
-      // console.log("ccccccccccccccccccccccc",updatedPath); // Output: response_folder/macro_VelociraptorHardeningKitty_02-07-2024-07-28-19.json
-    }
+     }
 
 
 
-  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
   const directoryPath = path.join(__dirname, '..','..', relativePath,"response_folder");
   // const directoryPath = path.join(__dirname, '..','..', relativePath);
   // const fullPath = path.join(directoryPath, `${macro_file_name}.json`);
@@ -390,10 +368,7 @@ const JSON_file = await fs. readFile(fullPath, 'utf8', (err, data) => {
 }
 
 
-
-
-
-
+ 
 
 
 async function order_result_aggregate_macro_model(result) {
@@ -405,7 +380,7 @@ async function order_result_aggregate_macro_model(result) {
 try{
 
 
-    console.log("result jjjjjjjjjj0", result);
+    // console.log("result jjjjjjjjjj0", result);
     // console.log(result['Failed Test/Number of tests']);
    const string =  result['Failed Test/Number of tests']
    const Failed_Test_Number_of_tests = string.split("/");
@@ -441,49 +416,12 @@ try{
 }catch(err){console.log("order_result_aggregate_macro_model",err);return  err}  
  
   }
-
-  // async function download_file_model(fullPath) {
  
-    
-  //       // Check if the directory exists (will throw if it doesn't)
-      
-    
-  //   const file = await fs. readFile(fullPath, 'utf8', (err, data) => {
-  //     if (err) {
-     
-  //     console. error(err);
-  //     return;
-  //     }
-     
-  //     });
-      
-    
-  //    if(file){
-  //     return file
-    
-  //    }
-  //   }
-
-//   async function download_file_model(fullPath) {
- 
-    
-//     if (fs_non_promises.existsSync(fullPath)) {
-//       // Set headers to force download
-//       res.setHeader('Content-disposition', 'attachment; filename=example.json');
-//       res.setHeader('Content-type', 'application/json');
-
-//       // Create a read stream from the file and pipe it to the response
-//       const fileStream = fs.createReadStream(jsonFilePath);
-//       fileStream.pipe(res);
-//   } else {
-//       res.status(404).send('File not found');
-//   }
-// }
 
 async function get_single_velociraptor_result_model(file_name) {
 
 
-  const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
   const directoryPath = path.join(__dirname, '..','..', relativePath);
   // let fullPath =""
   // const   fullPath = path.join(directoryPath,`\\`,file_name);
@@ -526,7 +464,7 @@ async function count_response_files_model() {
 
   try {
  
-    const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const directoryPath = path.join(__dirname, '..','..', relativePath);
 
       // Check if the directory exists (will throw if it doesn't)
@@ -557,7 +495,7 @@ async function find_latest_response_and_request(module_id) {
  
   try {
  
-    const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const directoryPath = path.join(__dirname, '..','..', relativePath);
 
       // Check if the directory exists (will throw if it doesn't)
@@ -612,142 +550,7 @@ return  {last_response:last_response , last_request:last_request}
 } 
 
 
-
-// async function get_all_velociraptor_results_model(all_velociraptor_artifacts, all_Modules) {
-//     try {
-//       const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
-//       const directoryPath = path.join(__dirname, '..','..', relativePath);
-
-
-//         // Check if the directory exists (will throw if it doesn't)
-//         await fs.access(directoryPath);
-    
-//         // Read directory contents
-//         const allfiles = await fs.readdir(directoryPath);
-//         const files = allfiles.filter(file => file.startsWith('response_'));
-
-// const json_files_array = []
-
-//         for (let file of files) {
-
-//           // Get the file's stats
-//           const filePath = path.join(directoryPath, file);
-//           const stats = await fs.stat(filePath);
-  
-
-// let request_time =""
-
-// let artifact_id =""
-// let  artifact_name_for_json = ""
-
-// let module_id =""
-// let module_name_for_json = ""
-
-// if (file.startsWith('response_velociraptor') ){
-//   artifact_id = file.split("artifact_id_").pop().replace(".json", "");  
-//   request_time = file.replace("response_velociraptor_", "").replace(/_artifact_id_.*/, '');  
-
-//   for (let index = 0; index < all_velociraptor_artifacts.length; index++) {
-//     if  (artifact_id != undefined &&artifact_id === all_velociraptor_artifacts[index]?.artifact_id ) { 
-//        artifact_name_for_json = all_velociraptor_artifacts[index]?.Toolname;  }
-// }
-
-// }
-
-
-
-// else{
-//   module_id = file.split("module_id_").pop().replace(".json", "");  
-//   request_time = file.split("_")[2];
-
-//   for (let index = 0; index < all_Modules.length; index++) {
-//     if  (module_id != undefined && module_id === all_Modules[index]?.tool_id ) { 
-//       module_name_for_json = all_Modules[index]?.Tool_name;  }
-// }
-
-// }
-
-
-   
-   
-
-         
-
-
-    
-
-// const item = {
-//   file_name: file,
-
-//   artifact_id:artifact_id,
-//   artifact_name: artifact_name_for_json,
-
-//   module_id:module_id,
-//   module_name:module_name_for_json,
-
-//   request_time:request_time,
-//   response_time: stats.birthtime}
-
-//   json_files_array.push(item)
-//           // Log file details
-//           // console.log({
-//           //   name: file,
-//           //   artifact_id:artifact_id,
-//           //   artifact_name: artifact_name_for_json,
-//           //   request:request_time,
-//           //   response: stats.birthtime
-//           // });
-//         }
-// // console.log("json_files_array" ,json_files_array);
-// return json_files_array
-//       } catch (err) {
-//         console.error('Error accessing or reading the directory:', err);
-//       }
-    
-
-
-  
-// }
-
-
-
-// async function add_time_note(ReqestStatus,all_Modules){
-
-//   const Modules = all_Modules.Modules
  
-
-
-//   try{
-//     for (let i = 0; i < ReqestStatus.length; i++) {
-//     //  console.log("----3-----", ReqestStatus[i]?.ModuleID);
-    
-//      for (let j = 0; j < Modules.length; j++) {
-//       // console.log("-----5----", Modules[j]?.tool_id);
-   
-//        if (Modules[j]?.tool_id === ReqestStatus[i]?.ModuleID) {
-//         ReqestStatus[i].isInTime=true
-//          console.log("bingo");
-
-
-
-//        }
-//      }
-
-
-
-//     }
-
-
-
- 
-
-//        return  "ddddd"
-  
-  
-//   }
-//   catch(err){res.send(err)}
-//   }
-
 
 module.exports = {
   // get_all_velociraptor_results_model,

@@ -228,7 +228,7 @@ console.log("dddddddddd" , module_id);
     const formattedDate = await get_Date_and_hour_string();
      
     
-    const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const directoryPath = path.join(__dirname, '..','..', relativePath);
     
     // const directoryPath = path.join(__dirname, '..','..', 'risx-mssp-python-script','jsonexamples');
@@ -436,7 +436,7 @@ console.log("6666666666666666666666666666666666",Artifact_config);
 const formattedDate = await get_Date_and_hour_string();
  
 
-const relativePath = process.env.PYTHON_VELOCIRAPTOR_RESPONSE_AND_REQUEST_PATH;
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 const directoryPath = path.join(__dirname, '..','..', relativePath);
 
 // // const directoryPath = path.join(__dirname, '..','..', 'risx-mssp-python-script','jsonexamples');

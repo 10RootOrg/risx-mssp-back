@@ -1,50 +1,16 @@
 {
   "General": {
-    "IntervalConfigurations": {
-      "ModulesUpdates": {
-        "TimeIntervalInHours": 24,
-        "UpdateVelociraptorModules": [
-          "Server.Import.ArtifactExchange",
-          "Server.Import.CuratedSigma",
-          "Exchange.Server.Import.DetectRaptor"
-        ],
-        "GeneralModulesToUpdate": []
-      },
-      "ScanHunts": {
-        "TimeIntervalInMinutes": 1
-      }
-    }
+    "DefaultInter": ""
   },
   "ClientInfrastructure": {
     "Assets": {
-      "r4f18d96b1f": {
-        "AssetString": "18.168.185.151",
-        "AssetEnable": true,
-        "AssetType": ["IP Address"],
-        "AssetModules": ["Velociraptor", "Nuclei"]
-      },
-      "r7163318a77": {
-        "AssetString": "google.co.il",
-        "AssetEnable": true,
-        "AssetType": ["Domain"],
-        "AssetModules": ["Shodan", "Dehashed"]
-      }
     },
     "Population": [
-      {
-        "ComputerName": "RisxServer",
-        "Label": ""
-      }
     ]
   },
 
   "ClientData": {
     "API": {
-      "Timesketch": {
-        "Username": "admin",
-        "Password": "admin",
-        "IP": "40.69.58.105"
-      },
       "Shodan": "APIKey",
       "Dehashed": "APIKey",
       "OpenAI": "APIKey"
@@ -55,6 +21,7 @@
     "Velociraptor": {
       "id": "2000000",
       "ModuleName": "Velociraptor",
+      "Enable": false,
       "LastRunDate": "2024-06-02 10:15:17",
       "ExpireDate": "0",
 
@@ -63,8 +30,8 @@
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
           "Enable": false,
-          "ExpireDate": "500",
-          "TimeInterval": "5",
+          "ExpireDate": "2000",
+          "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {}
         },
@@ -72,8 +39,8 @@
           "id": "1000103",
           "ModuleName": "HardeningKitty",
           "Enable": false,
-          "ExpireDate": "500",
-          "TimeInterval": "5",
+          "ExpireDate": "2000",
+          "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
             "TakeBackUp": "N",
@@ -84,8 +51,8 @@
           "id": "1000102",
           "ModuleName": "Zircolite",
           "Enable": false,
-          "ExpireDate": "500",
-          "TimeInterval": "5",
+          "ExpireDate": "2000",
+          "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
             "EVTXPath": "C:\\\\Windows\\\\System32\\\\winevt\\\\Logs",
@@ -97,17 +64,17 @@
           "id": "1000105",
           "ModuleName": "Hayabusa",
           "Enable": false,
-          "ExpireDate": "500",
-          "TimeInterval": "5",
+          "ExpireDate": "2000",
+          "TimeInterval": "15",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ROOT": "C:\\\\Windows\\\\System32\\\\WinEvt\\\\Logs\\\\",
-            "Debug": "N",
-            "RuleLevel": "All",
-            "RuleStatus": "Stable",
-            "RuleTitleFilter": ".",
-            "SigmaRules": "",
-            "NTFS_CACHE_TIME": "1000000"
+            "UTC": "Y",
+            "UpdateRules": "Y",
+            "NoisyRules": "N",
+            "OutputProfile": "standard",
+            "EIDFilter": "N",
+            "MinimalLevel": "informational",
+            "Threads": "2"
           }
         }
       }
@@ -115,25 +82,19 @@
     "Nuclei": {
       "id": "2001005",
       "ModuleName": "Nuclei",
-      "Enable": false,
+      "Enable": true,
       "LastRunDate": "2024-06-02 10:15:17",
       "ExpireDate": "0",
       "Arguments": {
         "NucleiTags": "",
         "NucleiWorkflow": "",
-        "NucleiExcludeSeverity": []
+        "NucleiExcludeSeverity": ""
       }
     },
     "TimeSketch": {
       "id": "2001002",
-      "Enable": true,
-      "Arguments": {
-        "SketchName": "Timelines",
-        "Analyzers": [],
-        "KapeCollection": "_J",
-        "CPUThrottling": "75",
-        "MemoryThrottling": "75"
-      },
+      "Enable": false,
+      "Arguments": {},
       "ModuleName": "TimeSketch",
       "ExpireDate": "0",
       "LastRunDate": "2024-06-02 10:15:17"
