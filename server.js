@@ -13,7 +13,7 @@ const front_ip = process.env.FRONT_IP || "";
 const front_port = process.env.FRONT_PORT || 3003;
 const front_url = process.env.FRONT_URL || "";
 app.use((req, res, next) => {
-  console.log("start req");
+  console.log('Start req, req ip ', req.headers.origin);
   next();
 }); //
 
@@ -30,25 +30,14 @@ app.use(
   cors({
     origin: [
       `http://localhost:${front_port}`,
-      // `http://localhost:${front_port}/login`,
-      // `http://localhost:${front_port}/results`,
-      // `http://localhost:${front_port}/resourcegroup`,
-  
+
       `http://${front_ip}:${front_port}`,
-      // `http://${front_ip}:${front_port}/login`,
-      // `http://${front_ip}:${front_port}/dashboard`,
-      // `http://${front_ip}:${front_port}/results`,
-      // `http://${front_ip}:${front_port}/resourcegroup`,
 
       `http://0.0.0.0:${front_port}`,
+      `http://127.0.0.1:${front_port}`,
       `${front_url}:${front_port}`,
       `${front_ip}:${front_port}`,
-      // `${front_url}:${front_port}/login`,
-      // `${front_url}:${front_port}/dashboard`,
-      // `${front_url}:${front_port}/results`,
-      // `${front_url}:${front_port}/resourcegroup`,
-    // `http://risxserverdev.westeurope.cloudapp.azure.com:3003`
-   
+
     ],
     credentials: true,
   })

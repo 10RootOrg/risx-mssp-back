@@ -207,26 +207,32 @@ const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.Req
 
 
 async function check_file_size(file_name) {
-console.log("-------check_file_size-----");
-      try {
+  console.log("-------check_file_size-----");
+  try {
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const directoryPath = path.join(__dirname, '..', '..', relativePath);
+    const fullPath = path.join(directoryPath, file_name);
 
-  const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-  const directoryPath = path.join(__dirname, '..','..', relativePath);
-  const fullPath = path.join(directoryPath,file_name);
-
+    console.log("check_file_size directoryPath - ", directoryPath);
 
     // Check if the directory exists (will throw if it doesn't)
     await fs.access(directoryPath);
-    const stats = await  fs_non_promises.statSync(directoryPath);
-    const fileSizeInBytes = stats?.size;
-    const fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
 
-return fileSizeInMegabytes
+    // Get file stats asynchronously
+    const stats = await fs.stat(fullPath);
+    console.log("check_file_size stats - file_name: ", file_name, stats);
 
+    const fileSizeInBytes = stats.size;
+    console.log("check_file_size fileSizeInBytes - ", fileSizeInBytes);
 
+    const fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024);
+    console.log("check_file_size fileSizeInMegabytes - ", fileSizeInMegabytes);
+
+    return fileSizeInMegabytes; // Return the size in megabytes
 
   } catch (err) {
     console.error('check_file_size:', err);
+    throw err; // Propagate the error to handle it further up the call stack
   }
  
 }
@@ -374,7 +380,7 @@ async function order_result_aggregate_macro_model(result) {
 try{
 
 
-    console.log("result jjjjjjjjjj0", result);
+    // console.log("result jjjjjjjjjj0", result);
     // console.log(result['Failed Test/Number of tests']);
    const string =  result['Failed Test/Number of tests']
    const Failed_Test_Number_of_tests = string.split("/");
