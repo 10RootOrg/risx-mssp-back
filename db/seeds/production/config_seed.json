@@ -1,5 +1,10 @@
 {
   "General": {
+    "AgentLinks": {
+      "Windows": "",
+      "Linux": "",
+      "Mac": ""
+    },
     "IntervalConfigurations": {
       "ModulesUpdates": {
         "TimeIntervalInHours": 24,
@@ -17,22 +22,20 @@
   },
   "ClientInfrastructure": {
     "Assets": {
-      "r4f18d96b1f": {
+      "Exampale": {
         "AssetString": "18.168.185.151",
         "AssetEnable": true,
         "AssetType": ["IP Address"],
         "AssetModules": ["Velociraptor", "Nuclei"]
-      },
-      "r7163318a77": {
-        "AssetString": "google.co.il",
-        "AssetEnable": true,
-        "AssetType": ["Domain"],
-        "AssetModules": ["Shodan", "Dehashed"]
       }
     },
     "Population": [
       {
         "ComputerName": "RisxServer",
+        "Label": ""
+      },
+      {
+        "ComputerName": "RisxServer2",
         "Label": ""
       }
     ]
@@ -42,7 +45,7 @@
     "API": {
       "Timesketch": {
         "Username": "admin",
-        "Password": "admin",
+        "Password": "Password",
         "IP": "40.69.58.105"
       },
       "Shodan": "APIKey",
@@ -59,6 +62,42 @@
       "ExpireDate": "0",
 
       "SubModules": {
+        "BestPractice": {
+          "Enable": true,
+          "ExpireDate": "500",
+          "id": "",
+          "ModuleName": "BestPractice",
+          "TimeInterval": "5",
+          "LastRunDate": "2024-06-02 10:15:17",
+          "Arguments": {
+            "ArtifactResoureLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
+            "Modules": {
+              "DetectRaptor.Server.StartHunts": {},
+              "Generic.Forensic.SQLiteHunter": {},
+              "Windows.Analysis.EvidenceOfDownload": {},
+              "Windows.Analysis.EvidenceOfExecution": {},
+              "Windows.NTFS.MFT": {},
+              "Windows.Forensics.Usn": {},
+              "Windows.Network.NetstatEnriched": {},
+              "Generic.Scanner.ThorZIP": {},
+              "Exchange.Custom.Windows.Nirsoft.LastActivityView": {},
+              "Custom.Windows.System.Powershell.PSReadline.QuickWins": {},
+              "Windows.Forensics.Lnk": {},
+              "Exchange.PSList.VTLookup": {},
+              "Generic.System.Pstree": {},
+              "Windows.System.UntrustedBinaries": {},
+              "Windows.Detection.Yara.Process": {},
+              "Windows.EventLogs.RDPAuth": {},
+              "Windows.Attack.UnexpectedImagePath": {},
+              "Windows.Sys.AllUsers": {},
+              "Windows.Registry.Sysinternals.Eulacheck": {}
+            }
+          }
+        },
         "PersistenceSniper": {
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
@@ -66,7 +105,14 @@
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
-          "Arguments": {}
+          "Arguments": {
+            "ArtifactResoureLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
+            "ArtifactParameters": {}
+          }
         },
         "HardeningKitty": {
           "id": "1000103",
@@ -76,8 +122,15 @@
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "TakeBackUp": "N",
-            "Baseline": "finding_list_0x6d69636b_machine"
+            "ArtifactResoureLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
+            "ArtifactParameters": {
+              "TakeBackUp": "N",
+              "Baseline": "finding_list_0x6d69636b_machine"
+            }
           }
         },
         "Zircolite": {
@@ -88,9 +141,16 @@
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "EVTXPath": "C:\\\\Windows\\\\System32\\\\winevt\\\\Logs",
-            "Rules": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\rules\\\\rules_windows_generic.json",
-            "Mappings": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\config\\\\fieldMappings.json"
+            "ArtifactResoureLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
+            "ArtifactParameters": {
+              "EVTXPath": "C:\\\\Windows\\\\System32\\\\winevt\\\\Logs",
+              "Rules": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\rules\\\\rules_windows_generic.json",
+              "Mappings": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\config\\\\fieldMappings.json"
+            }
           }
         },
         "Hayabusa": {
@@ -101,13 +161,20 @@
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ROOT": "C:\\\\Windows\\\\System32\\\\WinEvt\\\\Logs\\\\",
-            "Debug": "N",
-            "RuleLevel": "All",
-            "RuleStatus": "Stable",
-            "RuleTitleFilter": ".",
-            "SigmaRules": "",
-            "NTFS_CACHE_TIME": "1000000"
+            "ArtifactResoureLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
+            "ArtifactParameters": {
+              "ROOT": "C:\\\\Windows\\\\System32\\\\WinEvt\\\\Logs\\\\",
+              "Debug": "N",
+              "RuleLevel": "All",
+              "RuleStatus": "Stable",
+              "RuleTitleFilter": ".",
+              "SigmaRules": "",
+              "NTFS_CACHE_TIME": "1000000"
+            }
           }
         }
       }
@@ -126,17 +193,17 @@
     },
     "TimeSketch": {
       "id": "2001002",
-      "Enable": true,
+      "ModuleName": "TimeSketch",
+      "Enable": false,
+      "LastRunDate": "2024-06-02 10:15:17",
+      "ExpireDate": "0",
       "Arguments": {
         "SketchName": "Timelines",
         "Analyzers": [],
-        "KapeCollection": "_J",
+        "KapeCollection": "KapeTriage",
         "CPUThrottling": "75",
         "MemoryThrottling": "75"
-      },
-      "ModuleName": "TimeSketch",
-      "ExpireDate": "0",
-      "LastRunDate": "2024-06-02 10:15:17"
+      }
     }
   },
   "RequestStatus": []

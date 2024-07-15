@@ -13,7 +13,7 @@ const front_ip = process.env.FRONT_IP || "";
 const front_port = process.env.FRONT_PORT || 3003;
 const front_url = process.env.FRONT_URL || "";
 app.use((req, res, next) => {
-  console.log("start req");
+  console.log('Start req, req ip ', req.headers.origin);
   next();
 }); //
 
