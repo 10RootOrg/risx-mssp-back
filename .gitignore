@@ -8,6 +8,7 @@
 # testing
 /coverage
 mssp-back.log
+./mssp-back.log
 # production
 /build
 
