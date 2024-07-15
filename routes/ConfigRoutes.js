@@ -9,6 +9,8 @@ router.get('/from_env',        ConfigController.Get_From_ENV);  //get from env t
 
 
 router.put('/mssp-config-json-links',    ConfigController.Update_mssp_config_json_links);  //get the config file
+router.get('/ResetConfigToBasic',        ConfigController.ResetConfigToBasic);  //get from env to front
+
 
 
 module.exports = router;
