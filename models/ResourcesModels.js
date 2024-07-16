@@ -107,12 +107,12 @@ async function get_All_Resources_model() {
     });
 
     // Log each resource_type_id for debugging purposes
-    resource_types.forEach(resourceType => {
-      console.log("resource_type_id:", resourceType.resource_type_id);
-    });
+    // resource_types.forEach(resourceType => {
+    //   console.log("resource_type_id:", resourceType.resource_type_id);
+    // });
 
 
-    console.log("44444444444444444",groupedResources);
+    // console.log("groupedResources",groupedResources);
     return groupedResources;
   } catch (err) {
     console.log("get_All_Resources_model err", err);
@@ -146,7 +146,41 @@ async function get_All_Resources_model() {
   
 }
 
+async function get_Same_Type_model(asset_type_id) {
+if (!asset_type_id){ console.log("asset_type_id is ", asset_type_id , "in get_Same_Type_model" ); return}
+
  
+  try {
+    const resourcesQuery = DBConnection('all_resources')
+      .select(
+        'all_resources.resource_id',
+        'all_resources.resource_string',
+        'all_resources.description',
+        'all_resources.resource_status',
+        'all_resources.monitoring',
+        'all_resources.group_name',
+        'all_resources.checked',
+        'all_resources.updatedAt',
+        'all_resources.type',
+        DBConnection.raw('JSON_ARRAYAGG(JSON_OBJECT("Toolid", tools.tool_id, "toolname", tools.Tool_name)) as tools')
+      )
+      .leftJoin('tools', function () {
+        this.on(DBConnection.raw('FIND_IN_SET(tools.tool_id, REPLACE(all_resources.tools, " ", ""))'));
+      })
+      .where('all_resources.type', asset_type_id) // Filter for type equal to -- asset_type_id
+      .groupBy('all_resources.resource_id');
+
+    const [resources] = await Promise.all([resourcesQuery]);
+
+ 
+
+    return resources;
+  } catch (err) {
+    console.log("get_Same_Type_model error:", err);
+    throw err; // Optionally rethrow the error to propagate it further
+  }
+}
+
 
 
 async function get_All_Resource_Type_model() {
@@ -290,5 +324,6 @@ module.exports = {
   check_if_id_exist_in_db,
   delete_single_resource_by_id,
   get_config_path_model,
-  read_config_model
+  read_config_model,
+  get_Same_Type_model
 };
