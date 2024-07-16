@@ -1,9 +1,9 @@
 {
   "General": {
     "AgentLinks": {
-      "Windows": "",
-      "Linux": "",
-      "Mac": ""
+      "Windows": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-windows-amd64.exe",
+      "Linux": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-linux-amd64",
+      "Mac": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-darwin-amd64"
     },
     "IntervalConfigurations": {
       "ModulesUpdates": {
@@ -59,18 +59,18 @@
       "id": "2000000",
       "ModuleName": "Velociraptor",
       "LastRunDate": "2024-06-02 10:15:17",
-      "ExpireDate": "0",
+      "ExpireDate": "30",
 
       "SubModules": {
         "BestPractice": {
           "Enable": true,
-          "ExpireDate": "500",
+          "ExpireDate": "30",
           "id": "",
           "ModuleName": "BestPractice",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ArtifactResoureLimit": {
+            "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
               "MaxExecutionTimeInSeconds": "3600",
               "MaxBytesUploaded": "10000"
@@ -102,11 +102,11 @@
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
           "Enable": false,
-          "ExpireDate": "500",
+          "ExpireDate": "30",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ArtifactResoureLimit": {
+            "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
               "MaxExecutionTimeInSeconds": "3600",
               "MaxBytesUploaded": "10000"
@@ -118,11 +118,11 @@
           "id": "1000103",
           "ModuleName": "HardeningKitty",
           "Enable": false,
-          "ExpireDate": "500",
+          "ExpireDate": "30",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ArtifactResoureLimit": {
+            "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
               "MaxExecutionTimeInSeconds": "3600",
               "MaxBytesUploaded": "10000"
@@ -133,35 +133,15 @@
             }
           }
         },
-        "Zircolite": {
-          "id": "1000102",
-          "ModuleName": "Zircolite",
-          "Enable": false,
-          "ExpireDate": "500",
-          "TimeInterval": "5",
-          "LastRunDate": "2024-06-02 10:15:17",
-          "Arguments": {
-            "ArtifactResoureLimit": {
-              "CPULimitPercent": "60",
-              "MaxExecutionTimeInSeconds": "3600",
-              "MaxBytesUploaded": "10000"
-            },
-            "ArtifactParameters": {
-              "EVTXPath": "C:\\\\Windows\\\\System32\\\\winevt\\\\Logs",
-              "Rules": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\rules\\\\rules_windows_generic.json",
-              "Mappings": "https:\\\\raw.githubusercontent.com\\\\wagga40\\\\Zircolite\\\\master\\\\config\\\\fieldMappings.json"
-            }
-          }
-        },
         "Hayabusa": {
           "id": "1000105",
           "ModuleName": "Hayabusa",
           "Enable": false,
-          "ExpireDate": "500",
+          "ExpireDate": "30",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
-            "ArtifactResoureLimit": {
+            "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
               "MaxExecutionTimeInSeconds": "3600",
               "MaxBytesUploaded": "10000"
