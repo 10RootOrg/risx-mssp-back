@@ -14,6 +14,8 @@ const{post_resource_schema} = require('../schema/Resource_schema')
 
  router.get('/', ResourcesController.get_All_Resources);  //get all the Resources
 
+ router.get('/same-type', ResourcesController.get_Same_Type);  //get all from Same Type
+
  router.get('/all-resource-filtered', ResourcesController.get_All_Resources_filtered);  //get All Resources filtered
 
  router.get('/all-resource-type', ResourcesController.getAllResourceType);  //get resource type

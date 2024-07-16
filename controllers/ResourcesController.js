@@ -7,7 +7,8 @@ const {
   check_if_id_exist_in_db,
   delete_single_resource_by_id,
   get_config_path_model,
-  read_config_model
+  read_config_model,
+  get_Same_Type_model
 } = require('../models/ResourcesModels');
 
 const DBConnection = require('../db.js')
@@ -36,7 +37,25 @@ async function get_All_Resources(req, res, next) {
 
 
 }
+async function get_Same_Type(req, res, next) {
 
+
+
+  const {asset_type_id} = req.query
+ 
+  try {
+    const Same_Type  = await  get_Same_Type_model(asset_type_id);
+    if(Same_Type){  
+      res.send(Same_Type);}
+  } catch (err) {
+    res.sand(err.message)
+    next(err);
+  }
+
+ 
+
+
+}
 
 async function get_All_Resources_filtered(req, res, next) {
 
@@ -415,7 +434,8 @@ module.exports = {
   Count_From_Same_Type,
   post_new_resource,
   edit_resource,
-  delete_single_resource
+  delete_single_resource,
+  get_Same_Type
   // postNew_website,
   // getDefaultColumns ,
   // delete_website,

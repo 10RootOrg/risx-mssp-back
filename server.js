@@ -36,7 +36,7 @@ app.use(
       `http://0.0.0.0:${front_port}`,
       `http://127.0.0.1:${front_port}`,
       `${front_url}:${front_port}`,
-      `${front_ip}:${front_port}`,
+      `${front_ip}:${front_port}`,"http://10.5.0.18:3003",
 
     ],
     credentials: true,
