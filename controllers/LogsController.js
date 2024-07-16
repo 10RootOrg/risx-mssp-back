@@ -3,10 +3,9 @@
  const DBConnection = require('../db.js')
  
 async function Get_Log(req, res, next) {
- 
+
  const {logName} = req.query
  const {fileName} = req.query
- 
 
  if (logName === undefined) {console.log("logName is " , logName); return}
 
@@ -17,7 +16,7 @@ async function Get_Log(req, res, next) {
 
  res.send(log_file_data)
   }catch(err)
-  {console.log(err);}
+  {console.log("errrrrrrrrrrrrrrr",err);}
 
 }
  
