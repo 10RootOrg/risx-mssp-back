@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define your log file path
-const logFilePath = path.join(__dirname, 'mssp-back.log');
+const logFilePath = path.join(__dirname, 'msspBack.log');
 
 // Function to get the current timestamp
 const getTimestamp = () => {
