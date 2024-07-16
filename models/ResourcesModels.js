@@ -62,39 +62,88 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
 
 
 
-async function get_All_Resources_model() {
-
-
-
-
-
-  try {
-
- 
-
-    const resourcesQuery = DBConnection('all_resources')
-    .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.group_name', 'all_resources.checked', 'all_resources.updatedAt',
-      DBConnection.raw('JSON_ARRAYAGG(JSON_OBJECT("Toolid", tools.tool_id, "toolname", tools.Tool_name)) as tools'),
-      DBConnection.raw('(SELECT JSON_ARRAYAGG(JSON_OBJECT("resource_type_id", resource_type.resource_type_id, "resource_type_name", resource_type.resource_type_name)) FROM (SELECT DISTINCT resource_type.resource_type_id, resource_type.resource_type_name FROM resource_type WHERE FIND_IN_SET(resource_type.resource_type_id, all_resources.type)) AS resource_type) AS types')
-    )
-    .leftJoin('tools', function () {
-      this.on(DBConnection.raw('FIND_IN_SET(tools.tool_id, REPLACE(all_resources.tools, " ", ""))'));
-    })
-    .groupBy('all_resources.resource_id');
-
-    const [resources    ] = await Promise.all([resourcesQuery ]);
-    if (resources){return resources}
-    // res.send(resources);
-  } catch (err) {
-    console.log("get_All_Resources_model err",err);
-  }
-
-
-
-
-
-  
-}
+    async function get_All_Resources_model() {
+      try {
+        const resource_types = await DBConnection('resource_type').select('resource_type_id');
+    
+        // Fetch all resources
+        const resourcesQuery = DBConnection('all_resources')
+          .select(
+            'all_resources.resource_id',
+            'all_resources.resource_string',
+            'all_resources.description',
+            'all_resources.resource_status',
+            'all_resources.monitoring',
+            'all_resources.group_name',
+            'all_resources.checked',
+            'all_resources.updatedAt',
+            'all_resources.type',
+            DBConnection.raw('JSON_ARRAYAGG(JSON_OBJECT("Toolid", tools.tool_id, "toolname", tools.Tool_name)) as tools')
+          )
+          .leftJoin('tools', function () {
+            this.on(DBConnection.raw('FIND_IN_SET(tools.tool_id, REPLACE(all_resources.tools, " ", ""))'));
+          })
+          .groupBy('all_resources.resource_id');
+    
+        const [resources] = await Promise.all([resourcesQuery]);
+    
+        // Initialize the final object with all resource_type_ids as keys
+        const groupedResources = resource_types.reduce((acc, resourceType) => {
+          acc[resourceType.resource_type_id] = [];
+          return acc;
+        }, {});
+    
+        // Group resources by their type
+        resources.forEach(resource => {
+          const typeIds = resource.type.split(',');
+          typeIds.forEach(typeId => {
+            if (groupedResources[typeId]) {
+              groupedResources[typeId].push({
+                ...resource 
+              });
+            }
+          });
+        });
+    
+        // Log each resource_type_id for debugging purposes
+        resource_types.forEach(resourceType => {
+          console.log("resource_type_id:", resourceType.resource_type_id);
+        });
+    
+    
+        console.log("44444444444444444",groupedResources);
+        return groupedResources;
+      } catch (err) {
+        console.log("get_All_Resources_model err", err);
+      }
+    
+    
+    
+    
+      // try {
+      //   const resourcesQuery = DBConnection('all_resources')
+      //   .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.group_name', 'all_resources.checked', 'all_resources.updatedAt',
+      //     DBConnection.raw('JSON_ARRAYAGG(JSON_OBJECT("Toolid", tools.tool_id, "toolname", tools.Tool_name)) as tools'),
+      //     DBConnection.raw('(SELECT JSON_ARRAYAGG(JSON_OBJECT("resource_type_id", resource_type.resource_type_id, "resource_type_name", resource_type.resource_type_name)) FROM (SELECT DISTINCT resource_type.resource_type_id, resource_type.resource_type_name FROM resource_type WHERE FIND_IN_SET(resource_type.resource_type_id, all_resources.type)) AS resource_type) AS types')
+      //   )
+      //   .leftJoin('tools', function () {
+      //     this.on(DBConnection.raw('FIND_IN_SET(tools.tool_id, REPLACE(all_resources.tools, " ", ""))'));
+      //   })
+      //   .groupBy('all_resources.resource_id');
+    
+      //   const [resources    ] = await Promise.all([resourcesQuery ]);
+      //   if (resources){return resources}
+      //   // res.send(resources);
+      // } catch (err) {
+      //   console.log("get_All_Resources_model err",err);
+      // }
+    
+    
+    
+    
+    
+      
+    }
 
 // async function get_All_Resources_model() {
 
