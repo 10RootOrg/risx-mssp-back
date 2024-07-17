@@ -8,7 +8,8 @@ const {
   delete_single_resource_by_id,
   get_config_path_model,
   read_config_model,
-  get_Same_Type_model
+  get_Same_Type_model,
+  post_new_resource_model
 } = require('../models/ResourcesModels');
 
 const DBConnection = require('../db.js')
@@ -304,28 +305,67 @@ async function Count_From_Same_Type (req, res, next) {
  
 // }
 
+
+async function post_many_new_resource(req, res, next) {
+  console.log(" post_many_new_resource", req.body);
+
+  const { item_tool_list, item_types_list, description, monitoring ,resource_string} = req.body;
+let array_of_resource_strings = []
+
+
+if (resource_string.includes(',')) {
+  array_of_resource_strings = resource_string.split(','); // Convert to array
+
+} else {
+  array_of_resource_strings = [resource_string]; // Otherwise, make it an array with one item
+ }
+
+ 
+ try {
+
+
+  const results = []; // Store results for each posted resource
+
+  for (const resource of array_of_resource_strings) {
+    const posted_id = await post_new_resource_model(item_tool_list, item_types_list, description, monitoring, resource);
+    
+    if (posted_id) {
+      console.log("posted", posted_id);
+      const [the_new_item] = await DBConnection('all_resources').select('*').where('resource_id', '=', posted_id);
+      
+      if (the_new_item) {
+        results.push(the_new_item); // Add the new item to results
+      }
+    }
+  }
+
+
+
+  if (results.length > 0) {
+
+    console.log("all results -------------- " , results);
+    return res.status(200).send(results); // Send all results
+  }
+
+  res.status(500).send("Error in inserting resource");
+} catch (err) {
+  console.log(err.message);
+  next(err); // Call next with the error to handle it in a centralized error handler
+}
+}
+
 async function post_new_resource(req, res, next) {
   console.log(" post_new_resource", req.body);
 
-  const { item_tool_list, item_types_list, description, monitoring } = req.body;
+  const { item_tool_list, item_types_list, description, monitoring ,resource_string} = req.body;
   try {
-    const id = uuid();
-    const id_short = id.replace(/-/g, "").substring(0, 9);
-    const id_with_r = 'r' + id_short;
+ 
+    const posted_id = await post_new_resource_model(item_tool_list, item_types_list, description, monitoring ,resource_string)
+   
 
-    const posted = await DBConnection('all_resources')
-      .insert({
-        resource_id: id_with_r,
-        resource_string: req.body?.resource_string,
-        type: item_types_list.toString(),
-        tools: item_tool_list.toString(),
-        description: description,
-        monitoring: monitoring
-      });
-
-    if (posted) {
-      console.log("posted", posted);
-      const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
+    if (posted_id) {
+      console.log("posted", posted_id);
+      const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', posted_id);
       if (the_new_item) {
         return res.status(200).send(the_new_item);
       }
@@ -338,7 +378,6 @@ async function post_new_resource(req, res, next) {
     next(err); // Call next with the error to handle it in a centralized error handler
   }
 }
-
 
 async function edit_resource (req, res, next) {
 
@@ -435,7 +474,7 @@ module.exports = {
   post_new_resource,
   edit_resource,
   delete_single_resource,
-  get_Same_Type
+  get_Same_Type,post_many_new_resource
   // postNew_website,
   // getDefaultColumns ,
   // delete_website,

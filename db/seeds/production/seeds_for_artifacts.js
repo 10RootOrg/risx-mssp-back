@@ -92,6 +92,25 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
-    },
+    },     {
+        BoxType: "Tools_big",
+        headline: "Best Practice",
+        description: "Optimal digital forensics with expert-selected artifacts.",
+        Toolname: "BestPractice",
+        artifact_id: "1000106",
+        parent_id:"2000000",
+        readMoreText: "Our curated collection of Velociraptor artifacts represents the pinnacle of forensic investigation tools as recommended by our industry professionals. These artifacts are meticulously selected to ensure comprehensive and efficient digital forensics and cybersecurity investigations. By leveraging these best practice artifacts, you can enhance your capability to detect, analyze, and respond to security incidents with precision and speed.",
+        isActive: true,
+        ShowInUi: true,
+        logoAddress_1: "./Logos/BestPractice.svg",
+        toolURL: "http://23.101.51.55:5601/",
+        readMoreAddress: "",
+        buttonTitle: "View",
+        Status: "blue",
+        ServicePackage: "",
+        threshold_time:24,
+        arguments:{},
+        useResourceType:""
+       },
   ]);
 };

@@ -65,7 +65,7 @@
         "BestPractice": {
           "Enable": true,
           "ExpireDate": "30",
-          "id": "",
+          "id": "1000106",
           "ModuleName": "BestPractice",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",

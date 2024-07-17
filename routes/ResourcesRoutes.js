@@ -10,7 +10,7 @@ const {
      Check_if_resource_id_exists_to_continue
     
     } = require('../middleware/ResourcesMiddleware')
-const{post_resource_schema} = require('../schema/Resource_schema')
+const{post_resource_schema,post_many_resources_schema} = require('../schema/Resource_schema')
 
  router.get('/', ResourcesController.get_All_Resources);  //get all the Resources
 
@@ -23,6 +23,9 @@ const{post_resource_schema} = require('../schema/Resource_schema')
  router.get('/count-same-type', ResourcesController.Count_From_Same_Type);  // COUNT TIMES SAME RESOURCE TYPE EXISTING IN TABLE
 
  router.post('/' , [validateBody(post_resource_schema)],Check_if_resource_exists_to_avoid_duplication, ResourcesController.post_new_resource);
+
+ router.post('/many' , [validateBody(post_many_resources_schema)], ResourcesController.post_many_new_resource);
+
 
  router.put('/' , [validateBody(post_resource_schema)],Check_if_resource_id_exists_to_continue, ResourcesController.edit_resource);
 

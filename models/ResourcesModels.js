@@ -6,13 +6,41 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
   const pathToTmpJson  = path.resolve(__dirname,'../tmpjsons/ResourceGroup-websites.json')
   const DBConnection = require('../db.js')
   const { exec } = require('child_process');
-
+  const {v4: uuid} = require('uuid');
 
   
 
 
 
+  async function post_new_resource_model(item_tool_list, item_types_list, description, monitoring,resource_string) {
+    console.log(" post_new_resource_model" );
+  
+     try {
+      const id = uuid();
+      console.log("id" ,id);
+      const id_short = id.replace(/-/g, "").substring(0, 9);
+      console.log("id_short" ,id_short);
+      const id_with_r = 'r' + id_short;
+      console.log("id_with_r" ,id_with_r);
+      const posted = await DBConnection('all_resources')
+        .insert({
+          resource_id: id_with_r,
+          resource_string: resource_string,
+          type: item_types_list.toString(),
+          tools: item_tool_list.toString(),
+          description: description,
+          monitoring: monitoring
+        });
+  
+   return id_with_r;
+        
 
+
+    } catch (err) {
+      console.log(err.message);
+      // next(err); // Call next with the error to handle it in a centralized error handler
+    }
+  }
 
 
 
@@ -45,6 +73,7 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
     
     
     } 
+
     async function read_config_model(file_path ) {
       try {
        const data = await fs_promises.readFile(file_path, 'utf8');
@@ -58,8 +87,6 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
    
    
     }
-
-
 
 
 async function get_All_Resources_model() {
@@ -180,8 +207,6 @@ if (!asset_type_id){ console.log("asset_type_id is ", asset_type_id , "in get_Sa
     throw err; // Optionally rethrow the error to propagate it further
   }
 }
-
-
 
 async function get_All_Resource_Type_model() {
   console.log("get_All_Resource_Type_model 11111111111111");
@@ -325,5 +350,6 @@ module.exports = {
   delete_single_resource_by_id,
   get_config_path_model,
   read_config_model,
-  get_Same_Type_model
+  get_Same_Type_model,
+  post_new_resource_model
 };
