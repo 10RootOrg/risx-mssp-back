@@ -315,7 +315,9 @@ let array_of_resource_strings = []
 
 if (resource_string.includes(',')) {
   array_of_resource_strings = resource_string.split(','); // Convert to array
+  array_of_resource_strings = array_of_resource_strings.filter(item => item.trim() !== '');  // delete emptys
 
+console.log("array_of_resource_strings",array_of_resource_strings);
 } else {
   array_of_resource_strings = [resource_string]; // Otherwise, make it an array with one item
  }
