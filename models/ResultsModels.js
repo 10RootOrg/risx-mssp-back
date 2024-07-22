@@ -188,9 +188,6 @@ async function get_ReqestStatus_from_config_file() {
   try {
 const [ReqestStatus] = await DBConnection.raw('SELECT JSON_EXTRACT(config,"$.RequestStatus") as data FROM configjson;');
 
-
- 
-  
     return  ReqestStatus?.[0].data
 
   
