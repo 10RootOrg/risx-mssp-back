@@ -28,29 +28,22 @@
         "AssetType": ["IP Address"],
         "AssetModules": ["Velociraptor", "Nuclei"]
       }
-    },
-    "Population": [
-      {
-        "ComputerName": "RisxServer",
-        "Label": ""
-      },
-      {
-        "ComputerName": "RisxServer2",
-        "Label": ""
-      }
-    ]
+    }
   },
 
   "ClientData": {
     "API": {
       "Timesketch": {
-        "Username": "admin",
-        "Password": "Password",
-        "IP": "40.69.58.105"
+        "Username": "user",
+        "Password": "passs",
+        "IP": "Ip"
       },
+      "LeakCheck": "APIKey",
       "Shodan": "APIKey",
       "Dehashed": "APIKey",
-      "OpenAI": "APIKey"
+      "OpenAI": "APIKey",
+      "MISP": "APIKey",
+      "OpenCTI": "APIKey"
     }
   },
 
@@ -59,13 +52,13 @@
       "id": "2000000",
       "ModuleName": "Velociraptor",
       "LastRunDate": "2024-06-02 10:15:17",
-      "ExpireDate": "30",
+      "ExpireDate": "0",
 
       "SubModules": {
         "BestPractice": {
           "Enable": true,
-          "ExpireDate": "30",
-          "id": "1000106",
+          "ExpireDate": "500",
+          "id": "",
           "ModuleName": "BestPractice",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -102,7 +95,7 @@
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
           "Enable": false,
-          "ExpireDate": "30",
+          "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
@@ -118,7 +111,7 @@
           "id": "1000103",
           "ModuleName": "HardeningKitty",
           "Enable": false,
-          "ExpireDate": "30",
+          "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
@@ -137,7 +130,7 @@
           "id": "1000105",
           "ModuleName": "Hayabusa",
           "Enable": false,
-          "ExpireDate": "30",
+          "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
           "Arguments": {
@@ -173,17 +166,17 @@
     },
     "TimeSketch": {
       "id": "2001002",
-      "ModuleName": "TimeSketch",
       "Enable": false,
-      "LastRunDate": "2024-06-02 10:15:17",
-      "ExpireDate": "0",
       "Arguments": {
         "SketchName": "Timelines",
         "Analyzers": [],
         "KapeCollection": "KapeTriage",
         "CPUThrottling": "75",
         "MemoryThrottling": "75"
-      }
+      },
+      "ModuleName": "TimeSketch",
+      "ExpireDate": "0",
+      "LastRunDate": "2024-06-02 10:15:17"
     }
   },
   "RequestStatus": []
