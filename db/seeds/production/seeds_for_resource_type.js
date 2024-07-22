@@ -38,7 +38,7 @@ exports.seed = async function(knex) {
               }, 
               {
                 resource_type_id: 2006,
-                resource_type_name: 'Email Addresss',
+                resource_type_name: 'Email Address',
                 description_short: 'Authenticate users and prevent phishing and email-based attacks.',
                 description_long: 'Email addresses serve as crucial identifiers in cybersecurity, used to authenticate users identities and facilitate secure communication within digital environments. Ensuring their validity and security helps prevent various email-based threats, including phishing attacks aimed at stealing sensitive information or spreading malware. By verifying and safeguarding email addresses, organizations can enhance their overall cybersecurity posture and protect against potential breaches and unauthorized access.',
                 }, 
@@ -50,7 +50,7 @@ exports.seed = async function(knex) {
                   },{
                     resource_type_id: 2008,
                     resource_type_name: 'Computer',
-                    description_short: 'Essential for safeguarding data, preventing breaches, ensuring network security.',
+                    description_short: 'Essential for safeguarding data, preventing breaches, and ensuring network security..',
                     description_long: 'The "Computer" IS crucial, preventing breaches, and ensuring network integrity through robust encryption and stringent access controls.'
                     }, 
 
