@@ -16,7 +16,7 @@ const { log } = require('console');
 
 async function check_main_process_status_model() {
   const file_name = process.env.PYTHON_INTERVAL;
-console.log("file_name", file_name);
+console.log("check_main_process_status_model - file_name", file_name);
   try {
       const isRunning = await new Promise((resolve, reject) => {
           const command = `ps aux | grep '[p]ython'`;
@@ -67,6 +67,8 @@ console.log("file_name", file_name);
 }
 
 async function active_interval_process_model() {
+
+
  console.log("----- active_interval_process_model ------------");
 
     // const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
@@ -88,7 +90,7 @@ source ${PYTHON_ENVIRONMENT} && \
 ${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 `;
 
- 
+ console.log("command interval = " ,command  );
 //     const command = `
 //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
 //     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
@@ -102,7 +104,7 @@ ${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
             console.log("active_interval_process - Promise");
 
             if (error) {
-                console.log("active_interval_process - return new Promise error");
+                console.log("active_interval_process - return new Promise error",error);
                 // console.error(`Error: ${error.message}`);
                 // console.log(`stderr: ${stderr}`);
                 reject(false); // Reject with false indicating failure
