@@ -13,9 +13,28 @@ async function GetDashBoardFile(req, res, next) {
       "dashboard.json"
     );
     console.log("DashBoardFile", DashBoardFile);
+
     const file = await GetDashFile(DashBoardFile);
     if (file) {
-      res.send(file);
+      switch (req.params.DashBoardName) {
+        case "Forensics":
+          res.send({
+            Velociraptor: file.Velociraptor,
+            TimeSketch: file.TimeSketch,
+          });
+
+          break;
+        case "CTI":
+          res.send({
+            Misp: file.Misp,
+            LeakCheck: file.LeakCheck,
+          });
+
+          break;
+        default:
+          res.send(file);
+          break;
+      }
     }
   } catch (err) {
     console.log(err);
