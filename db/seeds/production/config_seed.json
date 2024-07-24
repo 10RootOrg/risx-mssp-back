@@ -1,9 +1,9 @@
 {
   "General": {
     "AgentLinks": {
-      "Windows": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-windows-amd64.exe",
-      "Linux": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-linux-amd64",
-      "Mac": "https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-darwin-amd64"
+      "Mac": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/mac/velociraptor_client_repacked",
+      "Linux": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/linux/velociraptor_client_repacked",
+      "Windows": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/windows/velociraptor_client_repacked.msi"
     },
     "IntervalConfigurations": {
       "ModulesUpdates": {
