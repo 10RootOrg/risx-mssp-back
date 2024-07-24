@@ -20,7 +20,7 @@ const { spawn } = require('child_process');
 // async function active_manual_process_model() {
 //   console.log("active_manual_process_model");
 //   try {
-//       const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+//       const EXECUTABLE = process.env.PYTHON_EXECUTABLE_ABSOLUTE;
 //       const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 //       const PYTHON_INTERVAL = process.env.PYTHON_INTERVAL;
 //       const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,PYTHON_INTERVAL);
@@ -59,7 +59,7 @@ const { spawn } = require('child_process');
   // async function active_manual_process_model(){
   //   console.log("active_main_process_model 1");
   //   try {
-  //     const EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+  //     const EXECUTABLE = process.env.PYTHON_EXECUTABLE_ABSOLUTE;
   //     const PYTHON_MANUAL_ACTIVE_RELATIVE_PATH = process.env.PYTHON_MANUAL_ACTIVE_RELATIVE_PATH;
   //     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_MANUAL_ACTIVE_RELATIVE_PATH);
   //     const pythonProcess = spawn(EXECUTABLE, [PYTHON_SCRIPT_PATH]);
@@ -494,7 +494,12 @@ async function get_Date_and_hour_string(additionalMinutes = 0) {
 }
  
 async function active_JSON_in_py(request_file_Path_and_Name){
-  const EXECUTABLE = process.env.PYTHON_EXECUTABLE
+
+
+  const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+  const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+
+  // const EXECUTABLE = process.env.PYTHON_EXECUTABLE_ABSOLUTE
   
  
   // const SCRIPT_PATH = process.env.PYTHON_VELOCIRAPTOR_SCRIPT_PATH
@@ -513,7 +518,7 @@ console.log("222222",SCRIPT_RELATIE_PATH);
  try {
 
 // Spawn the Python process
-const pythonProcess = spawn(EXECUTABLE, ['-u',SCRIPT_RELATIE_PATH,  request_file_Path_and_Name]);
+const pythonProcess = spawn(PYTHON_EXECUTABLE_RELATVE, ['-u',SCRIPT_RELATIE_PATH,  request_file_Path_and_Name]);
 
 const response_file_Path_and_Name = request_file_Path_and_Name.replace('request','response') 
  
