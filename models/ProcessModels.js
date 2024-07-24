@@ -73,21 +73,31 @@ async function active_interval_process_model() {
 
     // const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     // const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    // const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
+    // const PYTHON_EXECUTABLE_ABSOLUTE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
     // const RELATIVE = path.resolve(__dirname, '..', '..');
 
+
+// const PYTHON_EXECUTABLE_ABSOLUTE  = process.env.PYTHON_EXECUTABLE_ABSOLUTE;  
+
 const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
+const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+ const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
 // const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'modules', 'Velociraptor')
 const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER)
 
 
-const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+
+
+
+console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
+// console.log("PYTHON_EXECUTABLE_ABSOLUTE  = " ,PYTHON_EXECUTABLE_ABSOLUTE  );
+
 const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
 
 const command = `
 source ${PYTHON_ENVIRONMENT} && \
-${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 `;
 
  console.log("command interval = " ,command  );
@@ -151,23 +161,72 @@ ${PYTHON_EXECUTABLE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 }
  
 
+// async function test1() {
+
+
+//     console.log("----- test1------------");
+   
+
+   
+//    const PYTHON_EXECUTABLE_ABSOLUTE  = process.env.PYTHON_EXECUTABLE_ABSOLUTE;    
+//    const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+   
+//    const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+   
+//    const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+//     const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
+//    // const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'modules', 'Velociraptor')
+//    const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER)
+   
+   
+   
+   
+   
+//    console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
+//    console.log("PYTHON_EXECUTABLE_ABSOLUTE  = " ,PYTHON_EXECUTABLE_ABSOLUTE  );
+   
+//    const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
+   
+//    const command = `
+//    source ${PYTHON_ENVIRONMENT} && \
+//    ${PYTHON_EXECUTABLE_ABSOLUTE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+//    `;
+   
+//     console.log("command interval = " ,command  );
+//    //     const command = `
+//    //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
+//    //     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
+//    // `;
+   
+
+//    }
+
+//    test1();
+
+
 async function active_manual_process_model() {
-    console.log("active_manual_process_model 777");
+ 
 try{
+
+    const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+    const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+
     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    // const PYTHON_EXECUTABLE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
-
-    const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+    // const PYTHON_EXECUTABLE_ABSOLUTE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
+    // const PYTHON_EXECUTABLE_ABSOLUTE = process.env.PYTHON_EXECUTABLE_ABSOLUTE;
     
+    console.log("active_manual_process_model 888");
 
+    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+    
+    console.log("command", command);
 
-    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE}`;
     const args = [PYTHON_SCRIPT_PATH];
 
-    console.log("command", command);
+
     console.log("args", args);
 
     return new Promise((resolve, reject) => {
@@ -300,7 +359,7 @@ search_And_Kill_Process
 
 // const command = `
 // export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
-// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// ${PYTHON_EXECUTABLE_ABSOLUTE} ${PYTHON_SCRIPT_PATH}
 // `;
 
 
@@ -315,18 +374,18 @@ search_And_Kill_Process
 //     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 //     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
 //     const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-//     const PYTHON_EXECUTABLE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
+//     const PYTHON_EXECUTABLE_ABSOLUTE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
 
 //     const RELATIVE = path.resolve(__dirname, '..', '..');
 
 // // const command = `
 // // export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
-// // ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// // ${PYTHON_EXECUTABLE_ABSOLUTE} ${PYTHON_SCRIPT_PATH}
 // // `;
 
 //     const command = `
 //         export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
-//         ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+//         ${PYTHON_EXECUTABLE_ABSOLUTE} ${PYTHON_SCRIPT_PATH}
 //     `;
 
 //     return new Promise((resolve, reject) => {
@@ -357,11 +416,11 @@ search_And_Kill_Process
 
 // const command = `
 // export PATH="/home/Bacteria5570/mssp/risx-mssp-python-script/mssp_env/bin:$PATH" && \
-// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// ${PYTHON_EXECUTABLE_ABSOLUTE} ${PYTHON_SCRIPT_PATH}
 // `;
 // const command = `
 // export PATH="${RELATIVE}/${PYTHON_SCRIPTS_RELATIVE_PATH}/mssp_env/bin:$PATH" && \
-// ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT_PATH}
+// ${PYTHON_EXECUTABLE_ABSOLUTE} ${PYTHON_SCRIPT_PATH}
 // `;
 
 //  source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate 

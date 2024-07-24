@@ -179,12 +179,12 @@ exports.seed = async function(knex) {
         toolType:"module"
        },  {
         tool_id: 2001006,
-        Tool_name: 'AnyRun',
+        Tool_name: 'Strelka',
         BoxType: 'Tools_b',
-        headline: 'Strelka Sandbox',
+        headline: 'Sandbox',
         isActive: true,
         ShowInUi: true,
-        logoAddress_1: "./Logos/AnyRun.svg",
+        logoAddress_1: "./Logos/STRELKA.png",
         logoAddress_2: "",
         iconAddress: './icons/General-icons-d.svg',
         description_short: 'Examine files for malicious behavior',
