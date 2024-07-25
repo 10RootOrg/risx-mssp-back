@@ -105,7 +105,7 @@ async function DownloadAgent(req, res, next) {
   console.log("req.body req.body req.body", req?.body);
   const { PathOs } = req?.body;
   // console.log(os.homedir()+"\\setup_platform\\scripts\\velociraptor-docker\\velociraptor\\client\\windows\\velociraptor_client.msi");
-  const url = os.homedir() + PathOs.replace("~", "").replaceAll("/", "\\");
+  const url = os.homedir() + PathOs.replace("~", "");
   console.log(url);
   const exist = await fs.existsSync(url);
   console.log(
