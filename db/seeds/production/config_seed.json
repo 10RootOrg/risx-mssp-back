@@ -1,9 +1,9 @@
 {
   "General": {
     "AgentLinks": {
-      "Mac": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/mac/velociraptor_client_repacked",
-      "Linux": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/linux/velociraptor_client_repacked",
-      "Windows": "~/setup_platform/scripts/velociraptor-docker/velociraptor/client/windows/velociraptor_client_repacked.msi"
+      "Mac": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/mac/velociraptor_client_repacked",
+      "Linux": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/linux/velociraptor_client_repacked",
+      "Windows": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/windows/velociraptor_client_repacked.msi"
     },
     "IntervalConfigurations": {
       "ModulesUpdates": {
@@ -23,9 +23,9 @@
   },
   "ClientInfrastructure": {
     "Assets": {
-      "Exampale": {
+      "Example": {
         "AssetString": "18.168.185.151",
-        "AssetEnable": true,
+        "AssetEnable": 1,
         "AssetType": ["IP Address"],
         "AssetModules": ["Velociraptor", "Nuclei"]
       }
@@ -57,9 +57,9 @@
 
       "SubModules": {
         "BestPractice": {
-          "Enable": true,
+          "Enable": 0,
           "ExpireDate": "500",
-          "id": "",
+          "id": "1000106",
           "ModuleName": "BestPractice",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -95,7 +95,7 @@
         "PersistenceSniper": {
           "id": "1000104",
           "ModuleName": "PersistenceSniper",
-          "Enable": false,
+          "Enable": 0,
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -111,7 +111,7 @@
         "HardeningKitty": {
           "id": "1000103",
           "ModuleName": "HardeningKitty",
-          "Enable": false,
+          "Enable": 0,
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -130,7 +130,7 @@
         "Hayabusa": {
           "id": "1000105",
           "ModuleName": "Hayabusa",
-          "Enable": false,
+          "Enable": 0,
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
@@ -156,7 +156,7 @@
     "Nuclei": {
       "id": "2001005",
       "ModuleName": "Nuclei",
-      "Enable": false,
+      "Enable": 0,
       "LastRunDate": "2024-06-02 10:15:17",
       "ExpireDate": "0",
       "Arguments": {
@@ -167,7 +167,7 @@
     },
     "TimeSketch": {
       "id": "2001002",
-      "Enable": false,
+      "Enable": 0,
       "Arguments": {
         "SketchName": "Timelines",
         "Analyzers": [],

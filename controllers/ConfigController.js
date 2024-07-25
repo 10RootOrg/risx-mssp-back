@@ -6,6 +6,7 @@ const {
 const DBConnection = require("../db.js");
 const fs = require("fs"); // Import 'fs' with Promise-based API
 const path = require("path");
+const os = require("os");
 
 async function Get_Config(req, res, next) {
   try {
@@ -100,10 +101,29 @@ const ResetConfigToBasic = async (req, res, next) => {
   }
 };
 
+async function DownloadAgent(req, res, next) {
+  console.log("req.body req.body req.body", req?.body);
+  const { PathOs } = req?.body;
+  // console.log(os.homedir()+"\\setup_platform\\scripts\\velociraptor-docker\\velociraptor\\client\\windows\\velociraptor_client.msi");
+  const url = os.homedir() + PathOs.replace("~", "").replaceAll("/", "\\");
+  console.log(url);
+  const exist = await fs.existsSync(url);
+  console.log(
+    exist,
+    "ooooooooooooooooooooooooooooooooossssssssssssssssssssssssss"
+  );
+  if (exist) {
+    res.download(url);
+  } else {
+    res.status(401).send({ error: "no such file" });
+  }
+}
+// DownloadAgent()
 module.exports = {
   Get_Config,
   Put_Config,
   Get_From_ENV,
   Update_mssp_config_json_links,
   ResetConfigToBasic,
+  DownloadAgent,
 };
