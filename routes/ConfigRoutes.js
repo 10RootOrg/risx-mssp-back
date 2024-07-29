@@ -12,6 +12,7 @@ router.put('/mssp-config-json-links',    ConfigController.Update_mssp_config_jso
 router.get('/ResetConfigToBasic',        ConfigController.ResetConfigToBasic);  //get from env to front
 
 router.post('/DownloadAgent',        ConfigController.DownloadAgent);  //get from env to front
+router.get('/GetAllLeakAsset',        ConfigController.GetAllLeakAsset);  //get from env to front
 
 
 module.exports = router;

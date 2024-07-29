@@ -7,6 +7,7 @@ const DBConnection = require("../db.js");
 const fs = require("fs"); // Import 'fs' with Promise-based API
 const path = require("path");
 const os = require("os");
+const axios = require("axios");
 
 async function Get_Config(req, res, next) {
   try {
@@ -118,7 +119,27 @@ async function DownloadAgent(req, res, next) {
     res.status(401).send({ error: "no such file" });
   }
 }
-// DownloadAgent()
+async function GetAllLeakAsset(req, res, next) {
+  // Work in progress 
+  const data = await DBConnection.raw(
+    'SELECT resource_string FROM all_resources where tools like "%2001009%" or tools like "%2001011%"'
+  );
+  console.log("leakCheck Assets data", data);
+  // res.send(data[0].map((x) => x.resource_string));
+
+  const LeakJson = await axios.get(
+    // "https://leakcheck.io/api/v2/query/"+data[0].map((x) => x.resource_string).join(", "), 
+    "https://leakcheck.io/api/v2/query/example@example.com",
+    {
+      headers: {
+        Accept: "application/json",
+        "X-API-Key": "d1ade9ae7283d9ed377a54718b9cd1d770cb3f49",
+      },
+    }
+  );
+  console.log("gggggggggggggggg", LeakJson);
+}
+// GetAllLeakAsset()
 module.exports = {
   Get_Config,
   Put_Config,
@@ -126,4 +147,5 @@ module.exports = {
   Update_mssp_config_json_links,
   ResetConfigToBasic,
   DownloadAgent,
+  GetAllLeakAsset,
 };
