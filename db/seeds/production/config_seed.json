@@ -18,7 +18,7 @@
       "ScanHunts": {
         "TimeIntervalInMinutes": 1
       },
-      "GetDashboardsDataInHours": 24
+      "GetDashboardsDataInMinutes": 24
     }
   },
   "ClientInfrastructure": {
