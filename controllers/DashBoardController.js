@@ -27,7 +27,7 @@ async function GetDashBoardFile(req, res, next) {
         case "CTI":
           res.send({
             Misp: file.Misp,
-            LeakCheck: file.LeakCheck,
+            LeakCheck: file.DashboardsFromResponses.LeakCheck,
           });
 
           break;
