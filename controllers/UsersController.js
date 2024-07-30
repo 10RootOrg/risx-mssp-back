@@ -6,8 +6,8 @@ const bcrypt = require('bcrypt');
 
 
 async function Create_user(req, res, next) {
-
-  const { user_name, email, password } = req.body
+console.log(req.body);
+  const { user_name, email, password , type ,address ,state , phone_number} = req.body
  
 
  
@@ -21,7 +21,7 @@ async function Create_user(req, res, next) {
     }
 
     // Insert new user
-    const new_id = await insert_new_user(user_name,email,password);
+    const new_id = await insert_new_user(user_name,email,password,type ,address ,state ,phone_number);
 
     if (new_id ) {
       console.log("new_user1id_short",new_id);
