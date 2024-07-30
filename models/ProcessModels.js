@@ -71,14 +71,6 @@ async function active_interval_process_model() {
 
  console.log("----- active_interval_process_model ------------");
 
-    // const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-    // const PYTHON_SCRIPT_PATH = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    // const PYTHON_EXECUTABLE_ABSOLUTE = path.resolve(__dirname, '..', '..', PYTHON_SCRIPTS_RELATIVE_PATH,  'mssp_env', 'bin', 'python3');
-    // const RELATIVE = path.resolve(__dirname, '..', '..');
-
-
-// const PYTHON_EXECUTABLE_ABSOLUTE  = process.env.PYTHON_EXECUTABLE_ABSOLUTE;  
-
 const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
 const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
@@ -87,24 +79,23 @@ const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXE
 const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER)
 
 
-
-
-
 console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
-// console.log("PYTHON_EXECUTABLE_ABSOLUTE  = " ,PYTHON_EXECUTABLE_ABSOLUTE  );
 
 const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
 
+// const command = `
+// source ${PYTHON_ENVIRONMENT} && \
+// ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+// `;
+
 const command = `
-source ${PYTHON_ENVIRONMENT} && \
-${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+python ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 `;
 
+
+
  console.log("command interval = " ,command  );
-//     const command = `
-//     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
-//     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
-// `;
+ 
 
  try{
 
@@ -215,12 +206,12 @@ try{
     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-    // const PYTHON_EXECUTABLE_ABSOLUTE = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, 'mssp_env', 'bin', 'python');
-    // const PYTHON_EXECUTABLE_ABSOLUTE = process.env.PYTHON_EXECUTABLE_ABSOLUTE;
+
     
     console.log("active_manual_process_model 888");
 
-    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+    // const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+    const command = `python`;
     
     console.log("command", command);
 
