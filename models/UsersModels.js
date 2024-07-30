@@ -37,22 +37,23 @@ async function check_if_email_exists(input_email) {
   try {
     //   const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', id_with_r);
 
-    // const user = await db('users').where({ email }).first();
-    const user = await DBConnection("users")
-      .where("email", "=", input_email)
-      .first();
-    if (user) {
-      return user;
-    }
-  } catch (err) {
-    console.log("check_if_email_exists", err);
-  }
-}
+      // const user = await db('users').where({ email }).first();
+      const user  = await DBConnection('users').where('email' ,'=', input_email ).first();
+      if (user){return user}
 
-async function insert_new_user(user_name, email, password) {
-  console.log("insert_new_user", user_name, email, password);
+  }catch(err)
+    
+  {console.log("check_if_email_exists", err);}
 
-  try {
+
+  
+  }  
+
+  async function insert_new_user(user_name,email,password,type ,address ,state ,phone_number) {
+    console.log("insert_new_user",user_name,email,password);
+  
+      try{
+ 
     // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -61,28 +62,37 @@ async function insert_new_user(user_name, email, password) {
     const id_short = "u" + id.replace(/-/g, "").substring(0, 9);
     // const id_with_r = 'u' + id_short;
 
-    console.log("password", password);
-    console.log("hashedPassword", hashedPassword);
+
+
+    // console.log("password" , password);
+    // console.log("hashedPassword" , hashedPassword);
 
     const [user] = await DBConnection("users").insert({
       user_id: id_short,
       user_name: user_name,
       email: email,
       user_password: hashedPassword,
-      type: "type1",
+      type:type,
+      Address:address,
+      state:state,
+      phone_number:phone_number
     });
 
-    console.log("useruser", user);
-    return id_short;
-    // const user  = await DBConnection('users').where('email' ,'=', input_email ).first();
-    // console.log("user",user);
+  
+console.log("useruser",user);
+     return  id_short;
+        // const user  = await DBConnection('users').where('email' ,'=', input_email ).first();
+        // console.log("user",user);
+ 
+      //  if (user){return user}
+     
+    }catch(err)
+      
+    {console.log("insert_new_user", err); return false}
+    }  
+  
+  
 
-    //  if (user){return user}
-  } catch (err) {
-    console.log("insert_new_user", err);
-    return false;
-  }
-}
 
 module.exports = {
   Get_all_users_model,

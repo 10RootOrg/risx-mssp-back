@@ -24,7 +24,8 @@ exports.seed = async function(knex) {
       threshold_time:24,
       arguments:{},
       useResourceType:"",
-      toolType:"module"
+      toolType:"module",
+      LastRun:"2024-06-02 10:15:17"
      }, 
     {
     tool_id: 2001000, 
@@ -45,7 +46,8 @@ exports.seed = async function(knex) {
     threshold_time:24,
     arguments:{},
     useResourceType:"",
-    toolType:"link"
+    toolType:"link",
+    LastRun:"2024-06-02 10:15:17"
    }, 
     {
        tool_id: 2001001,
@@ -66,7 +68,8 @@ exports.seed = async function(knex) {
        threshold_time:24,
        arguments:{},
        useResourceType:"",
-       toolType:"link"
+       toolType:"link",
+       LastRun:"2024-06-02 10:15:17"
       }, 
          {
         tool_id: 2001002,
@@ -86,7 +89,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2008",
-        toolType:"module"
+        toolType:"module",
+       LastRun:"2024-06-02 10:15:17"
        },
        {
         tool_id: 2001003,
@@ -107,7 +111,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        toolType:"link"
+        toolType:"link",
+        LastRun:"2024-06-02 10:15:17"
        },
        {
         tool_id: 2001004,
@@ -128,7 +133,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
-        toolType:"link"
+        toolType:"link",
+       LastRun:"2024-06-02 10:15:17"
        },
        {
         tool_id: 2001010,
@@ -149,7 +155,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        toolType:"link"
+        toolType:"link",
+       LastRun:"2024-06-02 10:15:17"
        },
 
 
@@ -176,7 +183,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
-        toolType:"module"
+        toolType:"module",
+        LastRun:"2024-06-02 10:15:17"
        },  {
         tool_id: 2001006,
         Tool_name: 'Strelka',
@@ -196,7 +204,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        toolType:"link"
+        toolType:"link",
+        LastRun:"2024-06-02 10:15:17"
        },{
         tool_id: 2001007,
         Tool_name: 'HashR',
@@ -216,7 +225,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        toolType:"link"
+        toolType:"link",
+       LastRun:"2024-06-02 10:15:17"
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
@@ -236,7 +246,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
-        toolType:"link"
+        toolType:"link",
+        LastRun:"2024-06-02 10:15:17"
        },{
         tool_id: 2001009,
         Tool_name: 'Dehashed',
@@ -256,7 +267,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2006,2007",
-        toolType:"link"
+        toolType:"link",
+        LastRun:"2024-06-02 10:15:17"
        },
        {
         tool_id: 2001011,
@@ -277,7 +289,8 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
-        toolType:"link"
+        toolType:"module",
+       LastRun:"2024-06-02 10:15:17"
        },   {
         tool_id: 2001012,
         Tool_name: 'MISP',
@@ -297,7 +310,32 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        toolType:"link"
+        toolType:"link",
+        LastRun:"2024-06-02 10:15:17"
        },
+       {
+        tool_id: 2001013,
+        Tool_name: 'LEAKCHECK',
+        BoxType: 'Tools_b',
+        headline: 'Protect digital identity',
+        isActive: true,
+        ShowInUi: true,
+        logoAddress_1: "./Logos/LEAKCHECK.png",
+        logoAddress_2: "",
+        iconAddress: '',
+        description_short: 'Identify and manage exposed credentials.',
+        description_long: 'LeakCheck.io is a comprehensive tool designed to help you safeguard your digital identity. By scanning for exposed credentials and sensitive information, it ensures that your personal and professional data remains secure. Our service provides real-time alerts for potential breaches, allowing you to take swift action against unauthorized access. With an easy-to-use interface and detailed reports, LeakCheck.io empowers you to manage your security posture effectively and minimize risks associated with data leaks. Protect your online presence and stay ahead of potential threats with our robust leak detection and management system.',
+        Status: 'blue',
+        buttonTitle: 'Explore',
+        toolURL: 'https://leakcheck.io',
+        ServicePackage: 'Standard',
+        threshold_time:24,
+        arguments:{},
+        useResourceType:"2001,2002",
+        toolType:"module",
+        LastRun:"2024-06-02 10:15:17"
+       }, 
+
+
   ]);
 };
