@@ -35,8 +35,8 @@
   "ClientData": {
     "API": {
       "Timesketch": {
-        "Username": "user",
         "Password": "passs",
+        "Username": "user",
         "IP": "Ip"
       },
       "LeakCheck": "APIKey",
@@ -49,6 +49,23 @@
   },
 
   "Modules": {
+    "LeakCheck": {
+      "id": "2001013",
+      "Enable": 0,
+      "ModuleName": "LeakCheck",
+      "LastRunDate": "2024-06-02 10:15:17",
+      "ExpireDate": "0",
+      "Arguments": {}
+    },
+    "Shodan": {
+      "id": "2001011",
+      "Enable": 0,
+      "ModuleName": "Shodan",
+      "LastRunDate": "2024-06-02 10:15:17",
+      "ExpireDate": "0",
+      "Arguments": {}
+    },
+
     "Velociraptor": {
       "id": "2000000",
       "ModuleName": "Velociraptor",
