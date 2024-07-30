@@ -315,7 +315,7 @@ exports.seed = async function(knex) {
        },
        {
         tool_id: 2001013,
-        Tool_name: 'LEAKCHECK',
+        Tool_name: 'LeakCheck',
         BoxType: 'Tools_b',
         headline: 'Protect digital identity',
         isActive: true,
@@ -331,7 +331,7 @@ exports.seed = async function(knex) {
         ServicePackage: 'Standard',
         threshold_time:24,
         arguments:{},
-        useResourceType:"2001,2002",
+        useResourceType:"2001,2002,2003,2004,2005,2006",
         toolType:"module",
         LastRun:"2024-06-02 10:15:17"
        }, 
