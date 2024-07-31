@@ -43,6 +43,12 @@ exports.seed = async function(knex) {
                 description_long: 'Email addresses serve as crucial identifiers in cybersecurity, used to authenticate users identities and facilitate secure communication within digital environments. Ensuring their validity and security helps prevent various email-based threats, including phishing attacks aimed at stealing sensitive information or spreading malware. By verifying and safeguarding email addresses, organizations can enhance their overall cybersecurity posture and protect against potential breaches and unauthorized access.',
                 }, 
                 {
+                  resource_type_id: 2009,
+                  resource_type_name: 'Email Domain',
+                  description_short: 'Critical for email security and domain protection.',
+                  description_long: 'In cybersecurity, an email domain is essential for identifying and verifying the senders legitimacy. It plays a crucial role in preventing phishing attacks, spam, and email spoofing. Properly secured email domains help maintain the integrity and confidentiality of communications by ensuring that only authorized users can send emails from the domain. Implementing DMARC, DKIM, and SPF records enhances security measures, mitigating risks of email-based threats. Regular monitoring and updates of domain settings are vital to safeguard against emerging vulnerabilities and unauthorized access attempts, ensuring robust email security and trustworthiness.',
+                  }, 
+                {
                   resource_type_id: 2007,
                   resource_type_name: 'Company Name',
                   description_short: 'verify business legitimacy and ensure secure business interactions.',

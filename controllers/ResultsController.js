@@ -14,23 +14,21 @@ async function download_json_file(req, res, next) {
 
 
  const { ResponsePath } = req.query;
-if (ResponsePath === undefined){console.log("ResponsePath is" ,ResponsePath);}
+ if (!ResponsePath) {
+  console.log("ResponsePath is", ResponsePath);
+  return res.status(400).send('ResponsePath is required');
+}
+
 const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 const directoryPath = path.join(__dirname, '..','..', relativePath);
 const fullPath = path.join(directoryPath,ResponsePath);
-
 console.log("fullPath ---------------------------" , fullPath);
-await fs.access(directoryPath);
 
-// const result = await download_file_model(fullPath)
- 
-  
-
-
+await fs.access(directoryPath);// Check file existence asynchronously
 
 if (fs_non_promises.existsSync(fullPath)) {
   // Set headers to force download
-  res.setHeader('Content-disposition', 'attachment; filename=example.json');
+  res.setHeader('Content-disposition', `attachment; filename=${path.basename(fullPath)}`);
   res.setHeader('Content-type', 'application/json');
 
   // Create a read stream from the file and pipe it to the response
@@ -40,25 +38,13 @@ if (fs_non_promises.existsSync(fullPath)) {
   res.status(404).send('File not found');
 }
 
-
-
-      // if (result){
-
- 
       //   return    res.send(result)}
      } catch (err) {
        res.send(err.message)
+          res.status(500).send('Server error');
        next(err);
      }
    }
-
-
-
-
-
-
-
-
 
    
 async function get_single_velociraptor_response(req, res, next) {
