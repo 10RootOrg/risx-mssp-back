@@ -229,6 +229,7 @@ try{
         let found = false;
 
         childProcess.stdout.on('data', (data) => {
+            console.log("Start find if includes - ``Start mssp``");
             if (data.toString().includes("Start mssp")) {
                 found = true;
                 console.log("stdout.includes(Start mssp)");

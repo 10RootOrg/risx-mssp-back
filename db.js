@@ -18,7 +18,7 @@ console.log("backend running NODE_ENV -" , process.env["NODE_ENV"]);
 
 
 const config = require('./knexfile')[environment];
-console.log("config 3333333 ",config);
+console.log("connection config details",config);
 const DBConnection = require('knex')(config);
  
  

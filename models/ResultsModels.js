@@ -217,7 +217,7 @@ async function check_file_size(file_name) {
 
     // Get file stats asynchronously
     const stats = await fs.stat(fullPath);
-    console.log("check_file_size stats - file_name: ", file_name, stats);
+    // console.log("check_file_size stats - file_name: ", file_name, stats);
 
     const fileSizeInBytes = stats.size;
     console.log("check_file_size fileSizeInBytes - ", fileSizeInBytes);
