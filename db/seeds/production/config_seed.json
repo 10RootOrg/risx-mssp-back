@@ -6,8 +6,13 @@
       "Windows": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/windows/velociraptor_client_repacked.msi"
     },
     "IntervalConfigurations": {
+      "IntervalTimes": {
+        "GetDashboardsDataInMinutes": 10,
+        "GetAlertsDataInMinutes": 10,
+        "GetModulesUpdatesInMinutes": 1440,
+        "GetResultsDataInMinutes": 2
+      },
       "ModulesUpdates": {
-        "TimeIntervalInHours": 24,
         "UpdateVelociraptorModules": [
           "Server.Import.ArtifactExchange",
           "Server.Import.CuratedSigma",
@@ -18,8 +23,9 @@
       "ScanHunts": {
         "TimeIntervalInMinutes": 1
       },
-      "GetDashboardsDataInMinutes": 24,
-      "GetDashboardsDataInHours": 24
+      "MispConfiguration": {
+        "RecentHostTimeMispInHours": 24
+      }
     }
   },
   "ClientInfrastructure": {
@@ -38,7 +44,7 @@
       "Timesketch": {
         "Password": "passs",
         "Username": "user",
-        "IP": "Ip"
+        "IP": "0.0.0.0"
       },
       "LeakCheck": "APIKey",
       "Shodan": "APIKey",
