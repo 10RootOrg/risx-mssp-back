@@ -83,14 +83,14 @@ console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
 
 const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
 
-// const command = `
-// source ${PYTHON_ENVIRONMENT} && \
-// ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
-// `;
-
 const command = `
-python ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+source ${PYTHON_ENVIRONMENT} && \
+${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 `;
+
+// const command = `
+// python ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+// `;
 
 
 
@@ -210,8 +210,8 @@ try{
     
     console.log("active_manual_process_model 888");
 
-    // const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
-    const command = `python`;
+    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+    // const command = `python`;
     
     console.log("command", command);
 
