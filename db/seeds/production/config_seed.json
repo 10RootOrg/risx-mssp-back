@@ -18,7 +18,8 @@
       "ScanHunts": {
         "TimeIntervalInMinutes": 1
       },
-      "GetDashboardsDataInMinutes": 24
+      "GetDashboardsDataInMinutes": 24,
+      "GetDashboardsDataInHours": 24
     }
   },
   "ClientInfrastructure": {
@@ -160,7 +161,7 @@
             "ArtifactParameters": {
               "ROOT": "C:\\\\Windows\\\\System32\\\\WinEvt\\\\Logs\\\\",
               "Debug": "N",
-              "RuleLevel": "All",
+              "RuleLevel": "Critical and High",
               "RuleStatus": "Stable",
               "RuleTitleFilter": ".",
               "SigmaRules": "",
