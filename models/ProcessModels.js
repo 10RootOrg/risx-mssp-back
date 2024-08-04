@@ -267,11 +267,65 @@ catch (error) {
 }
 
 
-function search_And_Kill_Process(processName) {
+// function search_And_Kill_Process(processName) {
 
 
-    console.log("kill-interval-of-python",processName);
+//     console.log("kill-interval-of-python",processName);
+//     return new Promise((resolve, reject) => {
+//         exec(`ps aux | grep ${processName} | grep -v grep`, (err, stdout, stderr) => {
+//             if (err) {
+//                 console.error(`Error searching for process: ${err}`);
+//                 return reject(err);
+//             }
+
+//             if (stderr) {
+//                 console.error(`stderr: ${stderr}`);
+//                 return reject(stderr);
+//             }
+
+//             if (!stdout) {
+//                 console.log('No such process found.');
+//                 return resolve(false);
+//             }
+
+//             const processLines = stdout.split('\n').filter(line => line.includes(processName));
+//             const pids = processLines.map(line => line.trim().split(/\s+/)[1]);
+
+//             if (pids.length === 0) {
+//                 console.log('No matching processes found.');
+//                 return resolve(false);
+//             }
+
+//             let killPromises = pids.map(pid => {
+//                 return new Promise((resolve, reject) => {
+//                     exec(`kill ${pid}`, (err, stdout, stderr) => {
+//                         if (err) {
+//                             console.error(`Error killing process ${pid}: ${err}`);
+//                             return reject(err);
+//                         }
+
+//                         if (stderr) {
+//                             console.error(`stderr: ${stderr}`);
+//                             return reject(stderr);
+//                         }
+
+//                         console.log(`Process ${pid} killed successfully.`);
+//                         resolve(true);
+//                     });
+//                 });
+//             });
+
+//             Promise.all(killPromises)
+//                 .then(() => resolve(true))
+//                 .catch(err => reject(err));
+//         });
+//     });
+// }
+function search_And_Kill_Process(processName, useSIGKILL = true) {
+    console.log("Searching and killing process:", processName);
+
     return new Promise((resolve, reject) => {
+        // Search for the process
         exec(`ps aux | grep ${processName} | grep -v grep`, (err, stdout, stderr) => {
             if (err) {
                 console.error(`Error searching for process: ${err}`);
@@ -298,7 +352,10 @@ function search_And_Kill_Process(processName) {
 
             let killPromises = pids.map(pid => {
                 return new Promise((resolve, reject) => {
-                    exec(`kill ${pid}`, (err, stdout, stderr) => {
+                    // Use `kill -9` if `useSIGKILL` is true, otherwise use `kill`
+                    const killCommand = useSIGKILL ? `kill -9 ${pid}` : `kill ${pid}`;
+
+                    exec(killCommand, (err, stdout, stderr) => {
                         if (err) {
                             console.error(`Error killing process ${pid}: ${err}`);
                             return reject(err);
