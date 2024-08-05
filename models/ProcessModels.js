@@ -12,7 +12,8 @@ const path = require('path');
 const { exec } = require('child_process');
 const DBConnection = require('../db.js');
 const { log } = require('console');
- 
+ const readline = require('readline');
+
 
 async function check_main_process_status_model() {
   const file_name = process.env.PYTHON_INTERVAL;
@@ -151,176 +152,245 @@ ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 
 }
  
-
-// async function test1() {
-
-
-//     console.log("----- test1------------");
-   
-
-   
-//    const PYTHON_EXECUTABLE_ABSOLUTE  = process.env.PYTHON_EXECUTABLE_ABSOLUTE;    
-//    const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
-   
-//    const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-   
-//    const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
-//     const PYTHON_ENVIRONMENT = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'mssp_env', 'bin' , 'activate')
-//    // const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER,  'modules', 'Velociraptor')
-//    const SCRIPTS_PATH = path.resolve(__dirname, '..', '..', SCRIPTS_FOLDER)
-   
-   
-   
-   
-   
-//    console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
-//    console.log("PYTHON_EXECUTABLE_ABSOLUTE  = " ,PYTHON_EXECUTABLE_ABSOLUTE  );
-   
-//    const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
-   
-//    const command = `
-//    source ${PYTHON_ENVIRONMENT} && \
-//    ${PYTHON_EXECUTABLE_ABSOLUTE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
-//    `;
-   
-//     console.log("command interval = " ,command  );
-//    //     const command = `
-//    //     source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate  && \
-//    //     python  ~/mssp/risx-mssp-python-script/modules/Velociraptor/VelociraptorInterval.py
-//    // `;
-   
-
-//    }
-
-//    test1();
-
-
-async function active_manual_process_model() {
+// async function active_manual_process_model_______old() {
  
-try{
-
-    const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
-    const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
-
-    const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
-    const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
-    const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
-    const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-
+//     try{
     
-    console.log("active_manual_process_model 888");
-
-    const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
-    // const command = `python`;
+//         const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+//         const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+//         const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//         const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//         const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
+//         const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//         console.log("active_manual_process_model");
     
-    console.log("command", command);
-
-    const args = [PYTHON_SCRIPT_PATH];
-
-
-    console.log("args", args);
-
-    return new Promise((resolve, reject) => {
-        const childProcess = spawn(command, args, {
-            shell: '/bin/bash',
-            env: { ...process.env },
-        });
-
-        let found = false;
-
-        childProcess.stdout.on('data', (data) => {
-            console.log("Start find if includes - ``Start mssp``");
-            if (data.toString().includes("Start mssp")) {
-                found = true;
-                console.log("stdout.includes(Start mssp)");
-                resolve(true); // Resolve with true indicating success
-                // Do not kill the process, let it continue running
-            }
-        });
-
-        childProcess.stderr.on('data', (data) => {
-            console.error(`stderr: ${data}`);
-        });
-
-        childProcess.on('close', (code) => {
-            if (!found) {
-                console.log("Process closed with code:", code);
-                if (code !== 0) {
-                    console.error(`Process exited with code ${code}`);
-                }
-                resolve(false); // Resolve with false indicating failure
-            }
-        });
-
-        childProcess.on('error', (error) => {
-            console.error(`Error: ${error.message}`);
-            reject(false); // Reject with false indicating failure
-        });
-    });
-}
-catch (error) {
-    console.error('Error active_interval_process_model', error);
-    return false;
-}
-
-
-}
-
-
-// function search_And_Kill_Process(processName) {
-
-
-//     console.log("kill-interval-of-python",processName);
-//     return new Promise((resolve, reject) => {
-//         exec(`ps aux | grep ${processName} | grep -v grep`, (err, stdout, stderr) => {
-//             if (err) {
-//                 console.error(`Error searching for process: ${err}`);
-//                 return reject(err);
-//             }
-
-//             if (stderr) {
-//                 console.error(`stderr: ${stderr}`);
-//                 return reject(stderr);
-//             }
-
-//             if (!stdout) {
-//                 console.log('No such process found.');
-//                 return resolve(false);
-//             }
-
-//             const processLines = stdout.split('\n').filter(line => line.includes(processName));
-//             const pids = processLines.map(line => line.trim().split(/\s+/)[1]);
-
-//             if (pids.length === 0) {
-//                 console.log('No matching processes found.');
-//                 return resolve(false);
-//             }
-
-//             let killPromises = pids.map(pid => {
-//                 return new Promise((resolve, reject) => {
-//                     exec(`kill ${pid}`, (err, stdout, stderr) => {
-//                         if (err) {
-//                             console.error(`Error killing process ${pid}: ${err}`);
-//                             return reject(err);
-//                         }
-
-//                         if (stderr) {
-//                             console.error(`stderr: ${stderr}`);
-//                             return reject(stderr);
-//                         }
-
-//                         console.log(`Process ${pid} killed successfully.`);
-//                         resolve(true);
-//                     });
-//                 });
+//         const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+//         // const command = `python`;
+        
+//         console.log("command", command);
+    
+//         const args = [PYTHON_SCRIPT_PATH];
+//         console.log("active_manual_process_model 2");
+//         return new Promise((resolve, reject) => {
+//             const childProcess = spawn(command, args, {
+//                 shell: '/bin/bash',
+//                 env: { ...process.env },
 //             });
-
-//             Promise.all(killPromises)
-//                 .then(() => resolve(true))
-//                 .catch(err => reject(err));
+       
+    
+    
+//             let found = false;
+//             console.log("active_manual_process_model 3");
+    
+    
+//             childProcess.stdout.on('data', (data) => {
+    
+    
+//                 console.log("Start find if includes - ``Start mssp``");
+//                 if (data.toString().includes("Start mssp")) {
+//                     found = true;
+//                     console.log("stdout.includes(Start mssp)");
+//                     resolve(true); // Resolve with true indicating success
+//                     // Do not kill the process, let it continue running
+//                 }
+//             });
+    
+//             childProcess.stderr.on('data', (data) => {
+//                 console.error(`stderr: ${data}`);
+//             });
+    
+//             childProcess.on('close', (code) => {
+//                 if (!found) {
+//                     console.log("Process closed with code:", code);
+//                     if (code !== 0) {
+//                         console.error(`Process exited with code ${code}`);
+//                     }
+//                     resolve(false); // Resolve with false indicating failure
+//                 }
+//             });
+    
+//             childProcess.on('error', (error) => {
+//                 console.error(`Error: ${error.message}`);
+//                 reject(false); // Reject with false indicating failure
+//             });
 //         });
+//     }
+//     catch (error) {
+//         console.error('Error active_interval_process_model', error);
+//         return false;
+//     }
+    
+    
+//     }
+    
+ 
+
+// async function active_manual_process_model() {
+ 
+// try{
+
+//     const PYTHON_EXECUTABLE  = process.env.PYTHON_EXECUTABLE;
+//     const PYTHON_EXECUTABLE_RELATVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE)
+//     const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+//     const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+//     const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
+//     const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+//     console.log("active_manual_process_model");
+
+//     const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATVE}`;
+//     // const command = `python`;
+    
+//     const args = [PYTHON_SCRIPT_PATH];
+//     console.log("active_manual_process_model 2");
+//     return new Promise((resolve, reject) => {
+//         const childProcess = spawn(command, args, {
+//             shell: '/bin/bash',
+//             env: { ...process.env },
+//         });
+//         const pid = childProcess.pid;
+//         console.log(PYTHON_MANUAL_ACTIVE, ` Started process with PID: ${pid}`);
+//         let found = false;
+//         console.log("active_manual_process_model 3");
+
+
+//         // childProcess.stdout.on('data', (data) => {
+
+
+//         //     console.log("Start find if includes - ``Start mssp``");
+//         //     if (data.toString().includes("Start mssp")) {
+//         //         found = true;
+//         //         console.log("stdout.includes(Start mssp)");
+//         //         resolve(true); // Resolve with true indicating success
+//         //         // Do not kill the process, let it continue running
+//         //     }
+//         // });
+
+//         childProcess.stderr.on('data', (data) => {
+//             console.error(`stderr: ${data}`);
+//         });
+
+//         childProcess.on('close', (code) => {
+
+//             if (pid) {
+               
+//                 if (typeof pid === "number" ) {
+//                     console.log("active_manual_process_model  - true ( process = 'close'), got pid number: ", pid ,"code: " , code);      
+//                     resolve(true);}
+//             }
+
+
+//             if (!pid) {
+//                 console.log("active_manual_process_model  - false ( process = 'close'),  !pid ", "code: " , code);
+
+//                 resolve(false);    }
+
+
+
+//         });
+
+//         childProcess.on('error', (error) => {
+//             console.error(`active_manual_process_model  - false by Error: ${error.message}`);
+//             reject(false); // Reject with false indicating failure
+//         });
+
+
+//       // Wait for 0.2 seconds after getting the PID before resolving
+//       if (pid  && typeof pid === "number" ) {
+//         setTimeout(() => {
+//             console.log(" active_manual_process_model  - true by setTimeout  - pid:", pid );
+//             resolve(true);
+//         }, 300);
+//     } else {
+
+//         console.log(" active_manual_process_model  - false by setTimeout  - not pid" );
+//         resolve(false);
+//     }
+
 //     });
 // }
+// catch (error) {
+
+//     console.error('Error active_interval_process_model', error);
+//     return false;
+// }
+
+
+// }
+
+
+
+
+ async function active_manual_process_model() {
+    try {
+        const PYTHON_EXECUTABLE = process.env.PYTHON_EXECUTABLE;
+        const PYTHON_EXECUTABLE_RELATIVE = path.resolve(__dirname, '..', '..', PYTHON_EXECUTABLE);
+        const PYTHON_SCRIPTS_RELATIVE_PATH = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+        const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
+        const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
+        const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
+        console.log("active_manual_process_model");
+
+        const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATIVE}`;
+        
+        const args = [PYTHON_SCRIPT_PATH];
+        console.log("active_manual_process_model 2");
+
+        return new Promise((resolve, reject) => {
+            const childProcess = spawn(command, args, {
+                shell: '/bin/bash',
+                env: { ...process.env },
+            });
+
+            const pid = childProcess.pid;
+            console.log(PYTHON_MANUAL_ACTIVE, `Started process with PID: ${pid}`);
+            console.log("active_manual_process_model 3");
+
+            childProcess.stderr.on('data', (data) => {
+                console.error(`stderr: ${data}`);
+            });
+
+            childProcess.on('close', (code) => {
+                const closeMessage = `Process closed with code: ${code}`;
+                console.log(closeMessage);
+                if (pid && typeof pid === "number") {
+                    const successMessage = `active_manual_process_model - true (process = 'close'), got pid number: ${pid}, code: ${code}`;
+                    console.log(successMessage);
+                    resolve({ success: true, message: successMessage });
+                } else {
+                    const errorMessage = `active_manual_process_model - false (process = 'close'), !pid, code: ${code}`;
+                    console.log(errorMessage);
+                    resolve({ success: false, message: errorMessage });
+                }
+            });
+
+            childProcess.on('error', (error) => {
+                const errorMessage = `active_manual_process_model - false by Error: ${error.message}`;
+                console.error(errorMessage);
+                reject(new Error(errorMessage)); // Reject with the error indicating failure
+            });
+
+            // Wait for 0.3 seconds after getting the PID before resolving
+            if (pid && typeof pid === "number") {
+                setTimeout(() => {
+                    const successMessage = `active_manual_process_model - true by setTimeout - pid: ${pid}`;
+                    console.log(successMessage);
+                    resolve({ success: true, message: successMessage });
+                }, 300);
+            } else {
+                const errorMessage = `active_manual_process_model - false by setTimeout - not pid`;
+                console.log(errorMessage);
+                resolve({ success: false, message: errorMessage });
+            }
+        });
+    } catch (error) {
+        const errorMessage = `Error active_manual_process_model: ${error.message}`;
+        console.error(errorMessage);
+        throw new Error(errorMessage); // Throw the error to be caught by the caller
+    }
+}
+
+ 
+ 
 function search_And_Kill_Process(processName, useSIGKILL = true) {
     console.log("Searching and killing process:", processName);
 
@@ -379,11 +449,48 @@ function search_And_Kill_Process(processName, useSIGKILL = true) {
     });
 }
 
+
+
+
+
+
+async function get_all_python_processes() {
+    return new Promise((resolve, reject) => {
+        const command = "ps aux | grep python | grep -v grep";
+
+        exec(command, (error, stdout, stderr) => {
+            if (error && error.code !== 1) {
+                console.error(`Error: ${error.message}`);
+                return reject(error);
+            }
+            if (stderr) {
+                console.error(`stderr: ${stderr}`);
+            }
+
+            const processes = stdout.trim().split('\n')
+                .filter(line => line.trim() !== '')
+                .map(line => {
+                    const parts = line.split(/\s+/);
+                    const pid = parts[1];
+                    const command = parts.slice(10).join(' ');
+                    const name = command.split('/').pop();  // Get the last part of the path
+                    return { pid, name, command };
+                });
+
+            resolve(processes);
+        });
+    })
+  }
+
+
+
+
 module.exports = {
 check_main_process_status_model ,
 active_manual_process_model,
 active_interval_process_model,
-search_And_Kill_Process
+search_And_Kill_Process,
+get_all_python_processes
 };
 
 
