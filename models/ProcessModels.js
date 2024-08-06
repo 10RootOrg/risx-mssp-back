@@ -343,7 +343,6 @@ ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 
             const pid = childProcess.pid;
             console.log(PYTHON_MANUAL_ACTIVE, `Started process with PID: ${pid}`);
-            console.log("active_manual_process_model 3");
 
             childProcess.stderr.on('data', (data) => {
                 console.error(`stderr: ${data}`);
