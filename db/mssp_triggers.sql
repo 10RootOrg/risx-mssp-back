@@ -214,4 +214,61 @@ BEGIN
 	END IF;
 END$$
 
+DROP FUNCTION IF EXISTS ReturnArrayTool$$
+
+create Function ReturnArrayTool
+( stringLonf varchar(500)
+)
+     returns json
+     DETERMINISTIC 
+  begin
+   DECLARE Toolss, Tool VARCHAR(4000);
+     DECLARE ToolList JSON DEFAULT "[]";
+        DECLARE i INT DEFAULT 0;
+        SELECT CAST(CONCAT('["', REPLACE(stringLonf, ',', '","'), '"]') AS JSON) INTO Toolss;
+        WHILE i < JSON_LENGTH(Toolss) DO
+            SELECT Tool_name FROM tools WHERE tool_id = JSON_EXTRACT(Toolss, CONCAT('$[', i, ']')) INTO Tool;
+            SET ToolList = JSON_ARRAY_APPEND(ToolList, "$", Tool);
+            SET i = i + 1;
+        END WHILE;
+        return ToolList;
+end$$   
+
+DROP FUNCTION IF EXISTS ReturnArrayType$$
+
+create Function ReturnArrayType
+( stringLonf varchar(500)
+)
+     returns json
+     DETERMINISTIC 
+  begin
+		DECLARE typess, typr VARCHAR(4000);
+        DECLARE typelist JSON DEFAULT "[]";
+        DECLARE  z INT DEFAULT 0;
+        SELECT CAST(CONCAT('["', REPLACE(stringLonf, ',', '","'), '"]') AS JSON) INTO typess;
+        WHILE z < JSON_LENGTH(typess) DO
+            SELECT resource_type_name FROM resource_type WHERE resource_type_id = JSON_EXTRACT(typess, CONCAT('$[', z, ']')) INTO typr;
+            SET typelist = JSON_ARRAY_APPEND(typelist, "$", typr);
+            SET z = z + 1;
+		END WHILE;
+        return typelist;
+end$$   
+
+DROP PROCEDURE IF EXISTS addAllAssetsToConfig$$
+create PROCEDURE addAllAssetsToConfig ()
+  begin
+  
+  select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
+  "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring)) from all_resources;
+
+  UPDATE configjson SET config = JSON_SET(config,
+  "$.ClientInfrastructure.Assets", (select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
+  "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring)) from all_resources));
+
+  
+  end$$   
+
+
+
+
  
