@@ -59,7 +59,7 @@ async function get_single_velociraptor_response(req, res, next) {
 
 
 //  const MB_limit = 0.022
-     const MB_limit = 1
+     const MB_limit = 10
 
     console.log("file size= ", size  ,"MB_limit= ", MB_limit    );
     console.log(" MB_limit < size " ,  MB_limit < size    );
@@ -68,7 +68,7 @@ async function get_single_velociraptor_response(req, res, next) {
 if (  MB_limit < size ){ 
   console.log("json file too big",size);
  
-  return  res.status(200).json({ success: false, fileSize:"Too big", message: `File is too big. Maximum size allowed is ${MB_limit} MB.` });
+  return  res.status(200).json({ success: false, fileSize:"Too big" ,mbSize:size   , message: `File is too big. Maximum size allowed is ${MB_limit} MB.` });
  
  }
 
