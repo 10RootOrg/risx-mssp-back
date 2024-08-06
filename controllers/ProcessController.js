@@ -1,11 +1,9 @@
 
  const { check_main_process_status_model , active_manual_process_model,
-  active_interval_process_model,
+  active_interval_process_model,get_all_python_processes,
   
   
   search_And_Kill_Process} = require('../models/ProcessModels');
-
-
 
 
 
@@ -120,34 +118,54 @@ async function Check_Interval_Status(req, res, next) {
 
 }
 
-async function active_manual_process(req,res,next){
-  console.log("active_manual_process"  );
-  // const param1 =  req.query.param1
-try{ 
- 
- 
-  await  active_manual_process_model().then(isRunning => {
-  console.log('active_manual_process_model:', isRunning)
-if      (isRunning === true) {res.send(true);}
-else if(isRunning === false) { res.send("Error");}
+// async function active_manual_process(req,res,next){
+//   console.log("active_manual_process"  );
+
+// try{ 
+//   await  active_manual_process_model().then(isRunning => {
+//   console.log('active_manual_process_model:', isRunning)
+// if      (isRunning === true) {res.send(true);}
+// else if(isRunning === false) { res.send("Error");}
  
 
 
-}).catch(error => {
-  console.error('Error:', error);res.send(false); next(error);
-});
+// }).catch(error => {
+//   console.error('Error:', error);res.send(false); next(error);
+// });
 
  
-   
-  } 
-  catch(err)
-  {console.log("err in active_manual_process" , err);}
+//   } 
+//   catch(err)
+//   {console.log("err in active_manual_process" , err);}
 
 
+// }
+
+
+async function active_manual_process(req, res, next) {
+  console.log("active_manual_process");
+
+  try {
+      await active_manual_process_model()
+          .then(result => {
+              console.log('active_manual_process_model:', result);
+              if (result.success === true) {
+                  res.send(true);
+              } else if (result.success === false) {
+                  res.status(500).send({ error: "Error", message: result.message });
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              res.status(500).send({ error: error.message }); // Send the error message to the front end
+              next(error);
+          });
+  } catch (err) {
+      console.log("err in active_manual_process", err);
+      res.status(500).send({ error: err.message }); // Send the error message to the front end
+      next(err);
+  }
 }
-
-
-
 
 
 
