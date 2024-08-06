@@ -95,6 +95,7 @@ const ResetConfigToBasic = async (req, res, next) => {
   console.log("BasicConfig 8893852", BasicConfig);
 
   const put = await put_full_config_model(BasicConfig);
+  
   if (put === 1) {
     res.status(200).send("Updated successfully");
   } else {

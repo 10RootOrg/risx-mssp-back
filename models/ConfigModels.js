@@ -24,6 +24,17 @@ async function put_full_config_model(config) {
       .limit(1); //   first row
     console.log("change_this sssssssss", change_this);
 
+    try {
+      const rePutAssets = await DBConnection.raw("call addAllAssetsToConfig()")
+      console.log(rePutAssets);
+    } catch (error) {
+      console.log("error",error);
+      await DBConnection.raw("call addAllAssetsToConfig()")
+    }
+
+   
+    
+
     // const stringified =  JSON.stringify( real_config)
     //     const change_this = await DBConnection('configjson')
     //     .update({ config:stringified})
