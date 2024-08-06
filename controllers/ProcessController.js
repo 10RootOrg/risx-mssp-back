@@ -148,21 +148,26 @@ async function active_manual_process(req, res, next) {
   try {
       await active_manual_process_model()
           .then(result => {
-              console.log('active_manual_process_model:', result);
+              console.log('controller  ->  active_manual_process_model:', result);
+
               if (result.success === true) {
-                  res.send(true);
+                  // res.send(true);
+                  
+                  res.status(200).send({  message:result.message , success:true });
+                  
               } else if (result.success === false) {
-                  res.status(500).send({ error: "Error", message: result.message });
+                console.log('controller  ->  result.success === false:', result);
+                  res.status(500).send({ message: result.message , success:false });
               }
           })
           .catch(error => {
-              console.error('Error:', error);
-              res.status(500).send({ error: error.message }); // Send the error message to the front end
+              console.error('controller  -> active_manual_process_model  .catch(error =>:', error);
+              res.status(500).send({ message: error.message  , success:false }); // Send the error message to the front end
               next(error);
           });
   } catch (err) {
-      console.log("err in active_manual_process", err);
-      res.status(500).send({ error: err.message }); // Send the error message to the front end
+      console.log("controller  ->  active_manual_process_model  } catch (err) {", err);
+      res.status(500).send({ message: err.message , success:false }); // Send the error message to the front end
       next(err);
   }
 }

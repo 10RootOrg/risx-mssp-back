@@ -84,20 +84,16 @@ console.log("PYTHON_EXECUTABLE_RELATVE   = " ,PYTHON_EXECUTABLE_RELATVE  );
 
 const PYTHON_INTERVAL_FILENAME = process.env.PYTHON_INTERVAL;
 
-const command = `
-source ${PYTHON_ENVIRONMENT} && \
-${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
-`;
-
 // const command = `
-// python ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+// source ${PYTHON_ENVIRONMENT} && \
+// ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
 // `;
 
-
-
+const command = `
+python ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
+`;
  console.log("command interval = " ,command  );
  
-
  try{
 
     return new Promise((resolve, reject) => {
@@ -328,61 +324,79 @@ ${PYTHON_EXECUTABLE_RELATVE} ${SCRIPTS_PATH}/${PYTHON_INTERVAL_FILENAME}
         const PYTHON_MANUAL_ACTIVE = process.env.PYTHON_MANUAL_ACTIVE;
         const RELATIVE_PATH = path.resolve(__dirname, '..', '..');
         const PYTHON_SCRIPT_PATH = path.resolve(RELATIVE_PATH, PYTHON_SCRIPTS_RELATIVE_PATH, PYTHON_MANUAL_ACTIVE);
-        console.log("active_manual_process_model");
+ 
 
-        const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATIVE}`;
-        
+        // const command = `source ~/mssp/risx-mssp-python-script/mssp_env/bin/activate && ${PYTHON_EXECUTABLE_RELATIVE}`;
+        const command = `python`;
         const args = [PYTHON_SCRIPT_PATH];
-        console.log("active_manual_process_model 2");
+
+
+        console.log("active_manual_process_model file name is:" , PYTHON_MANUAL_ACTIVE);
+       console.log("active_manual_process_model       command:" , command);
 
         return new Promise((resolve, reject) => {
+
             const childProcess = spawn(command, args, {
                 shell: '/bin/bash',
                 env: { ...process.env },
             });
 
             const pid = childProcess.pid;
-            console.log(PYTHON_MANUAL_ACTIVE, `Started process with PID: ${pid}`);
+            console.log(PYTHON_MANUAL_ACTIVE, `Started process with PID: ${pid}.`);
 
             childProcess.stderr.on('data', (data) => {
                 console.error(`stderr: ${data}`);
+                const errorMessage = data.toString();
+                resolve({ success: false, message: errorMessage });
+
             });
 
             childProcess.on('close', (code) => {
-                const closeMessage = `Process closed with code: ${code}`;
-                console.log(closeMessage);
+
+  
                 if (pid && typeof pid === "number") {
-                    const successMessage = `active_manual_process_model - true (process = 'close'), got pid number: ${pid}, code: ${code}`;
+                    const successMessage = `A Manual Process has Started to run true by: (process = 'close'). PID: ${pid}.`;
                     console.log(successMessage);
                     resolve({ success: true, message: successMessage });
-                } else {
-                    const errorMessage = `active_manual_process_model - false (process = 'close'), !pid, code: ${code}`;
-                    console.log(errorMessage);
-                    resolve({ success: false, message: errorMessage });
+                // } else {
+                //     const errorMessage = `active_manual_process_model - false (process = 'close'), !pid, code: ${code}`;
+                //     console.log(errorMessage);
+                //     resolve({ success: false, message: errorMessage });
                 }
             });
 
             childProcess.on('error', (error) => {
-                const errorMessage = `active_manual_process_model - false by Error: ${error.message}`;
+                const errorMessage = `Error cant active the file: ${PYTHON_MANUAL_ACTIVE} in active_manual_process_model - false by childProcess.on('error'). Error message: ${error.message}.`;
                 console.error(errorMessage);
                 reject(new Error(errorMessage)); // Reject with the error indicating failure
             });
 
+            const time_to_wait = 1000
+
+
             // Wait for 0.3 seconds after getting the PID before resolving
-            if (pid && typeof pid === "number") {
-                setTimeout(() => {
-                    const successMessage = `active_manual_process_model - true by setTimeout - pid: ${pid}`;
-                    console.log(successMessage);
-                    resolve({ success: true, message: successMessage });
-                }, 300);
-            } else {
-                const errorMessage = `active_manual_process_model - false by setTimeout - not pid`;
-                console.log(errorMessage);
-                resolve({ success: false, message: errorMessage });
-            }
+
+
+setTimeout(() => {
+
+    if (pid && typeof pid === "number") {
+        const successMessage = `A Manual Process has Started to run. true by Timeout. PID: ${pid}.`;
+        console.log(successMessage);
+        resolve({ success: true, message: successMessage });
+    } else {
+        const errorMessage = `Error cant active the file: ${PYTHON_MANUAL_ACTIVE} in active_manual_process_model - false by Timeout - wait ${time_to_wait / 1000} seconds and didnt get python process PID.`;
+        console.log("errorMessage:", errorMessage);
+        resolve({ success: false, message: errorMessage });
+    }
+}, time_to_wait);
+
+
+
+
+
         });
     } catch (error) {
-        const errorMessage = `Error active_manual_process_model: ${error.message}`;
+        const errorMessage = `Error: cant active the file: ${PYTHON_MANUAL_ACTIVE}. error: ${error.message}`;
         console.error(errorMessage);
         throw new Error(errorMessage); // Throw the error to be caught by the caller
     }
