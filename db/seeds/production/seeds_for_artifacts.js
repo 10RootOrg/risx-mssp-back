@@ -31,7 +31,7 @@ exports.seed = async function (knex) {
       BoxType: "Tools_big",
       headline: "Hardening Kitty",
       description:
-        "OS compliance check for Windows OS against 40 different baselines",
+        "OS compliance check for Windows OS against 40 different baselines.",
       Toolname: "HardeningKitty",
       artifact_id: "1000103",
       parent_id: "2000000",
@@ -55,7 +55,7 @@ exports.seed = async function (knex) {
       BoxType: "Tools_big",
       headline: "Persistence Sniper",
       description:
-        "Incident Responders and System Administrators to hunt persistences implanted",
+        "Incident Responders and System Administrators to hunt persistences implanted.",
       Toolname: "PersistenceSniper",
       artifact_id: "1000104",
       parent_id: "2000000",
@@ -77,7 +77,7 @@ exports.seed = async function (knex) {
     {
       BoxType: "Tools_big",
       headline: "Hayabusa",
-      description: "Event log fast forensics timeline generator",
+      description: "Event log fast forensics timeline generator.",
       Toolname: "Hayabusa",
       artifact_id: "1000105",
       parent_id: "2000000",

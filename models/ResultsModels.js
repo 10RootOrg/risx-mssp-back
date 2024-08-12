@@ -11,6 +11,41 @@ const { log } = require('console');
  
 
 
+
+async function delete_json_results_file_model() {
+  const ResponsePath = 'response_folder/tmp2.json';
+
+  try {
+    // Read environment variable for scripts folder path
+    const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+
+    // Resolve the file path
+    const filePath = path.resolve(__dirname, "..", "..", SCRIPTS_FOLDER, ResponsePath);
+    console.log(`filePath: ${filePath}`);
+
+    // Check if the file exists
+    await fs.access(filePath);
+    console.log(`File found: ${filePath}`);
+
+    // Delete the file
+    await fs.unlink(filePath);
+    console.log(`File deleted: ${filePath}`);
+    
+    return { success: true, message: `File deleted 55: ${filePath}` };
+
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      // File does not exist
+      console.log(`File or folder does not exist: ${filePath}`);
+      return { success: false, message: `File or folder does not exist 22: ${filePath}` };
+    } else {
+      // Other errors
+      console.error('Error deleting file:', err);
+      return { success: false, message: 'Error deleting file. 33' };
+    }
+  }
+}
+
 async function get_all_latest_results_dates(results) {
  
 
@@ -564,6 +599,7 @@ module.exports = {
   get_all_latest_results_dates,
   get_velociraptor_aggregate_macro_model,
   order_result_aggregate_macro_model,
+  delete_json_results_file_model
   // download_file_model
 
 };

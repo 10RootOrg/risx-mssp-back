@@ -1,6 +1,6 @@
 const { 
 
-  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model } = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model ,delete_json_results_file_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -171,6 +171,50 @@ const latest = await find_latest_response_and_request(module_id)
     }catch(err){console.log(err); res.send(err)    }
   }
 
+  async function delete_results(req, res, next) {
+    const { checked_items } = req.query;
+ 
+    console.log("items" ,checked_items);
+    // Check if ids is valid
+    if (!checked_items || checked_items.length === 0) {
+      console.log("delete_results_by_ids no items to delete");
+      return res.status(400).json({ message: 'Choose items to delete them.' });
+    }
+    // ,"ModuleName":ModuleName ,"SubModuleName":SubModuleName    
+
+    const invalidItem = checked_items.find(item => !item.UniqueID || !item.ResponsePath );
+    if (invalidItem != undefined) {
+      console.log("invalidItem !!!");
+      return res.status(400).json({ message: `Missing data for delete results of ${invalidItem?.ModuleName} with the UniqueID of:  ${invalidItem?.UniqueID} ` });
+    }
+
+
+    try {
+      // Iterate over each ID using for...of
+      for (const item of checked_items) {
+       const deleted =  await delete_json_results_file_model(item.ResponsePath );
+
+     if (deleted?.success === true  ){console.log("yeaaaa", deleted?.message );}
+
+
+     else {console.log("noooooooo", deleted)};
+
+
+      }
+      
+      // Respond with a success message
+      // res.status(200).json({ message: 'Results deleted successfully' });
+    } catch (err) {
+
+      console.error('Error deleting results:', err);
+      res.status(500).send(err.message || 'An error occurred while deleting results');
+    }
+  }
+
+
+  
+
+
   module.exports = {
 
     // get_all_latest_results_dates,
@@ -179,7 +223,8 @@ const latest = await find_latest_response_and_request(module_id)
     check_last_req_and_res_for_module,
     get_all_requests_table,
     get_velociraptor_aggregate_macro,
-    download_json_file
+    download_json_file,
+    delete_results
   };
   
 
