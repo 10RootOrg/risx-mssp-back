@@ -11,6 +11,7 @@ router.get('/get_all_requests_table', ResultsController.get_all_requests_table);
  router.get('/velociraptor-aggregate-macro', ResultsController.get_velociraptor_aggregate_macro);  
  router.get('/check_last_req_and_res_for_module', ResultsController.check_last_req_and_res_for_module);  /// check to delete
 
+ router.delete('/delete-results-by-ids/', ResultsController.delete_results);
 
 //  router.get('/count-responses-files', ResultsController.count_velociraptor_responses);  
 
