@@ -36,7 +36,7 @@ exports.seed = async function (knex) {
       artifact_id: "1000103",
       parent_id: "2000000",
       readMoreText:
-        "HardeningKitty supports hardening of a Windows system. The configuration of the system is retrieved and assessed using a finding list. In addition, the system can be hardened according to predefined values. HardeningKitty reads settings from the registry and uses other modules to read configurations outside the registry.The script was developed for English systems. It is possible that in other languages the analysis is incorrect. Please create an issue if this occurs.",
+        "HardeningKitty supports hardening of a Windows system. The configuration of the system is retrieved and assessed using a finding list. In addition, the system can be hardened according to predefined values. HardeningKitty reads settings from the registry and uses other modules to read configurations outside the registry.The script was developed for English systems.",
       isActive: false,
       ShowInUi: true,
       logoAddress_1: "./Logos/Kitty.svg",
@@ -54,8 +54,7 @@ exports.seed = async function (knex) {
     {
       BoxType: "Tools_big",
       headline: "Persistence Sniper",
-      description:
-        "Incident Responders and System Administrators to hunt persistences implanted.",
+      description: "Incident Responders and System Administrators to hunt persistences implanted.",
       Toolname: "PersistenceSniper",
       artifact_id: "1000104",
       parent_id: "2000000",
