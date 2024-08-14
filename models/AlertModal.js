@@ -13,7 +13,7 @@ async function GetAlertsFile() {
       "alerts.json"
     );
     const file = await fs.readFileSync(DashBoardFile, "utf-8");
-    const [data] = JSON.parse(file);
+    const data = JSON.parse(file);
     const [users] = await DBConnection.raw(
       "select user_id,user_name from users"
     );
