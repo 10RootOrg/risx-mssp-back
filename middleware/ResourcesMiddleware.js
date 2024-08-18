@@ -25,14 +25,20 @@ next()
 
 }
 async function Check_if_resource_exists_to_avoid_duplication(req,res,next){
- 
+
   
-  const {resource_string} = req.body 
+  const {resource_string , item_types_list} = req.body 
  
-  const exist =  await check_if_string_exist_in_db(resource_string)
+
+  console.log("item_types_list" ,item_types_list);
+ 
+
+
+  const exist =  await check_if_string_exist_in_db(resource_string ,item_types_list)
   if (exist){
-     res.status(400).send("Resource Name is already exists") 
-    console.log("Resource Name is already exists");return}
+   res.status(400).send(`Asset named "${resource_string}" already exists for this type.`);
+
+    console.log("This Asset is already in this type");return}
  next()
  
  

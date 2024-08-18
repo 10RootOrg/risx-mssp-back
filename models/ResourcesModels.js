@@ -297,19 +297,69 @@ return AllResourceType
   
 }
 
-async function check_if_string_exist_in_db(resource_string){
-  console.log("resource_string", resource_string);
+async function check_if_string_exist_in_db_old(resource_string,item_types_list){
+
+
+
   try{
 
-    if (resource_string == undefined ||  resource_string == null ){return null}
+ if (resource_string == undefined ||  resource_string == null ){return null}
+ if (item_types_list == undefined ||  item_types_list == null  ||  item_types_list.length === 0  ){return null}
+
+// item_types_list.forEach((item_type) =>
+
+//   );
+
 
 const exist = await DBConnection('all_resources').select('resource_string')
-.where('resource_string', '=', resource_string);
+.where('resource_string', '=', resource_string)
+ .where('type', '=', item_type);
 if (exist?.length === 0) {console.log("no exist");return false}
 else if ( exist?.length != 0) {console.log("exist"  );return true}
 
   }catch(err){console.log(err);}
 }
+
+
+
+
+async function check_if_string_exist_in_db(resource_string,item_types_list) {
+  try {
+    // Validate inputs
+    if (!resource_string || !item_types_list || item_types_list.length === 0) {
+      return null;
+    }
+
+    // Iterate over each item type and check if the resource string exists
+    for (const item_type of item_types_list) {
+      const exist = await DBConnection('all_resources')
+        .select('resource_string')
+        .where('resource_string', '=', resource_string)
+        .where('type', '=', item_type);
+      
+      if (exist.length > 0) {
+        console.log("exist");
+        return true;
+      }
+    }
+
+    console.log("no exist");
+    return false;
+
+  } catch (err) {
+    console.error(err);
+    return false; // Consider what should be returned in case of an error
+  }
+}
+
+
+
+
+
+
+
+
+
 async function check_if_id_exist_in_db(resource_id){
   console.log("resource_id", resource_id);
   try{
