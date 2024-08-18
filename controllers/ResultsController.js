@@ -1,6 +1,6 @@
 const { 
 
-  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,get_requests_csv_table_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model ,delete_json_results_file_model} = require('../models/ResultsModels');
+  check_file_size ,get_single_velociraptor_result_model, count_response_files_model,find_latest_response_and_request ,Checking_if_file_exists_model,get_all_latest_results_dates,get_ReqestStatus_from_config_file,add_time_note,check_main_process_status_model,get_velociraptor_aggregate_macro_model,order_result_aggregate_macro_model ,delete_json_results_file_model} = require('../models/ResultsModels');
  const {get_all_Modules_model, all_Modules_id_and_trashold, all_Artifacts_id_and_trashold} = require('../models/ToolsModels');
 
 const DBConnection = require('../db.js');
@@ -8,6 +8,7 @@ const {v4: uuid} = require('uuid');
 const  path = require('path');
 const fs = require('fs').promises;
 const fs_non_promises = require('fs');
+const { error } = require('console');
 
 async function download_json_file(req, res, next) {
     try {
@@ -59,7 +60,7 @@ async function get_single_velociraptor_response(req, res, next) {
 
 
 //  const MB_limit = 0.022
-     const MB_limit = 10
+     const MB_limit = 1
 
     console.log("file size= ", size  ,"MB_limit= ", MB_limit    );
     console.log(" MB_limit < size " ,  MB_limit < size    );
@@ -172,16 +173,19 @@ const latest = await find_latest_response_and_request(module_id)
   }
 
   async function delete_results(req, res, next) {
+
+let error_message =""
+
     const { checked_items } = req.query;
  
     console.log("items" ,checked_items);
-    // Check if ids is valid
+
+//  Checking whether there is no information in the deletion request
     if (!checked_items || checked_items.length === 0) {
       console.log("delete_results_by_ids no items to delete");
       return res.status(400).json({ message: 'Choose items to delete them.' });
     }
-    // ,"ModuleName":ModuleName ,"SubModuleName":SubModuleName    
-
+// Checking whether one of the items that reach deletion is missing an ID or a file address for deletion
     const invalidItem = checked_items.find(item => !item.UniqueID || !item.ResponsePath );
     if (invalidItem != undefined) {
       console.log("invalidItem !!!");
@@ -190,14 +194,32 @@ const latest = await find_latest_response_and_request(module_id)
 
 
     try {
-      // Iterate over each ID using for...of
+
+
       for (const item of checked_items) {
-       const deleted =  await delete_json_results_file_model(item.ResponsePath );
 
-     if (deleted?.success === true  ){console.log("yeaaaa", deleted?.message );}
+        
+        const tmpPath = 'response_folder/tmp2.json';
+  
+        console.log("    item.ResponsePath " ,     item.ResponsePath );
 
 
-     else {console.log("noooooooo", deleted)};
+       const exists =  await Checking_if_file_exists_model(tmpPath)
+
+       if       (exists.success === true){ console.log("file exists")}
+        else if (exists.success === false){ error_message  = `respone path ${item.ResponsePath} not exists`; console.log("error_message",error_message) }
+
+        console.log("exists1" , exists.success === true);
+        console.log("exists1" , exists.success === false);
+
+
+
+    //    const deleted =  await delete_json_results_file_model(item.ResponsePath );
+
+    //  if (deleted?.success === true  ){console.log("yeaaaa", deleted?.message );}
+
+
+    //  else {console.log("noooooooo", deleted)};
 
 
       }
@@ -207,7 +229,7 @@ const latest = await find_latest_response_and_request(module_id)
     } catch (err) {
 
       console.error('Error deleting results:', err);
-      res.status(500).send(err.message || 'An error occurred while deleting results');
+      res.status(500).send(     {success : false , error_message: error_message,    catch_error_message: err.message || 'An error occurred while deleting results'  }      );        
     }
   }
 

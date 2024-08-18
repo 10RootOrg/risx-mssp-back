@@ -11,6 +11,36 @@ const { log } = require('console');
  
 
 
+async function Checking_if_file_exists_model(ResponsePath) {
+
+
+  try {
+    // Read environment variable for scripts folder path
+    const SCRIPTS_FOLDER = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+
+    // Resolve the file path
+    const filePath = path.resolve(__dirname, "..", "..", SCRIPTS_FOLDER, ResponsePath);
+    console.log(`filePath: ${filePath}`);
+
+    // Check if the file exists
+    await fs.access(filePath);
+    console.log(`File found: ${filePath}`);
+
+    
+    return { success: true};
+
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      // File does not exist
+      console.log(`File or folder does not exist: ${filePath}`);
+      return { success: false, message: `File or folder does not exist: ${filePath}` };
+    } else {
+      // Other errors
+      console.error('File or folder does not exist:', err);
+      return { success: false, message: 'File or folder does not exist.' };
+    }
+  }
+}
 
 async function delete_json_results_file_model() {
   const ResponsePath = 'response_folder/tmp2.json';
@@ -599,7 +629,7 @@ module.exports = {
   get_all_latest_results_dates,
   get_velociraptor_aggregate_macro_model,
   order_result_aggregate_macro_model,
-  delete_json_results_file_model
-  // download_file_model
+  delete_json_results_file_model,
+  Checking_if_file_exists_model
 
 };

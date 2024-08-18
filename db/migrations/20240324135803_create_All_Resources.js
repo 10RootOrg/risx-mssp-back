@@ -6,7 +6,7 @@ exports.up = function(knex) {
     return knex.schema
     .createTable('all_resources', table => {
         table.string('resource_id', 15).notNullable().unique().primary();
-        table.string('resource_string', 255).notNullable().unique();
+        table.string('resource_string', 255).notNullable();
         table.string('description');
         table.text('tools');
         table.string('type');
