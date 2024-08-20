@@ -25,7 +25,6 @@ console.log('backend got this front 2',`http://${front_ip}:${front_port}` );
 console.log('backend got this front 3',`${front_url}:${front_port}`);
 
 
-
 app.use(
   cors({
     origin: [
