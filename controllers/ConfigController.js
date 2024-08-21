@@ -174,15 +174,27 @@ async function ImportAllAssets(req, res, next) {
     console.log(jja);
 
     const r = await PostImportedAssets(jja);
-    console.log(r,"response of import");
-    
+    console.log(r, "response of import");
+
     res.send({});
   } catch (err) {
     console.log("Error in ExportAllAssets ", err);
   }
 }
 
-// GetAllLeakAsset()
+async function DeleteResultHistory(req, res, next) {
+  try {
+    console.log("start");
+    const file = await get_full_config_model();
+    file.RequestStatus = [];
+    const f = await put_full_config_model(file);
+    
+    res.status(200).send("Updated successfully");
+  } catch (error) {
+    console.log("Error in Delete History", error);
+  }
+}
+
 module.exports = {
   Get_Config,
   Put_Config,
@@ -193,4 +205,5 @@ module.exports = {
   GetAllLeakAsset,
   ExportAllAssets,
   ImportAllAssets,
+  DeleteResultHistory,
 };

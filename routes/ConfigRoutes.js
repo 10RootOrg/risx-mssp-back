@@ -19,5 +19,7 @@ router.get("/GetAllLeakAsset", ConfigController.GetAllLeakAsset); //get from env
 router.get("/ExportAllAssets", ConfigController.ExportAllAssets);
 
 router.post("/ImportAllAssets", ConfigController.ImportAllAssets);
+router.get("/DeleteResultHistory", ConfigController.DeleteResultHistory);
+
 
 module.exports = router;
