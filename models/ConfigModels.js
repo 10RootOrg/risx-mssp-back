@@ -25,15 +25,12 @@ async function put_full_config_model(config) {
     console.log("change_this sssssssss", change_this);
 
     try {
-      const rePutAssets = await DBConnection.raw("call addAllAssetsToConfig()")
+      const rePutAssets = await DBConnection.raw("call addAllAssetsToConfig()");
       console.log(rePutAssets);
     } catch (error) {
-      console.log("error",error);
-      await DBConnection.raw("call addAllAssetsToConfig()")
+      console.log("error", error);
+      await DBConnection.raw("call addAllAssetsToConfig()");
     }
-
-   
-    
 
     // const stringified =  JSON.stringify( real_config)
     //     const change_this = await DBConnection('configjson')
@@ -134,9 +131,44 @@ async function Update_mssp_config_json_links_model(body) {
     return false;
   }
 }
+async function GetAssetsModal() {
+  try {
+    const [fileM] = await DBConnection.raw(
+      "SELECT resource_string,tools,type,monitoring,checked FROM all_resources;"
+    );
+    return fileM;
+  } catch (err) {
+    console.log("Error in getAssetsModal ", err);
+    return { error: "Error in Export" };
+  }
+}
+
+async function GetAssetsModal() {
+  try {
+    const [fileM] = await DBConnection.raw(
+      "SELECT resource_string,tools,type,monitoring,checked FROM all_resources;"
+    );
+    return fileM;
+  } catch (err) {
+    console.log("Error in getAssetsModal ", err);
+    return { error: "Error in Export" };
+  }
+}
+
+async function PostImportedAssets(jja) {
+  try {
+    const fileM = await DBConnection("all_resources").insert(jja);
+    return fileM;
+  } catch (err) {
+    console.log("Error in getAssetsModal ", err);
+    return { error: "Error in Export" };
+  }
+}
 
 module.exports = {
   get_full_config_model,
   put_full_config_model,
   Update_mssp_config_json_links_model,
+  GetAssetsModal,
+  PostImportedAssets,
 };

@@ -25,6 +25,9 @@
       },
       "MispConfiguration": {
         "RecentHostTimeMispInHours": 24
+      },
+      "AlertsConfiguration": {
+        "LastTimeStampInterval": 1
       }
     }
   },
@@ -200,7 +203,7 @@
         "MemoryThrottling": "75"
       },
       "ModuleName": "TimeSketch",
-      "ExpireDate": "0",
+      "ExpireDate": "480",
       "LastRunDate": "2024-06-02 10:15:17"
     }
   },

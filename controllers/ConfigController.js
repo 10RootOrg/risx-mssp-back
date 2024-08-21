@@ -2,12 +2,15 @@ const {
   get_full_config_model,
   put_full_config_model,
   Update_mssp_config_json_links_model,
+  GetAssetsModal,
+  PostImportedAssets,
 } = require("../models/ConfigModels");
 const DBConnection = require("../db.js");
 const fs = require("fs"); // Import 'fs' with Promise-based API
 const path = require("path");
 const os = require("os");
 const axios = require("axios");
+const { v4: uuid } = require("uuid");
 
 async function Get_Config(req, res, next) {
   try {
@@ -19,7 +22,7 @@ async function Get_Config(req, res, next) {
 }
 
 async function Put_Config(req, res, next) {
-  const config = req.body.config;
+  const config = req.body?.config;
 
   try {
     const put = await put_full_config_model(config);
@@ -95,7 +98,7 @@ const ResetConfigToBasic = async (req, res, next) => {
   console.log("BasicConfig 8893852", BasicConfig);
 
   const put = await put_full_config_model(BasicConfig);
-  
+
   if (put === 1) {
     res.status(200).send("Updated successfully");
   } else {
@@ -121,7 +124,7 @@ async function DownloadAgent(req, res, next) {
   }
 }
 async function GetAllLeakAsset(req, res, next) {
-  // Work in progress 
+  // Work in progress
   const data = await DBConnection.raw(
     'SELECT resource_string FROM all_resources where tools like "%2001009%" or tools like "%2001011%"'
   );
@@ -129,7 +132,7 @@ async function GetAllLeakAsset(req, res, next) {
   // res.send(data[0].map((x) => x.resource_string));
 
   const LeakJson = await axios.get(
-    // "https://leakcheck.io/api/v2/query/"+data[0].map((x) => x.resource_string).join(", "), 
+    // "https://leakcheck.io/api/v2/query/"+data[0].map((x) => x.resource_string).join(", "),
     "https://leakcheck.io/api/v2/query/example@example.com",
     {
       headers: {
@@ -140,6 +143,45 @@ async function GetAllLeakAsset(req, res, next) {
   );
   console.log("gggggggggggggggg", LeakJson);
 }
+
+async function ExportAllAssets(req, res, next) {
+  try {
+    console.log("start");
+    const file = await GetAssetsModal();
+    console.log(file);
+
+    res.send(file);
+  } catch (err) {
+    console.log("Error in ExportAllAssets ", err);
+  }
+}
+
+async function ImportAllAssets(req, res, next) {
+  try {
+    console.log("start");
+    // console.log(
+    //   "ttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+    //   req.body
+    // );
+
+    const jja = req.body.map((x) => {
+      const id = uuid();
+      const id_short = id.replace(/-/g, "").substring(0, 9);
+      const id_with_r = "r" + id_short;
+      x.resource_id = id_with_r;
+      return x;
+    });
+    console.log(jja);
+
+    const r = await PostImportedAssets(jja);
+    console.log(r,"response of import");
+    
+    res.send({});
+  } catch (err) {
+    console.log("Error in ExportAllAssets ", err);
+  }
+}
+
 // GetAllLeakAsset()
 module.exports = {
   Get_Config,
@@ -149,4 +191,6 @@ module.exports = {
   ResetConfigToBasic,
   DownloadAgent,
   GetAllLeakAsset,
+  ExportAllAssets,
+  ImportAllAssets,
 };
