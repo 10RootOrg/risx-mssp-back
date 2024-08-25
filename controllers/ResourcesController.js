@@ -432,8 +432,11 @@ if(the_new_item){res.status(200).send(the_new_item);}
 }
 
 catch (err) {
-    res.send(err.message)
-    return res.status(500).send(err.message);
+  console.log("error in edit asset ",err);
+  
+    // res.send(err.message)
+    // return res.status(500).send(err.message);
+    res.status(500).send(err.message);
  
   }
 

@@ -1,5 +1,4 @@
 
-
 DROP TRIGGER IF EXISTS ToolsChange$$
 CREATE TRIGGER ToolsChange BEFORE UPDATE ON tools
 FOR EACH ROW
@@ -10,7 +9,7 @@ BEGIN
         UPDATE configjson SET config = JSON_SET(config,
             CONCAT("$.Modules.", NEW.Tool_name, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", NEW.Tool_name, ".ExpireDate"), NEW.threshold_time,
-            CONCAT("$.Modules.", NEW.Tool_name, ".LastRunDate"), NEW.LastRun),
+            CONCAT("$.Modules.", NEW.Tool_name, ".LastRunDate"), ifNull( NEW.LastRun,"2024-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end Tools table triger",now());
@@ -32,7 +31,7 @@ BEGIN
         UPDATE configjson SET config = JSON_SET(config,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".Enable"), NEW.isActive,
             CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".ExpireDate"), NEW.threshold_time,
-            CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".LastRunDate"), NEW.LastRun),
+            CONCAT("$.Modules.", toolName, ".SubModules.", NEW.Toolname, ".LastRunDate"),ifNull( NEW.LastRun,"2024-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end artifact table triger",now());
@@ -76,7 +75,8 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetString"), NEW.resource_string,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
-            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList,
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".LastRunDate"), ifNull(new.checked,"2024-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table update triger",now());
@@ -120,7 +120,8 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetString"), NEW.resource_string,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
-            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList),
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList,
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".LastRunDate"), ifNull(new.checked,"2024-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table insert triger",now());
@@ -196,6 +197,7 @@ BEGIN
             
             UPDATE all_resources SET monitoring = JSON_EXTRACT(Asset, "$.AssetEnable"),
                 resource_string = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetString")),
+                checked=JSON_EXTRACT(Asset, "$.LastRunDate"),
                 type = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(typelist, "$[*]"
                     COLUMNS (rowid FOR ORDINALITY, item VARCHAR(300) PATH "$")) AS json_parsed1),
                 tools = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(ToolList, "$[*]"
@@ -263,12 +265,7 @@ create PROCEDURE addAllAssetsToConfig ()
 
   UPDATE configjson SET config = JSON_SET(config,
   "$.ClientInfrastructure.Assets", (select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
-  "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring)) from all_resources));
+  "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring,"LastRunDate",ifNull(checked,"2024-06-02 10:15:17"))) from all_resources));
 
   
   end$$   
-
-
-
-
- 
