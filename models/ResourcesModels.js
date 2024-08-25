@@ -9,7 +9,34 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
   const {v4: uuid} = require('uuid');
 
   
+  async function get_single_resource_by_id(resource_id) {
 
+if (!resource_id) { console.log("problem no resource_id");}
+
+    try {
+    console.log("get_single_resource_by_id");
+    
+      const single = await DBConnection('all_resources')
+      .select('*')
+      .where('resource_id', '=', resource_id);
+  
+ 
+ if (single) {
+  return single;
+ }
+ 
+    } catch (err) {
+      console.log("get_All_Resources_model err", err);
+    }
+  
+  
+ 
+  
+  
+  
+  
+    
+  }
 
 
   async function post_new_resource_model(item_tool_list, item_types_list, description, monitoring,resource_string) {
@@ -41,8 +68,6 @@ const fs_promises = require('fs').promises; // Import 'fs' with Promise-based AP
       // next(err); // Call next with the error to handle it in a centralized error handler
     }
   }
-
-
 
 
   async function get_config_path_model(){
@@ -353,7 +378,7 @@ async function check_if_string_exist_in_db(resource_string,item_types_list) {
 }
 
 
-
+ 
 
 
 
@@ -401,5 +426,6 @@ module.exports = {
   get_config_path_model,
   read_config_model,
   get_Same_Type_model,
-  post_new_resource_model
+  post_new_resource_model,
+  get_single_resource_by_id
 };
