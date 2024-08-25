@@ -6,7 +6,8 @@ const {
     validateBody,
      Check_if_website_name_exists_to_avoid_duplication,
      Check_if_website_id_exists,
-     Check_if_resource_exists_to_avoid_duplication,
+     Check_if_resource_exists_to_avoid_duplication_for_post,
+     Check_if_resource_exists_to_avoid_duplication_for_edit,
      Check_if_resource_id_exists_to_continue
     
     } = require('../middleware/ResourcesMiddleware')
@@ -22,12 +23,12 @@ const{post_resource_schema,post_many_resources_schema} = require('../schema/Reso
 
  router.get('/count-same-type', ResourcesController.Count_From_Same_Type);  // COUNT TIMES SAME RESOURCE TYPE EXISTING IN TABLE
 
- router.post('/' , [validateBody(post_resource_schema)],Check_if_resource_exists_to_avoid_duplication, ResourcesController.post_new_resource);
+ router.post('/' , [validateBody(post_resource_schema)],Check_if_resource_exists_to_avoid_duplication_for_post, ResourcesController.post_new_resource);
 
  router.post('/many' , [validateBody(post_many_resources_schema)], ResourcesController.post_many_new_resource);
 
 
- router.put('/' , [validateBody(post_resource_schema)],Check_if_resource_id_exists_to_continue, ResourcesController.edit_resource);
+ router.put('/' , [validateBody(post_resource_schema)],Check_if_resource_id_exists_to_continue,Check_if_resource_exists_to_avoid_duplication_for_edit, ResourcesController.edit_resource);
 
  router.delete('/:resource_id', ResourcesController.delete_single_resource);  //delete_single resorce
 

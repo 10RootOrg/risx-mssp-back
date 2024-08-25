@@ -3,7 +3,7 @@ const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
 
 
 
-const { does_Website_Name_Exist_Model, does_Website_Id_Exist_Model ,check_if_string_exist_in_db, check_if_id_exist_in_db} = require('../models/ResourcesModels')
+const { does_Website_Name_Exist_Model, does_Website_Id_Exist_Model ,check_if_string_exist_in_db, check_if_id_exist_in_db,get_single_resource_by_id} = require('../models/ResourcesModels')
 
 function validateBody(schema){
   
@@ -24,7 +24,7 @@ next()
 }
 
 }
-async function Check_if_resource_exists_to_avoid_duplication(req,res,next){
+async function Check_if_resource_exists_to_avoid_duplication_for_post(req,res,next){
 
   
   const {resource_string , item_types_list} = req.body 
@@ -44,6 +44,74 @@ async function Check_if_resource_exists_to_avoid_duplication(req,res,next){
  
  }
  
+
+
+ async function Check_if_resource_exists_to_avoid_duplication_for_edit(req,res,next){
+
+  const {resource_string , item_types_list , resource_id} = req.body 
+
+  // console.log("item_types_list" ,item_types_list);
+
+
+  const [the_original] = await get_single_resource_by_id(resource_id);
+
+
+  console.log("the_original" ,the_original);
+
+ 
+
+
+
+if(resource_string === the_original?.resource_string){
+  console.log("if true allow couse its his string name" ,resource_string === the_original?.resource_string);
+  next()
+}
+
+
+
+else if (resource_string != the_original?.resource_string){
+  console.log("not his name lets chack"  );
+
+  const exist =  await check_if_string_exist_in_db(resource_string ,item_types_list)
+  if (exist){
+   res.status(400).send(`Asset named "${resource_string}" already exists for this type.`);
+
+    console.log("This Asset is already in this type");return}
+
+}
+
+
+next();
+
+
+
+ 
+
+
+
+
+
+  // console.log("the_original" ,the_original);
+
+  // const exist =  await check_if_string_exist_in_db(resource_string ,item_types_list)
+  // console.log("exist.exist" ,exist);
+
+//   if (exist){
+//    res.status(400).send(`Asset named "${resource_string}" already exists for this type.`);
+
+//     console.log("This Asset is already in this type");return}
+//  next()
+ 
+ 
+// console.log("return 123");
+// return
+
+
+ }
+
+ 
+ 
+
  async function Check_if_resource_id_exists_to_continue(req,res,next){
  
   
@@ -104,6 +172,7 @@ module.exports = {
     Check_if_website_name_exists_to_avoid_duplication,
     Check_if_website_id_exists,
     validateBody,
-    Check_if_resource_exists_to_avoid_duplication,
+    Check_if_resource_exists_to_avoid_duplication_for_post,
+    Check_if_resource_exists_to_avoid_duplication_for_edit,
     Check_if_resource_id_exists_to_continue
 }

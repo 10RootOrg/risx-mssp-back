@@ -382,28 +382,14 @@ async function post_new_resource(req, res, next) {
 }
 
 async function edit_resource (req, res, next) {
-
 console.log("edit_resource");
   console.log(req.body);
-
 const {resource_id} = req.body
- 
  const {monitoring} = req.body
  const {description} = req.body
  const {item_tool_list} = req.body
  const {item_types_list} = req.body
-
-
-//  knex('books').where({ id: 42 }).update(
-//   {
-//     title: "The Hitchhiker's Guide to the Galaxy",
-//   },
-//   ['id', 'title']
-// );
-
-
-
-
+ 
 try{
 
 
@@ -419,19 +405,26 @@ try{
   monitoring: monitoring
 });
 
-if (put){
-  console.log("posted" ,put);
-const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', resource_id);
-if(the_new_item){res.status(200).send(the_new_item);}
+if (put) {
+  console.log("put-----------------", put);
+  const the_new_item = await DBConnection('all_resources').select('*').where('resource_id', '=', resource_id);
+  console.log("the_new_item1-----------------", the_new_item);
+  if (the_new_item) {
+    console.log("the_new_item2-----------------", the_new_item);
+
+    console.log(" 22");
+    return res.status(200).send(the_new_item); // Ensure response is sent and function exits
 
 
- 
+  }
 }
-
-
+console.log(" 33");
+    // If no new item is found, send a different response
+    return res.status(404).send("Resource not found or not updated");
 }
 
 catch (err) {
+  console.log(" 44");
     res.send(err.message)
     return res.status(500).send(err.message);
  
