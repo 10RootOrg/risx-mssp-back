@@ -187,7 +187,8 @@ async function ImportAllAssets(req, res, next) {
     if (jja.length > 0) {
       const r = await PostImportedAssets(jja);
       console.log(r, "response of import");
-      res.send("Added successfully ");
+      // להיתבסס על הטקסט
+      res.send("Added successfully");
     } else {
       res.send("Nothing To add As It Already Exists in the Db");
     }
