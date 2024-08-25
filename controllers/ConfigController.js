@@ -163,22 +163,38 @@ async function ImportAllAssets(req, res, next) {
     //   "ttttttttttttttttttttttttttttttttttttttttttttttttttttt",
     //   req.body
     // );
+    const file = await GetAssetsModal();
 
-    const jja = req.body.map((x) => {
-      const id = uuid();
-      const id_short = id.replace(/-/g, "").substring(0, 9);
-      const id_with_r = "r" + id_short;
-      x.resource_id = id_with_r;
-      return x;
-    });
+    const jja = req.body
+      .filter((y) => {
+        let bol = true;
+        file.forEach((t) => {
+          if (y.resource_string == t.resource_string && y.type == t.type) {
+            bol = false;
+            console.log("Already Exists ", y.resource_string);
+          }
+        });
+        return bol;
+      })
+      .map((x) => {
+        const id = uuid();
+        const id_short = id.replace(/-/g, "").substring(0, 9);
+        const id_with_r = "r" + id_short;
+        x.resource_id = id_with_r;
+        return x;
+      });
     console.log(jja);
-
-    const r = await PostImportedAssets(jja);
-    console.log(r, "response of import");
-
-    res.send({});
+    if (jja.length > 0) {
+      const r = await PostImportedAssets(jja);
+      console.log(r, "response of import");
+      // להיתבסס על הטקסט
+      res.send("Added successfully");
+    } else {
+      res.send("Nothing To add As It Already Exists in the Db");
+    }
   } catch (err) {
-    console.log("Error in ExportAllAssets ", err);
+    console.log("Error in import assets ", err);
+    res.send("Error");
   }
 }
 
@@ -188,7 +204,7 @@ async function DeleteResultHistory(req, res, next) {
     const file = await get_full_config_model();
     file.RequestStatus = [];
     const f = await put_full_config_model(file);
-    
+
     res.status(200).send("Updated successfully");
   } catch (error) {
     console.log("Error in Delete History", error);

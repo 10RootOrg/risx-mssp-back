@@ -424,9 +424,17 @@ console.log(" 33");
 }
 
 catch (err) {
+ 
   console.log(" 44");
     res.send(err.message)
     return res.status(500).send(err.message);
+ 
+//   console.log("error in edit asset ",err);
+  
+    // res.send(err.message)
+    // return res.status(500).send(err.message);
+//     res.status(500).send(err.message);
+ 
  
   }
 
