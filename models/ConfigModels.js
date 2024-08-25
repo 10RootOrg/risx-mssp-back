@@ -134,19 +134,7 @@ async function Update_mssp_config_json_links_model(body) {
 async function GetAssetsModal() {
   try {
     const [fileM] = await DBConnection.raw(
-      "SELECT resource_string,tools,type,monitoring,checked FROM all_resources;"
-    );
-    return fileM;
-  } catch (err) {
-    console.log("Error in getAssetsModal ", err);
-    return { error: "Error in Export" };
-  }
-}
-
-async function GetAssetsModal() {
-  try {
-    const [fileM] = await DBConnection.raw(
-      "SELECT resource_string,tools,type,monitoring,checked FROM all_resources;"
+      "SELECT resource_string,tools,description,type,monitoring,checked FROM all_resources;"
     );
     return fileM;
   } catch (err) {
