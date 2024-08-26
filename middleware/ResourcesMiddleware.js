@@ -55,33 +55,61 @@ async function Check_if_resource_exists_to_avoid_duplication_for_post(req,res,ne
 
   const [the_original] = await get_single_resource_by_id(resource_id);
 
-
-  console.log("the_original" ,the_original);
-
- 
+  // console.log("Check_if_resource_exists_to_avoid_duplication_for_edit"  );
 
 
-
-if(resource_string === the_original?.resource_string){
-  console.log("if true allow couse its his string name" ,resource_string === the_original?.resource_string);
-  next()
-}
-
+ if(the_original?.resource_string === resource_string){
+  console.log("not try to change string"  );
+  next();
+ }
 
 
-else if (resource_string != the_original?.resource_string){
-  console.log("not his name lets chack"  );
+ if(the_original?.resource_string != resource_string){
+  console.log("try to change his name"  );
+
 
   const exist =  await check_if_string_exist_in_db(resource_string ,item_types_list)
+
   if (exist){
-   res.status(400).send(`Asset named "${resource_string}" already exists for this type.`);
+   res.status(400).send(`Cant Change to "${resource_string}", its already exists for this type.`);
 
     console.log("This Asset is already in this type");return}
+ next()
+
+
+
+
+
+
+
+
+  // return res.status(400).send(`try to change your name`)
+ }
+
 
 }
 
 
-next();
+// if(resource_string === the_original?.resource_string){
+//   console.log("if true allow -  its his string name" ,resource_string === the_original?.resource_string);
+//   next()
+// }
+
+
+
+// else if (resource_string != the_original?.resource_string){
+//   console.log("not his name lets chack"  );
+
+//   const exist =  await check_if_string_exist_in_db(resource_string ,item_types_list)
+//   if (exist){
+//    res.status(400).send(`Asset named "${resource_string}" already exists for this type.`);
+
+//     console.log("This Asset is already in this type");return}
+
+// }
+
+
+
 
 
 
@@ -107,7 +135,7 @@ next();
 // return
 
 
- }
+ 
 
  
  
