@@ -3,6 +3,10 @@ DROP TRIGGER IF EXISTS ToolsChange$$
 CREATE TRIGGER ToolsChange BEFORE UPDATE ON tools
 FOR EACH ROW
 BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
+		insert logtable values("Error in ToolsChange",now());
+		SET @trigger_disabled = Null;
+    end;
     IF @trigger_disabled IS NULL THEN
 		SET @trigger_disabled = TRUE;
 		insert logtable values("start Tools table triger",now());
@@ -23,7 +27,10 @@ CREATE TRIGGER ArtiffactChange BEFORE UPDATE ON artifacts
 FOR EACH ROW
 BEGIN
 	DECLARE toolName VARCHAR(240);
-    
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
+		insert logtable values("Error in ArtiffactChange",now());
+		SET @trigger_disabled = Null;
+    end;
     IF @trigger_disabled IS NULL THEN
 		insert logtable values("Start artifact table triger",now());
         SET @trigger_disabled = TRUE;
@@ -44,9 +51,14 @@ DROP TRIGGER IF EXISTS AssetChange$$
 CREATE TRIGGER AssetChange BEFORE UPDATE ON all_resources
 FOR EACH ROW
 BEGIN
+
 		DECLARE Toolss, Tool, typess, typr VARCHAR(4000);
         DECLARE ToolList, typelist JSON DEFAULT "[]";
         DECLARE i, z INT DEFAULT 0;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
+			insert logtable values("Error in AssetChange",now());
+			SET @trigger_disabled = Null;
+		end;
     IF @trigger_disabled IS NULL THEN
         SET @trigger_disabled = TRUE;
         insert logtable values("Start all_resources table update triger",now());
@@ -91,9 +103,14 @@ DROP TRIGGER IF EXISTS AssetAdd$$
 CREATE TRIGGER AssetAdd BEFORE insert ON all_resources
 FOR EACH ROW
 BEGIN
+
 		DECLARE Toolss, Tool, typess, typr VARCHAR(4000);
         DECLARE ToolList, typelist JSON DEFAULT "[]";
         DECLARE i, z INT DEFAULT 0;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
+			insert logtable values("Error in AssetAdd",now());
+			SET @trigger_disabled = Null;
+		end;
     IF @trigger_disabled IS NULL THEN
         SET @trigger_disabled = TRUE;
         insert logtable values("Start all_resources table insert triger",now());
@@ -136,9 +153,14 @@ DROP TRIGGER IF EXISTS ChangeFromConfig$$
 CREATE TRIGGER ChangeFromConfig AFTER UPDATE ON configjson
 FOR EACH ROW
 BEGIN
+
 	DECLARE json, jsonAsset, Assets, Asset, products, product, submods, submod ,AssetModulesList,AssetTypeList VARCHAR(4000);
     declare ToolList,typelist json default "[]";
 	DECLARE i, z, q,w INT DEFAULT 0;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
+		insert logtable values("Error in ChangeFromConfig",now());
+		SET @trigger_disabled = Null;
+	end;
     IF @trigger_disabled IS NULL THEN
         SET @trigger_disabled = TRUE;
 		insert logtable values("JSON Trigger Start",now());
@@ -266,6 +288,7 @@ create PROCEDURE addAllAssetsToConfig ()
   UPDATE configjson SET config = JSON_SET(config,
   "$.ClientInfrastructure.Assets", (select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
   "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring,"LastRunDate",ifNull(checked,"2024-06-02 10:15:17"))) from all_resources));
+
 
   
   end$$   

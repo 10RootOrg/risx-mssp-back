@@ -48,7 +48,7 @@
       "Timesketch": {
         "Password": "passs",
         "Username": "user",
-        "IP": "0.0.0.0"
+        "IP": "localhost"
       },
       "LeakCheck": "APIKey",
       "Shodan": "APIKey",
@@ -178,6 +178,20 @@
               "NTFS_CACHE_TIME": "1000000"
             }
           }
+        },
+        "Kape": {
+          "id": "",
+          "ModuleName": "Kape",
+          "Enable": 0,
+          "ExpireDate": "60",
+          "TimeInterval": "5",
+          "LastRunDate": "2024-06-02 10:15:17",
+          "Arguments": {
+            "ArtifactResourceLimit": {},
+            "ArtifactParameters": {
+              "KapeCollection": "KapeTriage"
+            }
+          }
         }
       }
     },
@@ -199,7 +213,6 @@
       "Arguments": {
         "SketchName": "Timelines",
         "Analyzers": [],
-        "KapeCollection": "KapeTriage",
         "CPUThrottling": "75",
         "MemoryThrottling": "75"
       },
