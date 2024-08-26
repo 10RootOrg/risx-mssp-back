@@ -205,9 +205,28 @@ async function DeleteResultHistory(req, res, next) {
     file.RequestStatus = [];
     const f = await put_full_config_model(file);
 
-    res.status(200).send("Updated successfully");
+    const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const directoryPath = path.join(
+      __dirname,
+      "..",
+      "..",
+      relativePath,
+      "response_folder"
+    );
+
+    const files = fs.readdirSync(directoryPath);
+    console.log(files, "llllllllllllllllllllllll");
+    files.forEach(async (fil) => {
+      if (fil.startsWith("response_")) {
+        await fs.unlinkSync(
+          path.join(__dirname, "..", "..", relativePath, "response_folder", fil)
+        );
+      }
+    });
+    res.status(200).send("Delete successfully");
   } catch (error) {
     console.log("Error in Delete History", error);
+    res.send("Delete Failed");
   }
 }
 

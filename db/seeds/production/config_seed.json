@@ -214,7 +214,8 @@
         "SketchName": "Timelines",
         "Analyzers": [],
         "CPUThrottling": "75",
-        "MemoryThrottling": "75"
+        "MemoryThrottling": "75",
+        "KapeCollection": "KapeTriage"
       },
       "ModuleName": "TimeSketch",
       "ExpireDate": "480",
