@@ -72,8 +72,8 @@ async function show_in_ui_module(req, res, next) {
   const set_ShowInUi_to =  req.body?.params?.set_ShowInUi_to
   console.log("module_id",module_id,"set_ShowInUi_to",set_ShowInUi_to);
     try{
-      const enable_disable = await show_in_ui_module_model(module_id, set_ShowInUi_to)  
-   
+                             await show_in_ui_module_model(module_id, set_ShowInUi_to)  
+      const enable_disable = await enable_disable_module_model(module_id, set_ShowInUi_to)  
   
   
   
