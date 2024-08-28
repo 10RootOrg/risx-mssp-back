@@ -1,12 +1,10 @@
 
  const { check_main_process_status_model , active_manual_process_model,
   active_interval_process_model,get_all_python_processes,
-  
-  
   search_And_Kill_Process} = require('../models/ProcessModels');
 
-
-
+// const logger = require("./logger");
+const logger = require("../logger");
 
 async function check_and_active_interval(req, res, next) {
 
@@ -81,9 +79,14 @@ async function Check_Interval_Status(req, res, next) {
  
 //     const momo = "3333"
 //  res.send(momo)
-
+const file_name = process.env.PYTHON_INTERVAL;
     const bobo =  await  check_main_process_status_model().then(isRunning => {
-      console.log('Process running status:', isRunning)
+      console.log('Process running status:', isRunning);
+    
+      if(isRunning){  logger.info(`${file_name} check_main_process_status_model: ${isRunning}`)}
+      if(!isRunning){  logger.error(`${file_name} check_main_process_status_model: ${isRunning}`)}
+
+  
       res.send(isRunning);
 
 
@@ -95,12 +98,17 @@ async function Check_Interval_Status(req, res, next) {
   if (bobo){      console.log('isRunning bobo ', isRunning,"sssssss",bobo );
     res.send(true)
   }
-  if (bobo === false){      console.log('bobo === false'   );
+  if (bobo === false){
+    logger.error(`${file_name} check_main_process_status_model: ${bobo}`);
+     console.log('bobo === false'   );
     res.send(false)
   }
 
   }catch(err)
-  {console.log(err);}
+  {
+    
+    logger.error(` check_main_process_status_model catch(err): ${err}`);
+    console.log(err);}
 
   // try {
  
@@ -157,16 +165,19 @@ async function active_manual_process(req, res, next) {
                   
               } else if (result.success === false) {
                 console.log('controller  ->  result.success === false:', result);
+                  logger.error(`active_manual_process. error: ${result.message }`);
                   res.status(500).send({ message: result.message , success:false });
               }
           })
           .catch(error => {
               console.error('controller  -> active_manual_process_model  .catch(error =>:', error);
+              logger.error(`active_manual_process. catch(error => error1: ${error.message}`);
               res.status(500).send({ message: error.message  , success:false }); // Send the error message to the front end
               next(error);
           });
   } catch (err) {
       console.log("controller  ->  active_manual_process_model  } catch (err) {", err);
+      logger.error(`active_manual_process. catch(error => error2: ${err.message}`);
       res.status(500).send({ message: err.message , success:false }); // Send the error message to the front end
       next(err);
   }
