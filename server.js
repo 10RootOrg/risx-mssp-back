@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 const {
   check_and_active_interval,
 } = require("./controllers/ProcessController");
-// check_and_active_interval(); //nof this is what you need to stop
+check_and_active_interval(); //Start Interval On Start
 
 console.log("backend got this front 1", `http://localhost:${front_port}`);
 console.log("backend got this front 2", `http://${front_ip}:${front_port}`);
