@@ -23,6 +23,7 @@ exports.seed = async function(knex) {
       ServicePackage: 'Standard',
       threshold_time:24,
       arguments:{},
+      positionNumber:0,
       useResourceType:"",
       toolType:"module",
       LastRun:"2024-06-02 10:15:17"
@@ -46,6 +47,7 @@ exports.seed = async function(knex) {
     threshold_time:24,
     arguments:{},
     useResourceType:"",
+    positionNumber:1,
     toolType:"link",
     LastRun:"2024-06-02 10:15:17"
    }, 
@@ -53,7 +55,7 @@ exports.seed = async function(knex) {
        tool_id: 2001001,
        Tool_name: 'ELK',
        BoxType: 'Tools_b',
-       headline: 'Artifacts',
+       headline: 'Collected Artifacts and Results',
        isActive: true,
        ShowInUi: true,
        logoAddress_1: "./Logos/ELK.svg",
@@ -68,6 +70,7 @@ exports.seed = async function(knex) {
        threshold_time:24,
        arguments:{},
        useResourceType:"",
+       positionNumber:2,
        toolType:"link",
        LastRun:"2024-06-02 10:15:17"
       }, 
@@ -89,6 +92,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2008",
+        positionNumber:3,
         toolType:"module",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -111,6 +115,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
+        positionNumber:4,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -118,7 +123,7 @@ exports.seed = async function(knex) {
         tool_id: 2001004,
         Tool_name: '10Root Osint',
         BoxType: 'Tools_b',
-        headline: 'Open Source Intelligence',
+        headline: 'OSINT Private Search',
         isActive: true,
         ShowInUi: true,
         logoAddress_1: "./Logos/10Root.svg",
@@ -133,6 +138,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
+        positionNumber:5,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -155,6 +161,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
+        positionNumber:6,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -183,6 +190,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
+        positionNumber:7,
         toolType:"module",
         LastRun:"2024-06-02 10:15:17"
        },  {
@@ -204,6 +212,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
+        positionNumber:8,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },{
@@ -225,13 +234,14 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
+        positionNumber:9,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },{
         tool_id: 2001008,
         Tool_name: 'Ail',
         BoxType: 'Tools_b',
-        headline: 'Ail',
+        headline: 'Information Leak Framework',
         isActive: true,
         ShowInUi: true,
         logoAddress_1: "./Logos/ail.png",
@@ -246,6 +256,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
+        positionNumber:10,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },{
@@ -267,6 +278,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2006,2007",
+        positionNumber:11,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -289,6 +301,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
+        positionNumber:12,
         toolType:"module",
        LastRun:"2024-06-02 10:15:17"
        },   {
@@ -310,6 +323,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
+        positionNumber:13,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -332,6 +346,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006",
+        positionNumber:14,
         toolType:"module",
         LastRun:"2024-06-02 10:15:17"
        }, 

@@ -11,50 +11,137 @@ async function get_log_model(logName, fileName) {
   let log_file_name = fileName;
   let log_File_Path = "";
 
+  const risx_mssp_back_logs = ["log_mssp_backend"];
+  const risx_mssp_python_script_logs = ["log_python_interval", "log_python_main","log_alerts_interval","log_crash","log_daily_update_interval","log_dashboard","log_resource_usage"];
+
+
   try {
-    switch (logName) {
-      case "log_mssp_backend":
-        console.log("log_mssp_backend");
 
-        log_File_Path = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "risx-mssp-back",
-          log_file_name
-        );
-        break;
-
-      case "log_python_interval":
-        console.log("interval.log");
-
-        log_File_Path = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "risx-mssp-python-script",
-          "logs",
-          log_file_name
-        );
-        break;
-
-      case "log_python_main":
-        console.log("main.log");
-
-        log_File_Path = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "risx-mssp-python-script",
-          "logs",
-          log_file_name
-        );
-        break;
-
-      default:
-        return `log file name: ${logName} is not recognize`;
-        break;
+    if (risx_mssp_python_script_logs.includes(logName)) {
+    log_File_Path = path.resolve(
+__dirname,
+"..",
+"..",
+"risx-mssp-python-script",
+"logs",
+log_file_name
+);
+ 
     }
+
+     else if(risx_mssp_back_logs.includes(logName)) {
+      log_File_Path = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "risx-mssp-back",
+        log_file_name
+        );
+    }
+ else {
+      console.log("logName not found");
+    }
+
+
+
+
+// switch (logName) {
+  
+// // case "log_mssp_backend":
+// // console.log("log_mssp_backend");
+
+// // log_File_Path = path.resolve(
+// // __dirname,
+// // "..",
+// // "..",
+// // "risx-mssp-back",
+// // log_file_name
+// // );
+// // break;
+
+// case "log_python_interval":
+// console.log("interval.log");
+
+// log_File_Path = path.resolve(
+// __dirname,
+// "..",
+// "..",
+// "risx-mssp-python-script",
+// "logs",
+// log_file_name
+// );
+// break;
+
+// case "log_python_main":
+// console.log("main.log");
+
+// log_File_Path = path.resolve(
+// __dirname,
+// "..",
+// "..",
+// "risx-mssp-python-script",
+// "logs",
+// log_file_name
+// );
+// break;
+
+// case "log_alerts_interval":
+// console.log("alerts_interval.log");
+
+// log_File_Path = path.resolve(
+// __dirname,
+// "..",
+// "..",
+// "risx-mssp-python-script",
+// "logs",
+// log_file_name
+// );
+// break;
+
+// case "log_crash":
+// console.log("Crash.log");
+// log_File_Path = path.resolve(
+//   __dirname,
+//   "..",
+//   "..",
+//   "risx-mssp-python-script",
+//   "logs",
+//   log_file_name
+// );
+// break;
+
+// case "log_daily_update_interval":
+// console.log("daily_update_interval.log");
+// log_File_Path = path.resolve(
+//   __dirname,
+//   "..",
+//   "..",
+//   "risx-mssp-python-script",
+//   "logs",
+//   log_file_name
+// );
+// break;
+
+// case "log_dashboard":
+// console.log("dashboard.log");
+// log_File_Path = path.resolve(
+//   __dirname,
+//   "..",
+//   "..",
+//   "risx-mssp-python-script",
+//   "logs",
+//   log_file_name
+// );
+// break;
+
+
+ 
+
+
+//       default:
+//         return `log file name: ${logName} is not recognize`;
+ 
+//     }
 
     // if (process.env.NODE_ENV === 'development') {
     //   path_to_mssp_config_json = path.join(__dirname, '..', '..', 'risx-mssp-front', `public`, mssp_config_json);
