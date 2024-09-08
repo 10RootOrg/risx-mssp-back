@@ -48,6 +48,7 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
+      positionNumber:1,
       LastRun: "2024-06-02 10:15:17",
     },
 
@@ -71,6 +72,7 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
+      positionNumber:2,
       LastRun: "2024-06-02 10:15:17",
     },
     {
@@ -93,6 +95,7 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
+      positionNumber:3,
       LastRun: "2024-06-02 10:15:17",
     },
     {
@@ -115,6 +118,7 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
+      positionNumber:4,
       LastRun: "2024-06-02 10:15:17",
     },
   ]);

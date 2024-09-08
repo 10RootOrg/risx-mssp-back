@@ -7,6 +7,7 @@ exports.up = function(knex) {
     .createTable('resource_type', table => {
         table.string('resource_type_id', 10).notNullable().unique().primary();
         table.string('resource_type_name',100).notNullable().unique();
+        table.string('preview_name');
         table.string('description_short');
         table.text('description_long');
  table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'))

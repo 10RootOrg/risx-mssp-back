@@ -234,12 +234,12 @@ if (!asset_type_id){ console.log("asset_type_id is ", asset_type_id , "in get_Sa
 }
 
 async function get_All_Resource_Type_model() {
-  console.log("get_All_Resource_Type_model 11111111111111");
+  // console.log("get_All_Resource_Type_model 11111111111111");
 
   try{
    
     const resourcesQuery  = await DBConnection('resource_type')
-    .select('resource_type_id','resource_type_name','description_short')
+    .select('resource_type_id','resource_type_name','description_short','preview_name')
    if (resourcesQuery){return resourcesQuery}
  
 }catch(err)

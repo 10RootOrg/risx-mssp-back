@@ -23,8 +23,9 @@ exports.up = function(knex) {
         table.string('toolType',150);
         table.string('ServicePackage',50);
         table.string('useResourceType');
+        table.integer('positionNumber',10);
         table.timestamp('LastRun');
-        table.integer('threshold_time',10);
+        table.integer('threshold_time');
         table.json('arguments');
         
         

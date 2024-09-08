@@ -21,6 +21,7 @@ exports.up = function(knex) {
         table.string('Status',100);
         table.string('ServicePackage',50);
         table.string('useResourceType');
+        table.integer('positionNumber');
         table.timestamp('LastRun');
         table.integer('threshold_time',10);
         table.timestamp('createdAt').defaultTo(knex.raw('CURRENT_TIMESTAMP'));
