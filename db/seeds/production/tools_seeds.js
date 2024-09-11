@@ -92,7 +92,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2008",
-        positionNumber:3,
+        positionNumber:1,
         toolType:"module",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -115,7 +115,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        positionNumber:4,
+        positionNumber:3,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -138,7 +138,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
-        positionNumber:5,
+        positionNumber:4,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -161,7 +161,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        positionNumber:6,
+        positionNumber:9,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },
@@ -190,7 +190,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
-        positionNumber:7,
+        positionNumber:2,
         toolType:"module",
         LastRun:"2024-06-02 10:15:17"
        },  {
@@ -212,7 +212,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        positionNumber:8,
+        positionNumber:5,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },{
@@ -234,7 +234,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        positionNumber:9,
+        positionNumber:6,
         toolType:"link",
        LastRun:"2024-06-02 10:15:17"
        },{
@@ -256,7 +256,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006,2007",
-        positionNumber:10,
+        positionNumber:7,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },{
@@ -278,7 +278,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2006,2007",
-        positionNumber:11,
+        positionNumber:8,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -301,7 +301,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002",
-        positionNumber:12,
+        positionNumber:3,
         toolType:"module",
        LastRun:"2024-06-02 10:15:17"
        },   {
@@ -323,7 +323,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"",
-        positionNumber:13,
+        positionNumber:10,
         toolType:"link",
         LastRun:"2024-06-02 10:15:17"
        },
@@ -346,7 +346,7 @@ exports.seed = async function(knex) {
         threshold_time:24,
         arguments:{},
         useResourceType:"2001,2002,2003,2004,2005,2006",
-        positionNumber:14,
+        positionNumber:4,
         toolType:"module",
         LastRun:"2024-06-02 10:15:17"
        }, 

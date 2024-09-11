@@ -14,6 +14,7 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const  path = require('path');
 const DBConnection = require('../db.js')
 const { spawn } = require('child_process');
+const { log } = require('console');
 
 
 
@@ -134,16 +135,17 @@ console.log("  artifact_id", artifact_id , typeof artifact_id,"set_enable_disabl
       await DBConnection('artifacts')
       .where('artifact_id', artifact_id)
       .update('isActive', set_enable_disable_to);
-
-//       const Modules = await DBConnection('tools')
-//       .select('tool_id', 'isActive');
-         
-//  console.log(Modules);
+ 
       
       return{change_this}
         }catch(err)
         {console.log(err);}
    }
+
+
+
+   
+
 
   async function get_all_Modules_model(){
 
@@ -668,7 +670,112 @@ async function write_to_csv_table(filePath,the_orginal_file,module_name,Sub_Modu
   }
   
 
+  async function change_positions(all_Modules_or_Artifact , type,positionNumber,operator,subtype){
+let all_list_same_type 
+
+
+ 
+    try{
+
+
+ if     (type === "Module"){all_list_same_type = await all_Modules_or_Artifact?.Modules.filter((item) => item?.toolType === subtype   && item?.BoxType != "Velociraptor"); }
+
+ else if(type === "Artifact"){all_list_same_type = await all_Modules_or_Artifact?.allArtifacts.filter((item) => item?.BoxType != "Velociraptor"); }
+
+//  console.log("all_list_same_type" , all_list_same_type);
+
+if(!all_list_same_type){return}
+      const [the_item] =         await all_list_same_type.filter((item) => item?.positionNumber === positionNumber);
+      const [the_item_above] =   await all_list_same_type.filter((item) => item?.positionNumber  ===  the_item?.positionNumber -1   && item?.BoxType != "Velociraptor");
+      const [the_item_below] =   await all_list_same_type.filter((item) => item?.positionNumber  ===  the_item?.positionNumber +1  && item?.BoxType != "Velociraptor");
+
+
+
+      let table_name;
+      let artifact_id_or_module_id;
+
+
+
+switch (type) {
+  case 'Artifact':
+    table_name = 'artifacts';
+    artifact_id_or_module_id = "artifact_id"
+    break;
+  case 'Module':
+    table_name = 'tools';
+     artifact_id_or_module_id = "tool_id"
+    break;
+ 
+  default:
+    throw new Error('Invalid type');
+}
+
+
+
+console.log("the_item_above  ---  " , the_item_above?.Tool_name);
+console.log("the_item        ---  " , the_item?.Tool_name);
+console.log("the_item_below  ---  " , the_item_below?.Tool_name);
+
+      console.log("type",type);//Module   //Artifact
+ 
+      
+if(the_item?.positionNumber === 1 && operator === -1){console.log("its on top..  cant move up");return}
+if(the_item?.positionNumber === all_list_same_type?.length  && operator === +1){console.log("its on buttom.. cant move down");return}
+
+
+console.log("999 item 33333333333",artifact_id_or_module_id, table_name ===  "artifacts" ? the_item?.artifact_id : the_item?.tool_id );
+ 
+
+if( operator === -1) ///go up
+
+ {
+console.log("change item ",the_item?.Tool_name," number from "  , the_item.positionNumber , "to "  ,the_item.positionNumber -1);
+
+
+
+
+
+await DBConnection(table_name)
+.where(artifact_id_or_module_id, table_name ===  "artifacts" ? the_item?.artifact_id : the_item?.tool_id)
+.update('positionNumber', the_item.positionNumber -1);
+
+console.log("change above ",the_item_above?.Tool_name," number from "  , the_item_above.positionNumber , "to "  ,the_item_above.positionNumber +1);
+
+await DBConnection(table_name)
+.where(artifact_id_or_module_id, table_name ===  "artifacts" ? the_item_above?.artifact_id : the_item_above?.tool_id)
+.update('positionNumber', the_item_above.positionNumber +1);
+
+ }
+
+
+
+ if( operator === +1) ///go down
+ {
+console.log("change item ",the_item?.Tool_name," number from "  , the_item.positionNumber , "to "  ,the_item.positionNumber +1);
+await DBConnection(table_name)
+.where(artifact_id_or_module_id, table_name ===  "artifacts" ? the_item?.artifact_id : the_item?.tool_id)
+.update('positionNumber', the_item.positionNumber +1);
+
+
+
+console.log("change below ",the_item_below?.Tool_name," number from "  , the_item_below.positionNumber , "to "  ,the_item_below.positionNumber -1);
+
+await DBConnection(table_name)
+.where(artifact_id_or_module_id, table_name ===  "artifacts" ? the_item_below?.artifact_id : the_item_below?.tool_id)
+.update('positionNumber', the_item_below.positionNumber -1);
+ }
+
+
+
+      
+      return  true
+        }catch(err)
+
+        {console.log(err);}
+   }
+
 module.exports = {
+  change_positions,
   make_JSON_Artifact_to_velociraptor,
   get_Date_and_hour_string,
   active_JSON_in_py,

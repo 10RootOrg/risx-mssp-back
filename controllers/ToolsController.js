@@ -5,7 +5,7 @@ const {
 
 const { 
   make_toolData_model, make_JSON_Artifact_to_velociraptor, active_JSON_in_py, get_all_velociraptor_artifacts_model,
-  make_JSON_Module_model, get_all_Modules_model, get_single_Module_by_id_model,write_last_run_of_module,
+  make_JSON_Module_model, get_all_Modules_model, get_single_Module_by_id_model,write_last_run_of_module,change_positions,
   make_reponse_file_name,write_to_csv_table, get_Date_and_hour_string,enable_disable_module_model,show_in_ui_module_model,enable_disable_artifact_model
 } = require('../models/ToolsModels');
 
@@ -64,7 +64,51 @@ res.send("response")
 
  
 
+async function change_modules_preview_position(req, res, next) {
 
+  
+const type =  req.body?.params?.type
+const positionNumber =  req.body?.params?.positionNumber
+const operator =  req.body?.params?.operator
+const subtype =  req.body?.params?.subtype
+
+// console.log("type" , type);
+// console.log("positionNumber" , positionNumber);
+// console.log("operator" , operator);
+// console.log("subtype" , subtype);
+
+
+     try{
+
+  //                            await show_in_ui_module_model(module_id, set_ShowInUi_to)  
+  //     const enable_disable = await enable_disable_module_model(module_id, set_ShowInUi_to)  
+
+
+if(type === "Module"){
+const all_Modules = await get_all_Modules_model();
+const new_positions = await change_positions(all_Modules , type,positionNumber,operator,subtype);
+ 
+
+if(new_positions === true ){res.send(true)}else{res.send(false)}
+
+
+}
+else if(type === "Artifact"){
+  const all_artifacts= await get_all_velociraptor_artifacts_model();
+  const new_positions = await change_positions(all_artifacts , type,positionNumber,operator,subtype);
+ 
+  if(new_positions === true ){res.send(true)}else{res.send(false)}
+  }         
+  
+
+ 
+
+
+  
+  // res.send(enable_disable)
+    }catch(err)
+    {console.log(err);}
+  }
 
 async function show_in_ui_module(req, res, next) {
  
@@ -97,6 +141,7 @@ res.send(enable_disable)
   }catch(err)
   {console.log(err);}
 }
+
 async function enable_disable_artifact(req, res, next) {
  console.log("enable_disable_artifact");
 //  artifact_id: artifact_id ,
@@ -279,7 +324,7 @@ module.exports = {
   enable_disable_module,
   enable_disable_artifact,
   show_in_ui_module,
-  // active_manual_process,
+  change_modules_preview_position,
   tmp1
  
 };

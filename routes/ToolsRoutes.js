@@ -13,8 +13,11 @@ router.get('/all-velociraptor_artifacts', ToolsController.get_all_velociraptor_a
 router.put('/enable-disable-module',          ToolsController.enable_disable_module); 
 router.put('/enable-disable-artifact',          ToolsController.enable_disable_artifact); 
 
-router.put('/show-in-ui',              ToolsController.show_in_ui_module); 
- 
+router.put('/show-in-ui',                     ToolsController.show_in_ui_module); 
+router.put('/change-modules-preview-position', ToolsController.change_modules_preview_position); 
+
+
+
  //active modules 
  router.get('/dehashed-json',              ToolsController.Get_Dehashed_Json); 
 
