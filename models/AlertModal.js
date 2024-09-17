@@ -62,7 +62,7 @@ async function UpdateAlertFile(Info) {
     );
     const file = await fs.writeFileSync(
       DashBoardFile,
-      JSON.stringify([data]),
+      JSON.stringify(data),
       "utf-8"
     );
 
