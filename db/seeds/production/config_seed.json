@@ -27,7 +27,8 @@
         "RecentHostTimeMispInHours": 24
       },
       "AlertsConfiguration": {
-        "LastTimeStampInterval": 1
+        "LastTimeStampInterval": 1,
+        "AlertResultPerArtifactLimit": 200
       }
     }
   },

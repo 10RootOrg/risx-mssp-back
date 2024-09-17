@@ -266,7 +266,7 @@ async function add_time_note(ReqestStatus) {
           ReqestStatus[i]?.ExpireDate === "" ||
           ReqestStatus[i]?.ExpireDate === undefined
         ) {
-          ReqestStatus[i].TimeNote = "NoData";
+          ReqestStatus[i].TimeNote = "NoExpireDate";
           return;
         } else {
           const note = compare_dates(ExpireDate, LastIntervalDate);
