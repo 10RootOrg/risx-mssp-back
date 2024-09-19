@@ -29,7 +29,7 @@ exports.seed = async function (knex) {
     //  },
     {
       BoxType: "Tools_big",
-      headline: "Hardening Kitty",
+      headline: "Threat Hunting",
       description:
         "OS compliance check for Windows OS against 40 different baselines.",
       Toolname: "HardeningKitty",
@@ -48,14 +48,15 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
-      positionNumber:1,
+      positionNumber: 1,
       LastRun: "2024-06-02 10:15:17",
     },
 
     {
       BoxType: "Tools_big",
-      headline: "Persistence Sniper",
-      description: "Incident Responders and System Administrators to hunt persistences implanted.",
+      headline: "Threat Hunting",
+      description:
+        "Incident Responders and System Administrators to hunt persistences implanted.",
       Toolname: "PersistenceSniper",
       artifact_id: "1000104",
       parent_id: "2000000",
@@ -72,12 +73,12 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
-      positionNumber:2,
+      positionNumber: 2,
       LastRun: "2024-06-02 10:15:17",
     },
     {
       BoxType: "Tools_big",
-      headline: "Hayabusa",
+      headline: "Threat Hunting",
       description: "Event log fast forensics timeline generator.",
       Toolname: "Hayabusa",
       artifact_id: "1000105",
@@ -95,12 +96,12 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
-      positionNumber:3,
+      positionNumber: 3,
       LastRun: "2024-06-02 10:15:17",
     },
     {
       BoxType: "Tools_big",
-      headline: "Best Practice",
+      headline: "All Around",
       description: "Optimal digital forensics with expert-selected artifacts.",
       Toolname: "BestPractice",
       artifact_id: "1000106",
@@ -118,7 +119,7 @@ exports.seed = async function (knex) {
       threshold_time: 24,
       arguments: {},
       useResourceType: "",
-      positionNumber:4,
+      positionNumber: 4,
       LastRun: "2024-06-02 10:15:17",
     },
   ]);

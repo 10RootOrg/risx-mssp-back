@@ -1,5 +1,19 @@
 {
   "General": {
+    "AlertDictionary": {
+      "Exchange.Windows.ETW.Powershell": {
+        "Name": "Powershell Monitoring",
+        "Description": "Powershell scriptblock and commandlet load monitoring."
+      },
+      "Custom.Windows.FailedLogins": {
+        "Name": "Failed Login Attempt",
+        "Description": "Monitor for failed login attempts on Windows systems"
+      },
+      "Windows.Detection.PsexecService": {
+        "Name": "Psexec Service History",
+        "Description": "PSExec works by installing a new service in the system. The service can be renamed using the -r flag and therefore it is not enough to just watch for a new service called psexecsvc.exe. This artifact improves on this by scanning the service binary to detect the original psexec binary."
+      }
+    },
     "AgentLinks": {
       "Mac": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/mac/velociraptor_client_repacked",
       "Linux": "~/setup_platform/scripts/velociraptor-docker/velociraptor/clients/linux/velociraptor_client_repacked",
@@ -92,6 +106,7 @@
           "ModuleName": "BestPractice",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
+          "ArtifactTimeOut": 600,
           "Arguments": {
             "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
@@ -110,7 +125,7 @@
               "Exchange.Custom.Windows.Nirsoft.LastActivityView": {},
               "Custom.Windows.System.Powershell.PSReadline.QuickWins": {},
               "Windows.Forensics.Lnk": {},
-              "Exchange.PSList.VTLookup": {},
+              "Exchange.PSList.VTLookup.ServerMetaData": {},
               "Generic.System.Pstree": {},
               "Windows.System.UntrustedBinaries": {},
               "Windows.Detection.Yara.Process": {},
@@ -128,6 +143,7 @@
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
+          "ArtifactTimeOut": 600,
           "Arguments": {
             "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
@@ -144,6 +160,7 @@
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
+          "ArtifactTimeOut": 600,
           "Arguments": {
             "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
@@ -163,6 +180,7 @@
           "ExpireDate": "500",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
+          "ArtifactTimeOut": 600,
           "Arguments": {
             "ArtifactResourceLimit": {
               "CPULimitPercent": "60",
@@ -187,6 +205,7 @@
           "ExpireDate": "60",
           "TimeInterval": "5",
           "LastRunDate": "2024-06-02 10:15:17",
+          "ArtifactTimeOut": 7200,
           "Arguments": {
             "ArtifactResourceLimit": {},
             "ArtifactParameters": {
