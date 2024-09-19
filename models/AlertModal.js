@@ -26,7 +26,14 @@ async function GetAlertsFile() {
     });
     // console.log(users);
 
-    return data.sort((a, b) => b?.["_ts"] - a?.["_ts"]);
+    const [[AletDic]] = await DBConnection.raw(
+      'SELECT JSON_EXTRACT(config,"$.General.AlertDictionary") as a from configjson'
+    );
+
+    return {
+      Alerts: data.sort((a, b) => b?.["_ts"] - a?.["_ts"]),
+      AletDic: AletDic.a,
+    };
   } catch (error) {
     console.log("error in dash getter", error);
     return false;
@@ -37,7 +44,10 @@ async function UpdateAlertFile(Info) {
   try {
     console.log("hello UpdateAlertFile");
 
-    const data = await GetAlertsFile();
+    const dataraw = await GetAlertsFile();
+    const data = dataraw.Alerts;
+    console.log(data, "AlertsAlertsAlertsAlerts");
+
     let yy;
     data?.every((x, index) => {
       if (x.AlertID == Info.AlertID) {
