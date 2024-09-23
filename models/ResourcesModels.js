@@ -420,7 +420,21 @@ async function UpdateMonitorSingleModal(id, val) {
   }
 }
 
+async function UpdateMonitorMultiModal(id, val) {
+  try {
+    console.log("id, val", id, val);
+    const updated = await DBConnection.raw(
+      `UPDATE all_resources set monitoring = ${val} where type = "${id}" `
+    );
+    return true;
+  } catch (error) {
+    console.log("error in UpdateMonitorSingleModal ", error);
+    return false;
+  }
+}
+
 module.exports = {
+  UpdateMonitorMultiModal,
   UpdateMonitorSingleModal,
   get_All_Resources_model,
   get_All_Resource_Type_model,
