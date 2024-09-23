@@ -53,6 +53,10 @@ router.put(
   Check_if_resource_id_exists_to_continue,
   ResourcesController.UpdateMonitorSingle
 );
+router.put(
+  "/UpdateMonitorMulti",
+  ResourcesController.UpdateMonitorMulti
+);
 
 router.delete("/:resource_id", ResourcesController.delete_single_resource); //delete_single resorce
 

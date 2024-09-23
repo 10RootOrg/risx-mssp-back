@@ -50,7 +50,7 @@
     "Assets": {
       "Example": {
         "AssetString": "18.168.185.151",
-        "AssetEnable": 1,
+        "AssetEnable": 0,
         "AssetType": ["IP Address"],
         "AssetModules": ["Velociraptor", "Nuclei"],
         "LastRunDate": "2024-06-02 10:15:17"

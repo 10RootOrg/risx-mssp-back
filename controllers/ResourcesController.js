@@ -11,6 +11,7 @@ const {
   get_Same_Type_model,
   post_new_resource_model,
   UpdateMonitorSingleModal,
+  UpdateMonitorMultiModal,
 } = require("../models/ResourcesModels");
 
 const DBConnection = require("../db.js");
@@ -432,8 +433,21 @@ async function UpdateMonitorSingle(req, res, next) {
     console.log("error in UpdateMonitorSingle".error);
   }
 }
+async function UpdateMonitorMulti(req, res, next) {
+  try {
+    console.log("UpdateMonitorSingle", req.body);
+    const up = await UpdateMonitorMultiModal(
+      req.body?.asset_type_id,
+      req.body?.value
+    );
+    res.send(up);
+  } catch (error) {
+    console.log("error in UpdateMonitorSingle".error);
+  }
+}
 
 module.exports = {
+  UpdateMonitorMulti,
   UpdateMonitorSingle,
   get_All_Resources,
   getAllResourceType,
