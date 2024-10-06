@@ -36,7 +36,8 @@ async function post_new_resource_model(
   item_types_list,
   description,
   monitoring,
-  resource_string
+  resource_string,
+  parent_id
 ) {
   console.log(" post_new_resource_model");
 
@@ -54,6 +55,7 @@ async function post_new_resource_model(
       tools: item_tool_list.toString(),
       description: description,
       monitoring: monitoring,
+      parent_id: parent_id,
     });
 
     return id_with_r;
@@ -122,7 +124,7 @@ async function get_All_Resources_model() {
         "all_resources.description",
         "all_resources.resource_status",
         "all_resources.monitoring",
-        "all_resources.group_name",
+        "all_resources.parent_id",
         "all_resources.checked",
         "all_resources.updatedAt",
         "all_resources.type",
@@ -172,7 +174,7 @@ async function get_All_Resources_model() {
 
   // try {
   //   const resourcesQuery = DBConnection('all_resources')
-  //   .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.group_name', 'all_resources.checked', 'all_resources.updatedAt',
+  //   .select('all_resources.resource_id', 'all_resources.resource_string', 'all_resources.description', 'all_resources.resource_status', 'all_resources.monitoring', 'all_resources.parent_id', 'all_resources.checked', 'all_resources.updatedAt',
   //     DBConnection.raw('JSON_ARRAYAGG(JSON_OBJECT("Toolid", tools.tool_id, "toolname", tools.Tool_name)) as tools'),
   //     DBConnection.raw('(SELECT JSON_ARRAYAGG(JSON_OBJECT("resource_type_id", resource_type.resource_type_id, "resource_type_name", resource_type.resource_type_name)) FROM (SELECT DISTINCT resource_type.resource_type_id, resource_type.resource_type_name FROM resource_type WHERE FIND_IN_SET(resource_type.resource_type_id, all_resources.type)) AS resource_type) AS types')
   //   )
@@ -203,7 +205,7 @@ async function get_Same_Type_model(asset_type_id) {
         "all_resources.description",
         "all_resources.resource_status",
         "all_resources.monitoring",
-        "all_resources.group_name",
+        "all_resources.parent_id",
         "all_resources.checked",
         "all_resources.updatedAt",
         "all_resources.type",
@@ -238,7 +240,8 @@ async function get_All_Resource_Type_model() {
       "resource_type_id",
       "resource_type_name",
       "description_short",
-      "preview_name"
+      "preview_name",
+      "category_name"
     );
     if (resourcesQuery) {
       return resourcesQuery;
@@ -424,16 +427,158 @@ async function UpdateMonitorMultiModal(id, val) {
   try {
     console.log("id, val", id, val);
     const updated = await DBConnection.raw(
-      `UPDATE all_resources set monitoring = ${val} where type = "${id}" `
+      `UPDATE all_resources set monitoring = ${val} where parent_id in ("${id}") `
     );
     return true;
   } catch (error) {
-    console.log("error in UpdateMonitorSingleModal ", error);
+    console.log("error in UpdateMonitorMultiModal ", error);
     return false;
   }
 }
 
+async function GetAllModuleAssignedResources(id) {
+  try {
+    const [arr] = await DBConnection.raw(
+      `SELECT resource_id,resource_string,checked,monitoring FROM all_resources where tools like "%${id}%"`
+    );
+    return arr;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getFullCategoryAndEntitiesListModal(id) {
+  try {
+    const [arr] = await DBConnection.raw(
+      `SELECT 
+      json_arrayagg(
+          json_object(
+              'categoryName', grouped_entities.category_type,
+              'entities', grouped_entities.entities_agg
+          )
+      ) AS objFull
+  FROM (
+      SELECT 
+          e.category_type,
+          json_arrayagg(
+              json_object(
+                  'entitiesId', e.entities_id,
+                  'entityName', e.entity_name,
+                  'role', e.role,
+                  'organization', e.organization,
+                  'department', e.department,
+                  'description', e.description,
+                  'highProfile', e.high_profile,
+                  'properties', COALESCE(ar.properties_agg, JSON_ARRAY()),
+                  'categoryName', e.category_type
+              )
+          ) AS entities_agg
+      FROM entities e
+      LEFT JOIN (
+          SELECT 
+              parent_id,
+              json_arrayagg(
+                  json_object(
+                      'resource_id', resource_id,
+                      'resource_string', resource_string,
+                      'description', description,
+                      'tools', (
+                          SELECT JSON_ARRAYAGG(
+                              JSON_OBJECT(
+                                  'Toolid', tools.tool_id, 
+                                  'toolname', tools.Tool_name
+                              )
+                          )
+                          FROM all_resources
+                          LEFT JOIN tools ON FIND_IN_SET(tools.tool_id, REPLACE(all_resources.tools, " ", ""))
+                          WHERE tt.resource_id = resource_id
+                          GROUP BY all_resources.resource_id
+                      ),
+                      'type', type,
+                      'resource_status', resource_status,
+                      'monitoring', monitoring,
+                      'parent_id', parent_id,
+                      'checked', checked,
+                      'createdAt', createdAt,
+                      'updatedAt', updatedAt
+                  )
+              ) AS properties_agg
+          FROM all_resources as tt
+          GROUP BY parent_id
+      ) ar ON e.entities_id = ar.parent_id
+      GROUP BY 
+          e.category_type
+  ) AS grouped_entities;
+  
+   `
+    );
+    return arr;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function AddEntityModal(data) {
+  try {
+    console.log(data, "AddEntityModal");
+
+    const raw =
+      await DBConnection.raw(`insert into entities ( entity_name, role, organization, department, description, high_profile, category_type) values
+    ("${data.entityName}","${data.role}","${data.organization}","${data.department}","${data.description}",${data.highProfile},"${data.categoryName}")`);
+
+    return true;
+  } catch (error) {
+    console.log("Error in AddEntityModal : ", error);
+    return false;
+  }
+}
+
+async function UpdateEntityModal(data) {
+  try {
+    console.log(data, "AddEntityModal");
+
+    const raw =
+      await DBConnection.raw(`update entities set  entity_name="${data.entityName}", role="${data.role}",
+         organization="${data.organization}", department="${data.department}", description="${data.description}",
+          high_profile=${data.highProfile} where entities_id = "${data.entitiesId}"`);
+
+    return true;
+  } catch (error) {
+    console.log("Error in AddEntityModal : ", error);
+    return false;
+  }
+}
+
+async function DeleteSingleEntityModal(EntityId) {
+  console.log("delete_single_resource_by_id", EntityId);
+
+  try {
+    const deleted1 = await DBConnection.raw(
+      `delete from entities where entities_id = "${EntityId}"`
+    );
+    const deleted2 = await DBConnection.raw(
+      `delete from all_resources where parent_id like "%${EntityId}%"`
+    );
+    console.log("deleted2,deleted2,deleted2", deleted2);
+
+    if (deleted1) {
+      console.log("no exist", deleted1);
+      return true;
+    } else {
+      console.log("exist", deleted1);
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 module.exports = {
+  DeleteSingleEntityModal,
+  UpdateEntityModal,
+  AddEntityModal,
+  getFullCategoryAndEntitiesListModal,
+  GetAllModuleAssignedResources,
   UpdateMonitorMultiModal,
   UpdateMonitorSingleModal,
   get_All_Resources_model,

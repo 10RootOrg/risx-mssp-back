@@ -8,6 +8,7 @@ exports.seed = async function (knex) {
   await knex("resource_type").insert([
     {
       resource_type_id: 2001,
+      category_name: "Organization",
       resource_type_name: "Domain",
       preview_name: "Company Domain",
       description_short:
@@ -17,6 +18,7 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2002,
+      category_name: "Organization",
       resource_type_name: "IP Address",
       preview_name: "IP Address and Range",
       description_short: "IP addresses aid cybersecurity monitoring.",
@@ -25,8 +27,9 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2003,
+      category_name: "Users",
       resource_type_name: "Username (Social)",
-      preview_name: "High-Profile Username",
+      preview_name: "Username",
       description_short:
         "Usernames are unique identifiers used to access accounts or systems.",
       description_long:
@@ -34,8 +37,9 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2004,
+      category_name: "Users",
       resource_type_name: "Phone Number",
-      preview_name: "High-Profile Phone Number",
+      preview_name: "Phone Number",
       description_short:
         "Risk in mobile phone numbers includes SIM swapping, phishing attacks, spamming, and identity theft..",
       description_long:
@@ -43,8 +47,9 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2005,
+      category_name: "Users",
       resource_type_name: "Full Name",
-      preview_name: "High-Profile Employees Full Name",
+      preview_name: "Full Name",
       description_short:
         "Ensuring the security of full names is vital for authentication.",
       description_long:
@@ -52,8 +57,9 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2006,
+      category_name: "Users",
       resource_type_name: "Email Address",
-      preview_name: "High-Profile Employees Email Address",
+      preview_name: "Email Address",
       description_short:
         "Authenticate users and prevent phishing and email-based attacks.",
       description_long:
@@ -61,6 +67,7 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2009,
+      category_name: "Organization",
       resource_type_name: "Email Domain",
       preview_name: "Email Domain",
       description_short: "Critical for email security and domain protection.",
@@ -69,6 +76,7 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2007,
+      category_name: "Organization",
       resource_type_name: "Company Name",
       preview_name: "Company Name",
       description_short:
@@ -78,8 +86,9 @@ exports.seed = async function (knex) {
     },
     {
       resource_type_id: 2008,
+      category_name: "Endpoints",
       resource_type_name: "Computer",
-      preview_name: "Internal Endpoint",
+      preview_name: "Name",
       description_short:
         "Essential for safeguarding data, preventing breaches, and ensuring network security..",
       description_long:
