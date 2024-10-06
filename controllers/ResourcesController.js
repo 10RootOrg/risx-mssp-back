@@ -12,10 +12,16 @@ const {
   post_new_resource_model,
   UpdateMonitorSingleModal,
   UpdateMonitorMultiModal,
+  GetAllModuleAssignedResources,
+  getFullCategoryAndEntitiesListModal,
+  AddEntityModal,
+  UpdateEntityModal,
+  DeleteSingleEntityModal,
 } = require("../models/ResourcesModels");
 
 const DBConnection = require("../db.js");
 const { v4: uuid } = require("uuid");
+const { get_all_Modules_model } = require("../models/ToolsModels.js");
 
 async function get_All_Resources(req, res, next) {
   try {
@@ -321,6 +327,7 @@ async function post_new_resource(req, res, next) {
     description,
     monitoring,
     resource_string,
+    parent_id,
   } = req.body;
   try {
     const posted_id = await post_new_resource_model(
@@ -328,7 +335,8 @@ async function post_new_resource(req, res, next) {
       item_types_list,
       description,
       monitoring,
-      resource_string
+      resource_string,
+      parent_id
     );
 
     if (posted_id) {
@@ -418,6 +426,7 @@ async function delete_single_resource(req, res, next) {
   } catch (err) {
     // res.sand(err.message)
     // next(err);
+    console.log(err);
   }
 }
 
@@ -430,23 +439,143 @@ async function UpdateMonitorSingle(req, res, next) {
     );
     res.send(up);
   } catch (error) {
-    console.log("error in UpdateMonitorSingle".error);
+    console.log("error in UpdateMonitorSingle", error);
   }
 }
 async function UpdateMonitorMulti(req, res, next) {
   try {
     console.log("UpdateMonitorSingle", req.body);
     const up = await UpdateMonitorMultiModal(
-      req.body?.asset_type_id,
+      req.body?.ids?.join('","'),
       req.body?.value
     );
     res.send(up);
   } catch (error) {
-    console.log("error in UpdateMonitorSingle".error);
+    console.log("error in UpdateMonitorSingle", error);
+  }
+}
+
+async function getResourceToModuleObj(req, res, next) {
+  try {
+    const all_Modules = await get_all_Modules_model();
+    // console.log(all_Modules);
+
+    const obj = {};
+    await all_Modules?.Modules?.forEach(async (x) => {
+      const AssetArr = await GetAllModuleAssignedResources(x?.tool_id);
+      console.log(x.Tool_name, "1111111111111tttttttttt");
+
+      obj[x.Tool_name] = AssetArr;
+      console.log(obj, "444444444");
+    });
+    console.log(obj, "sdsdsdsd");
+
+    res.send(obj);
+  } catch (error) {
+    console.log("error in UpdateMonitorSingle", error);
+  }
+}
+
+async function getFullCategoryAndEntitiesList(req, res, next) {
+  try {
+    console.log("getFullCategoryAndEntitiesList");
+    const arr = await getFullCategoryAndEntitiesListModal();
+    // console.log(arr[0], "arr[0]?.objFull", arr[0], "leigh");
+
+    let tmpArray = ["Users", "Endpoints", "Organization"];
+    arr[0]?.objFull.forEach((z) => {
+      const dateArr = [];
+      z?.entities?.forEach((w) => {
+        console.log(
+          w?.properties.map((cur) => new Date(cur?.checked)?.getTime()),
+          "sssss",
+          Math.max(
+            ...w?.properties.map((cur) => new Date(cur?.checked)?.getTime())
+          ),
+          "ssssqwe"
+        );
+        const maxDate = Math.max(
+          ...w?.properties.map((cur) => new Date(cur?.checked)?.getTime())
+        );
+        dateArr.push(maxDate ? maxDate : null);
+        w.lastUpdated = maxDate ? maxDate : null;
+      });
+      const maxDateArr = Math.max(...dateArr);
+      z.lastUpdated = maxDateArr ? maxDateArr : null;
+    });
+
+    const arrNew = tmpArray.map((x) => {
+      if (arr[0]?.objFull.some((y) => y?.categoryName == x)) {
+        return;
+      } else {
+        arr[0]?.objFull?.push({
+          categoryName: x,
+          entities: [],
+          lastUpdated: null,
+        });
+      }
+    });
+    res.send(arr[0]?.objFull);
+  } catch (error) {
+    console.log("error in getFullCategoryAndEntitiesList", error);
+  }
+}
+
+async function AddEntity(req, res, next) {
+  try {
+    console.log(req.body, " req.body of AddEntity");
+
+    const bol = await AddEntityModal(req.body);
+    if (bol) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (error) {
+    console.log("Error in AddEntity : ", error);
+    res.send(false);
+  }
+}
+async function UpdateEntity(req, res, next) {
+  try {
+    console.log(req.body, " req.body of AddEntity");
+
+    const bol = await UpdateEntityModal(req.body);
+    if (bol) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (error) {
+    console.log("Error in AddEntity : ", error);
+    res.send(false);
+  }
+}
+
+async function DeleteSingleEntity(req, res, next) {
+  const { EntityId } = req.params;
+
+  if (EntityId === undefined || EntityId === null || EntityId === "") {
+    res.sand("no id");
+    return "no id";
+  }
+
+  try {
+    const deleted = await DeleteSingleEntityModal(EntityId);
+    res.send(deleted);
+  } catch (err) {
+    // res.sand(err.message)
+    // next(err);
+    console.log(err);
   }
 }
 
 module.exports = {
+  DeleteSingleEntity,
+  UpdateEntity,
+  AddEntity,
+  getFullCategoryAndEntitiesList,
+  getResourceToModuleObj,
   UpdateMonitorMulti,
   UpdateMonitorSingle,
   get_All_Resources,
@@ -608,3 +737,5 @@ module.exports = {
 //     next(err);
 //   }
 // }
+
+// "http://mssp-dev.northeurope.cloudapp.azure.com/kibana/app/dashboards#/view/b118d331-2334-4da1-85d0-626610073555?embed=true&_g=(refreshInterval:(pause:!t,value:60000),time:(from:now-15M,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:artifact,key:Severity.keyword,negate:!f,params:(query:Medium),type:phrase),query:(match_phrase:(Severity.keyword:Medium)))))"

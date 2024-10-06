@@ -33,16 +33,16 @@ async function check_and_active_interval(req, res, next) {
         .then((isActive) => {
           console.log("isActive", isActive);
           if (isActive === true) {
-            res.send(true);
+            res ? res.send(true) : "";
           } else if (isActive === false) {
-            res.send("Error");
+            res ? res.send("Error") : "";
           }
         })
         .catch((error) => {
           console.log("out of active_interval_process_model");
           console.error("Error:", error);
-          res.send(false);
-          next(error);
+          res ? res.send(false) : "";
+          next ? next(error) : "";
         });
     }
   } catch (err) {
@@ -81,7 +81,7 @@ async function Check_Interval_Status(req, res, next) {
           );
         }
         if (!isRunning) {
-          check_and_active_interval( ) // Checks if it is off and starts the interval important for when given to install
+          check_and_active_interval(); // Checks if it is off and starts the interval important for when given to install
           logger.error(
             `${file_name} check_main_process_status_model: ${isRunning}`
           );

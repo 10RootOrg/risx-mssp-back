@@ -207,7 +207,11 @@
           "LastRunDate": "2024-06-02 10:15:17",
           "ArtifactTimeOutInMinutes": 7200,
           "Arguments": {
-            "ArtifactResourceLimit": {},
+            "ArtifactResourceLimit": {
+              "CPULimitPercent": "60",
+              "MaxExecutionTimeInSeconds": "3600",
+              "MaxBytesUploaded": "10000"
+            },
             "ArtifactParameters": {
               "KapeCollection": "KapeTriage"
             }
@@ -224,7 +228,8 @@
       "Arguments": {
         "NucleiTags": "",
         "NucleiWorkflow": "",
-        "NucleiExcludeSeverity": []
+        "NucleiExcludeSeverity": [],
+        "NucleiArgumentFlags": []
       }
     },
     "TimeSketch": {
