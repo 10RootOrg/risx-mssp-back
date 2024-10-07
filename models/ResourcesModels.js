@@ -1,5 +1,4 @@
 // const DatabaseError = require('../errors/DatabaseError');
-const { log } = require("console");
 const fs = require("fs");
 const fs_promises = require("fs").promises; // Import 'fs' with Promise-based API
 const path = require("path");
@@ -573,7 +572,20 @@ async function DeleteSingleEntityModal(EntityId) {
   }
 }
 
+async function GetAllEntitiesAndAssetsModal() {
+  try {
+    const [entities] = await DBConnection.raw("SELECT * FROM entities");
+    const [Assets] = await DBConnection.raw(
+      "SELECT  resource_string, description, tools, type, resource_status, monitoring, parent_id FROM all_resources"
+    );
+    return [entities, Assets];
+  } catch (error) {
+    console.log("Error GetAllEntitiesAndAssetsModal : ", error);
+  }
+}
+
 module.exports = {
+  GetAllEntitiesAndAssetsModal,
   DeleteSingleEntityModal,
   UpdateEntityModal,
   AddEntityModal,

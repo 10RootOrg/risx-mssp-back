@@ -88,6 +88,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList,
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetParentId"), NEW.parent_id	,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".LastRunDate"), ifNull(new.checked,"1999-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
@@ -138,6 +139,7 @@ BEGIN
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetEnable"), NEW.monitoring LIKE 1,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetType"), typelist,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetModules"), ToolList,
+            CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".AssetParentId"), NEW.parent_id,
             CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id, ".LastRunDate"), ifNull(new.checked,"1999-06-02 10:15:17")),
             lastupdated = now();
         SET @trigger_disabled = NULL;
@@ -219,6 +221,7 @@ BEGIN
             
             UPDATE all_resources SET monitoring = JSON_EXTRACT(Asset, "$.AssetEnable"),
                 resource_string = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetString")),
+                parent_id = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetParentId")),
                 checked=JSON_EXTRACT(Asset, "$.LastRunDate"),
                 type = (SELECT GROUP_CONCAT(item) FROM JSON_TABLE(typelist, "$[*]"
                     COLUMNS (rowid FOR ORDINALITY, item VARCHAR(300) PATH "$")) AS json_parsed1),
@@ -281,20 +284,15 @@ end$$
 DROP PROCEDURE IF EXISTS addAllAssetsToConfig$$
 create PROCEDURE addAllAssetsToConfig ()
   begin
-  
-  select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
+  select parent_id from all_resources;
+  select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,"AssetParentId",all_resources.parent_id,
   "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring)) from all_resources;
 
   UPDATE configjson SET config = JSON_SET(config,
   "$.ClientInfrastructure.Assets", (select JSON_OBJECTagg(resource_id,JSON_OBJECT("AssetString",resource_string,
-  "AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),"AssetEnable",monitoring,"LastRunDate",ifNull(checked,"1999-06-02 10:15:17"))) from all_resources));
+  "AssetParentId",parent_id,"AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),
+  "AssetEnable",monitoring,"LastRunDate",ifNull(checked,"1999-06-02 10:15:17"))) from all_resources));
 
   
   end$$   
-
-
-
-
- 
-
 

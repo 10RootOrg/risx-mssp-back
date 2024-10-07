@@ -11,6 +11,10 @@ const path = require("path");
 const os = require("os");
 const axios = require("axios");
 const { v4: uuid } = require("uuid");
+const {
+  getFullCategoryAndEntitiesListModal,
+  GetAllEntitiesAndAssetsModal,
+} = require("../models/ResourcesModels.js");
 
 async function Get_Config(req, res, next) {
   try {
@@ -146,9 +150,11 @@ async function GetAllLeakAsset(req, res, next) {
 
 async function ExportAllAssets(req, res, next) {
   try {
-    console.log("start");
-    const file = await GetAssetsModal();
-    console.log(file);
+    console.log("start ExportAllAssets");
+    const file = await GetAllEntitiesAndAssetsModal();
+    // const file = await getFullCategoryAndEntitiesListModal();
+
+    console.log(file, "End ExportAllAssets");
 
     res.send(file);
   } catch (err) {
@@ -158,40 +164,54 @@ async function ExportAllAssets(req, res, next) {
 
 async function ImportAllAssets(req, res, next) {
   try {
-    console.log("start");
+    console.log("start ImportAllAssets");
     // console.log(
     //   "ttttttttttttttttttttttttttttttttttttttttttttttttttttt",
     //   req.body
     // );
-    const file = await GetAssetsModal();
+    const file = await GetAllEntitiesAndAssetsModal();
+    const EntitiesRaw = req.body[0];
+    const AssetsRaw = req.body[1];
 
-    const jja = req.body
-      .filter((y) => {
-        let bol = true;
-        file.forEach((t) => {
-          if (y.resource_string == t.resource_string && y.type == t.type) {
-            bol = false;
-            console.log("Already Exists ", y.resource_string);
-          }
-        });
-        return bol;
-      })
-      .map((x) => {
-        const id = uuid();
-        const id_short = id.replace(/-/g, "").substring(0, 9);
-        const id_with_r = "r" + id_short;
-        x.resource_id = id_with_r;
-        return x;
+    const EntitiesFilter = EntitiesRaw.filter((y) => {
+      let bol = true;
+      file[0]?.forEach((t) => {
+        if (y.entities_id == t.entities_id) {
+          bol = false;
+          console.log("Already Exists ", y.entities_id);
+        }
       });
-    console.log(jja);
-    if (jja.length > 0) {
-      const r = await PostImportedAssets(jja);
+      return bol;
+    });
+
+    const AssetsFilter = AssetsRaw.filter((y) => {
+      let bol = true;
+      file[1].forEach((t) => {
+        if (y.resource_string == t.resource_string && y.type == t.type) {
+          bol = false;
+          console.log("Already Exists ", y.resource_string);
+        }
+      });
+      return bol;
+    }).map((x) => {
+      const id = uuid();
+      const id_short = id.replace(/-/g, "").substring(0, 9);
+      const id_with_r = "r" + id_short;
+      x.resource_id = id_with_r;
+      return x;
+    });
+    console.log();
+    if (EntitiesFilter.length > 0 || AssetsFilter.length > 0) {
+      const r = await PostImportedAssets(EntitiesFilter, AssetsFilter);
       console.log(r, "response of import");
       // להיתבסס על הטקסט
       res.send("Added successfully");
     } else {
+      console.log("Nothing To add As It Already Exists in the Db");
+
       res.send("Nothing To add As It Already Exists in the Db");
     }
+    console.log("End ImportAllAssets");
   } catch (err) {
     console.log("Error in import assets ", err);
     res.send("Error");

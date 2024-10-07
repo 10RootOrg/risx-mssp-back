@@ -143,12 +143,22 @@ async function GetAssetsModal() {
   }
 }
 
-async function PostImportedAssets(jja) {
+async function PostImportedAssets(entities, assets) {
   try {
-    const fileM = await DBConnection("all_resources").insert(jja);
-    return fileM;
+    // console.log(entities, assets, "entities, assets");
+
+    if (assets.length > 0) {
+      const fileA = await DBConnection("all_resources").insert(assets);
+      console.log(fileA, "fileA PostImportedAssets");
+    }
+    if (entities.length > 0) {
+      const fileE = await DBConnection("entities").insert(entities);
+      console.log(fileE, "fileE PostImportedAssets");
+    }
+
+    return true;
   } catch (err) {
-    console.log("Error in getAssetsModal ", err);
+    console.log("Error in PostImportedAssets ", err);
     return { error: "Error in Export" };
   }
 }
