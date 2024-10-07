@@ -486,14 +486,7 @@ async function getFullCategoryAndEntitiesList(req, res, next) {
     arr[0]?.objFull.forEach((z) => {
       const dateArr = [];
       z?.entities?.forEach((w) => {
-        console.log(
-          w?.properties.map((cur) => new Date(cur?.checked)?.getTime()),
-          "sssss",
-          Math.max(
-            ...w?.properties.map((cur) => new Date(cur?.checked)?.getTime())
-          ),
-          "ssssqwe"
-        );
+
         const maxDate = Math.max(
           ...w?.properties.map((cur) => new Date(cur?.checked)?.getTime())
         );
