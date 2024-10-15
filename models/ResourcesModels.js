@@ -511,6 +511,9 @@ async function getFullCategoryAndEntitiesListModal(id) {
   
    `
     );
+    if (!arr[0]?.objFull?.length > 0) {
+      return [{ objFull: [] }];
+    }
     return arr;
   } catch (error) {
     console.log(error);
