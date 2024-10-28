@@ -1,8 +1,52 @@
 const { GetAlertsFile, UpdateAlertFile } = require("../models/AlertModal");
+const { get_full_config_model } = require("../models/ConfigModels");
 
 async function GetAlertFileData(req, res, next) {
   try {
     const data = await GetAlertsFile();
+    const Item = {
+      New: 0,
+      InProgress: 0,
+      "False Positive": 0,
+      "True Positive": 0,
+      Ignore: 0,
+      Closed: 0,
+      Reopened: 0,
+    };
+    const Artifact = {};
+    data.Alerts = data?.Alerts?.filter((x) => {
+      if (data?.AletDic[x?.Artifact?.trim()]?.Show ?? true) {
+        Item[x?.UserInput?.Status]++;
+        if (
+          !Artifact[data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact]
+        ) {
+          Artifact[data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact] =
+            {};
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].LastDate = x?._ts;
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].Description = data?.AletDic[x?.Artifact?.trim()]?.Description;
+
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].Num = 0;
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].Show = data?.AletDic[x?.Artifact?.trim()]?.Show;
+        }
+        Artifact[data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact].Num++;
+
+        x.SimpleName = data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact;
+        x.Description = data?.AletDic[x?.Artifact?.trim()]?.Description;
+        x.Show = data?.AletDic[x?.Artifact?.trim()]?.Show;
+      }
+      return data?.AletDic[x?.Artifact?.trim()]?.Show ?? true;
+    });
+    data.Artifact = Artifact;
+    data.PieData = Item;
+
     // console.log(data, "sdsdsdsdsdsdsdsdsd");
     res.send(data);
   } catch (error) {
