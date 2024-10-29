@@ -36,7 +36,7 @@ async function GetAlertsFile() {
     };
   } catch (error) {
     console.log("error in dash getter", error);
-    return false;
+    return {};
   }
 }
 
