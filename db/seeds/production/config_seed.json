@@ -2,21 +2,25 @@
   "General": {
     "AlertDictionary": {
       "Exchange.Windows.ETW.Powershell": {
+        "Log": true,
         "Show": true,
         "Name": "Powershell Monitoring",
         "Description": "Powershell scriptblock and commandlet load monitoring."
       },
       "Custom.Windows.FailedLogins": {
+        "Log": true,
         "Show": true,
         "Name": "Failed Login Attempt",
         "Description": "Monitor for failed login attempts on Windows systems"
       },
       "Windows.Detection.PsexecService": {
+        "Log": true,
         "Show": true,
         "Name": "Psexec Service History",
         "Description": "PSExec works by installing a new service in the system. The service can be renamed using the -r flag and therefore it is not enough to just watch for a new service called psexecsvc.exe. This artifact improves on this by scanning the service binary to detect the original psexec binary."
       },
       "Generic.Client.Stats": {
+        "Log": false,
         "Show": false,
         "Name": "Client Stats",
         "Description": "To Much Data Ignore"
