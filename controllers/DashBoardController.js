@@ -61,11 +61,13 @@ async function GetDashBoardClientIdVelo(req, res, next) {
     const file = await GetDashFile(ClientDict);
     console.log(file);
     console.log(
-      file[name[0]?.resource_string] ?? false,
-      "file[name] ?? false;"
+      file[name[0]?.resource_string] ?? name[0]?.resource_string ?? false,
+      "result send"
     );
 
-    res.send(file[name[0]?.resource_string] ?? false);
+    res.send(
+      file[name[0]?.resource_string] ?? name[0]?.resource_string ?? false
+    );
   } catch (error) {
     console.log("error in GetDashBoardClientIdVelo :", error);
   }

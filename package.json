@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx knex migrate:latest --knexfile ./knexfile.js --env development && npx knex seed:run --specific seeds_for_artifacts.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific seeds_for_resource_type.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific tools_seeds.js --knexfile ./knexfile.js --env development && npx knex seed:run --specific seed_for_config.js --knexfile ./knexfile.js --env development",
-    "prod": "npx knex migrate:latest --knexfile ./knexfile.js --env production  && npx knex seed:run --specific seeds_for_artifacts.js --knexfile ./knexfile.js --env production  && npx knex seed:run --specific seeds_for_resource_type.js --knexfile ./knexfile.js --env production  && npx knex seed:run --specific tools_seeds.js --knexfile ./knexfile.js --env production  && npx knex seed:run --specific seed_for_config.js --knexfile ./knexfile.js --env production",
+    "dev": "npx knex migrate:latest --knexfile ./knexfile.js --env development && npx knex seed:run --env development",
+    "prod": "npx knex migrate:latest --knexfile ./knexfile.js --env production  && npx knex seed:run --env production",
     "start": "node server"
   },
   "keywords": [],

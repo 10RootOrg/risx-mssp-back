@@ -163,10 +163,91 @@ async function PostImportedAssets(entities, assets) {
   }
 }
 
+async function GetAllVeloConfigModel() {
+  try {
+    console.log("start GetAllVeloConfigModel");
+    const [fileA] = await DBConnection.raw(
+      "SELECT * FROM on_premise_velociraptor"
+    );
+    console.log(fileA);
+    return fileA;
+  } catch (error) {
+    console.log("Error in GetAllVeloConfigModel", error);
+  }
+}
+
+async function SaveConfigVeloModel(obj) {
+  try {
+    console.log("start SaveConfigVeloModel");
+    const fileA = await DBConnection("on_premise_velociraptor")
+      .where({
+        config_id: obj?.config_id,
+      })
+      .update({
+        config_name: obj.config_name,
+        description: obj.description,
+        config: JSON.stringify(obj.config),
+      });
+    console.log(fileA);
+    return true;
+  } catch (error) {
+    console.log("Error in SaveConfigVeloModel", error);
+    return false;
+  }
+}
+
+async function AddConfigVeloModel(obj) {
+  try {
+    console.log("start AddConfigVeloModel");
+    const fileA = await DBConnection("on_premise_velociraptor").insert({
+      config_name: obj.config_name,
+      description: obj.description,
+      config: JSON.stringify(obj.config),
+    });
+    console.log(fileA);
+    return true;
+  } catch (error) {
+    console.log("Error in AddConfigVeloModel", error);
+    return false;
+  }
+}
+async function GetAllVeloConfigSideBarModel() {
+  try {
+    console.log("start GetAllVeloConfigModel");
+    const [fileA] = await DBConnection.raw(
+      "SELECT config_id, config_name FROM on_premise_velociraptor"
+    );
+    console.log(fileA);
+    return fileA;
+  } catch (error) {
+    console.log("Error in GetAllVeloConfigModel", error);
+  }
+}
+
+async function GetSpecificCollectorModal(command) {
+  try {
+    console.log("start GetSpecificCollectorModal");
+    return new Promise((resolve, reject) => {
+      const childProcess = spawn(command, {
+        shell: "/bin/bash",
+        env: { ...process.env },
+      });
+      resolve({ success: true });
+    });
+  } catch (error) {
+    console.log("Error in GetSpecificCollectorModal", error);
+  }
+}
+
 module.exports = {
+  GetAllVeloConfigSideBarModel,
+  GetSpecificCollectorModal,
+  AddConfigVeloModel,
+  SaveConfigVeloModel,
   get_full_config_model,
   put_full_config_model,
   Update_mssp_config_json_links_model,
   GetAssetsModal,
   PostImportedAssets,
+  GetAllVeloConfigModel,
 };

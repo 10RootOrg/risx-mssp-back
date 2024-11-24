@@ -74,8 +74,8 @@
   "ClientData": {
     "API": {
       "Timesketch": {
-        "Password": "passs",
-        "Username": "user",
+        "Password": "importing",
+        "Username": "import",
         "IP": "localhost"
       },
       "LeakCheck": "APIKey",
