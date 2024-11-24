@@ -20,6 +20,11 @@ router.get("/ExportAllAssets", ConfigController.ExportAllAssets);
 
 router.post("/ImportAllAssets", ConfigController.ImportAllAssets);
 router.get("/DeleteResultHistory", ConfigController.DeleteResultHistory);
+router.get("/GetAllVeloConfig", ConfigController.GetAllVeloConfig);
+router.post("/SaveConfigVelo", ConfigController.SaveConfigVelo);
+router.post("/InsertConfigVelo", ConfigController.InsertConfigVelo);
+router.get("/GetAllVeloConfigSideBar", ConfigController.GetAllVeloConfigSideBar);
+router.post("/GetSpecificCollector", ConfigController.GetSpecificCollector);
 
 
 module.exports = router;

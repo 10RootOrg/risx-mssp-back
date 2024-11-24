@@ -4,6 +4,11 @@ const {
   Update_mssp_config_json_links_model,
   GetAssetsModal,
   PostImportedAssets,
+  GetAllVeloConfigModel,
+  SaveConfigVeloModel,
+  AddConfigVeloModel,
+  GetAllVeloConfigSideBarModel,
+  GetSpecificCollectorModal,
 } = require("../models/ConfigModels");
 const DBConnection = require("../db.js");
 const fs = require("fs"); // Import 'fs' with Promise-based API
@@ -250,7 +255,99 @@ async function DeleteResultHistory(req, res, next) {
   }
 }
 
+async function GetAllVeloConfig(req, res, next) {
+  try {
+    const f = await GetAllVeloConfigModel();
+    const obj = {
+      config_name: "Add Collector",
+      description: "This IS The Description Of The Collector",
+      config: {
+        Artifacts: [
+          {
+            name: "Change This As This Is An Example",
+            parameters: {
+              ExampleParam1: false,
+              ExampleParam2: "exe,cpl,dll,kkk",
+            },
+          },
+        ],
+        Resources: {
+          CpuLimit: 30,
+          MaxExecutionTimeInSeconds: 600,
+          MaxIdleTimeInSeconds: 600,
+        },
+        Configuration: {
+          EncryptionScheme: "None",
+          EncryptionSchemeValue: "",
+          CollectorFileName: "Collector-ChangeName",
+          OutputsFileName: "Collector-Lite-Outputs-%FQDN%-%TIMESTAMP%",
+        },
+      },
+    };
+    f.push(obj);
+    res.send(f);
+  } catch (error) {
+    console.log("Error in GetAllVeloConfig", error);
+  }
+}
+async function SaveConfigVelo(req, res, next) {
+  try {
+    const response = await SaveConfigVeloModel(req.body);
+    res.send(response);
+  } catch (error) {
+    console.log("Error in SaveConfigVelo", error);
+  }
+}
+async function InsertConfigVelo(req, res, next) {
+  try {
+    const response = await AddConfigVeloModel(req.body);
+    res.send(response);
+  } catch (error) {
+    console.log("Error in SaveConfigVelo", error);
+  }
+}
+
+async function GetAllVeloConfigSideBar(req, res, next) {
+  try {
+    const response = await GetAllVeloConfigSideBarModel(req.body);
+    res.send(response);
+  } catch (error) {
+    console.log("Error in GetAllVeloConfigSideBar", error);
+  }
+}
+async function GetSpecificCollector(req, res, next) {
+  try {
+    console.log(req.body);
+
+    const PYTHON_SCRIPTS_RELATIVE_PATH =
+      process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const RELATIVE_PATH = path.resolve(__dirname, "..", "..");
+    const PYTHON_SCRIPT_PATH = path.resolve(
+      RELATIVE_PATH,
+      PYTHON_SCRIPTS_RELATIVE_PATH,
+      "modules",
+      "Collector",
+      "create_collection_file.py"
+    );
+    console.log(
+      "python ",
+      PYTHON_SCRIPT_PATH + ` "${req.body.id}" "${req.body.os}"`
+    );
+
+    const response = await GetSpecificCollectorModal(
+      "python ",
+      PYTHON_SCRIPT_PATH + ` "${req.body.id}" "${req.body.os}"`
+    );
+    res.send(response);
+  } catch (error) {
+    console.log("Error in GetSpecificCollector", error);
+  }
+}
 module.exports = {
+  GetAllVeloConfigSideBar,
+  GetSpecificCollector,
+  InsertConfigVelo,
+  SaveConfigVelo,
   Get_Config,
   Put_Config,
   Get_From_ENV,
@@ -261,4 +358,5 @@ module.exports = {
   ExportAllAssets,
   ImportAllAssets,
   DeleteResultHistory,
+  GetAllVeloConfig,
 };
