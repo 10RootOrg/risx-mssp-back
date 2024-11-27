@@ -228,14 +228,39 @@ async function GetSpecificCollectorModal(command) {
   try {
     console.log("start GetSpecificCollectorModal");
     return new Promise((resolve, reject) => {
-      const childProcess = spawn(command, {
-        shell: "/bin/bash",
-        env: { ...process.env },
-      });
-      resolve({ success: true });
+      try {
+        console.log("flipo the hipo is dipo");
+
+        exec(command, { shell: "/bin/bash" }, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error executing command: ${error.message}`);
+            reject(false);
+            return;
+          }
+
+          if (stderr) {
+            console.error(`Error: ${stderr}`);
+            reject(false);
+            return;
+          }
+
+          // Check if any line contains the file name
+          const lines = stdout?.trim()?.split("\n");
+
+          console.log(
+            lines.length,
+            lines[lines.length - 1]?.split("cut")[1]?.trim(),
+            "stdout.trim() NOW NOW"
+          );
+
+          resolve(lines[lines.length - 1]?.split("cut")[1]?.trim());
+        });
+      } catch (error) {
+        console.log("Error in exec GetSpecificCollectorModal ", error);
+      }
     });
   } catch (error) {
-    console.log("Error in GetSpecificCollectorModal", error);
+    console.log("Error  in GetSpecificCollectorModal", error);
   }
 }
 

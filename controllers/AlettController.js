@@ -47,7 +47,6 @@ async function GetAlertFileData(req, res, next) {
     data.Artifact = Artifact;
     data.PieData = Item;
 
-    // console.log(data, "sdsdsdsdsdsdsdsdsd");
     res.send(data);
   } catch (error) {
     console.log(error, "GetAlertFileData GetAlertFileData");

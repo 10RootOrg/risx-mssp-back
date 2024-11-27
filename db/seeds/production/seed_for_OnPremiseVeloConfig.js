@@ -34,8 +34,8 @@ exports.seed = async function (knex) {
       }),
     },
     {
-      config_name: "Full",
-      description: "Full Scan To The Agent Velociraptor Config",
+      config_name: "Best-Practice",
+      description: "Best of Breed Artifacts as recommended by 10Root",
       config: JSON.stringify({
         Artifacts: [
           {
@@ -55,8 +55,8 @@ exports.seed = async function (knex) {
         Configuration: {
           EncryptionScheme: "None",
           EncryptionSchemeValue: "",
-          CollectorFileName: "Collector-Full",
-          OutputsFileName: "Collector-Full-Outputs-%FQDN%-%TIMESTAMP%",
+          CollectorFileName: "Collector-Best-Practice",
+          OutputsFileName: "Collector-Best-Practice-Outputs-%FQDN%-%TIMESTAMP%",
         },
       }),
     },
