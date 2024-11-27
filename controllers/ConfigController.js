@@ -270,6 +270,10 @@ async function GetAllVeloConfig(req, res, next) {
               ExampleParam2: "exe,cpl,dll,kkk",
             },
           },
+          {
+            name: "Change This As This Is An Example 2",
+            parameters: {},
+          },
         ],
         Resources: {
           CpuLimit: 30,
@@ -329,18 +333,36 @@ async function GetSpecificCollector(req, res, next) {
       "Collector",
       "create_collection_file.py"
     );
-    console.log(
-      "python ",
-      PYTHON_SCRIPT_PATH + ` "${req.body.id}" "${req.body.os}"`
-    );
 
-    const response = await GetSpecificCollectorModal(
-      "python ",
-      PYTHON_SCRIPT_PATH + ` "${req.body.id}" "${req.body.os}"`
-    );
-    res.send(response);
+    const command =
+      "python " + PYTHON_SCRIPT_PATH + ` "${req.body.id}" "${req.body.os}"`;
+    console.log(command);
+    const response = await GetSpecificCollectorModal(command);
+
+    console.log(response, "response flip");
+    if (response) {
+      const PythonCollectorPath = path.resolve(
+        RELATIVE_PATH,
+        PYTHON_SCRIPTS_RELATIVE_PATH,
+        response
+      );
+      console.log(
+        PythonCollectorPath,
+        "PythonCollectorPath PythonCollectorPath"
+      );
+      const exist = await fs.existsSync(PythonCollectorPath);
+      console.log(
+        exist,
+        "ooooooooooooooooooooooooooooooooossssssssssssssssssssssssss"
+      );
+      if (exist) {
+        res.download(PythonCollectorPath);
+      } else {
+        res.status(401).send({ error: "no such file" });
+      }
+    }
   } catch (error) {
-    console.log("Error in GetSpecificCollector", error);
+    console.log("Error in  GetSpecificCollector", error);
   }
 }
 module.exports = {

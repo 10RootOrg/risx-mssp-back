@@ -463,12 +463,11 @@ async function getResourceToModuleObj(req, res, next) {
     const obj = {};
     await all_Modules?.Modules?.forEach(async (x) => {
       const AssetArr = await GetAllModuleAssignedResources(x?.tool_id);
-      console.log(x.Tool_name, "1111111111111tttttttttt");
+      // console.log(x.Tool_name, "1111111111111tttttttttt");
 
       obj[x.Tool_name] = AssetArr;
-      console.log(obj, "444444444");
+      // console.log(obj, "444444444");
     });
-    console.log(obj, "sdsdsdsd");
 
     res.send(obj);
   } catch (error) {
