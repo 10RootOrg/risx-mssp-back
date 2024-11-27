@@ -169,7 +169,6 @@ async function GetAllVeloConfigModel() {
     const [fileA] = await DBConnection.raw(
       "SELECT * FROM on_premise_velociraptor"
     );
-    console.log(fileA);
     return fileA;
   } catch (error) {
     console.log("Error in GetAllVeloConfigModel", error);
@@ -217,7 +216,6 @@ async function GetAllVeloConfigSideBarModel() {
     const [fileA] = await DBConnection.raw(
       "SELECT config_id, config_name FROM on_premise_velociraptor"
     );
-    console.log(fileA);
     return fileA;
   } catch (error) {
     console.log("Error in GetAllVeloConfigModel", error);
