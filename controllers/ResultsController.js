@@ -79,14 +79,12 @@ async function get_single_velociraptor_response(req, res, next) {
     if (MB_limit < size) {
       console.log("json file too big", size);
 
-      return res
-        .status(200)
-        .json({
-          success: false,
-          fileSize: "Too big",
-          mbSize: size,
-          message: `File is too big. Maximum size allowed is ${MB_limit} MB.`,
-        });
+      return res.status(200).json({
+        success: false,
+        fileSize: "Too big",
+        mbSize: size,
+        message: `File is too big. Maximum size allowed is ${MB_limit} MB.`,
+      });
     } else {
       const result = await get_single_velociraptor_result_model(file_name);
       if (result) {
@@ -106,12 +104,10 @@ async function get_velociraptor_aggregate_macro(req, res, next) {
   console.log("get_velociraptor_aggregate_macro  ResponseFile", ResponseFile);
   console.log("get_velociraptor_aggregate_macro SubModuleName", SubModuleName);
   if (ResponseFile === undefined || SubModuleName === undefined) {
-    res
-      .status(400)
-      .json({
-        success: false,
-        message: `'ResponseFile is ${ResponseFile} ,SubModuleName is ${SubModuleName}`,
-      });
+    res.status(400).json({
+      success: false,
+      message: `'ResponseFile is ${ResponseFile} ,SubModuleName is ${SubModuleName}`,
+    });
   }
 
   try {
@@ -210,11 +206,9 @@ async function delete_results(req, res, next) {
   );
   if (invalidItem != undefined) {
     console.log("invalidItem !!!");
-    return res
-      .status(400)
-      .json({
-        message: `Missing data for delete results of ${invalidItem?.ModuleName} with the UniqueID of:  ${invalidItem?.UniqueID} `,
-      });
+    return res.status(400).json({
+      message: `Missing data for delete results of ${invalidItem?.ModuleName} with the UniqueID of:  ${invalidItem?.UniqueID} `,
+    });
   }
 
   try {
@@ -246,18 +240,29 @@ async function delete_results(req, res, next) {
     // res.status(200).json({ message: 'Results deleted successfully' });
   } catch (err) {
     console.error("Error deleting results:", err);
-    res
-      .status(500)
-      .send({
-        success: false,
-        error_message: error_message,
-        catch_error_message:
-          err.message || "An error occurred while deleting results",
-      });
+    res.status(500).send({
+      success: false,
+      error_message: error_message,
+      catch_error_message:
+        err.message || "An error occurred while deleting results",
+    });
+  }
+}
+
+async function ImportVeloResult(req, res, next) {
+  try {
+    console.log(
+      req.body,
+      "ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult "
+    );
+    res.send(true)
+  } catch (error) {
+    console.log("Error in ImportVeloResult");
   }
 }
 
 module.exports = {
+  ImportVeloResult,
   // get_all_latest_results_dates,
   get_single_velociraptor_response,
   count_velociraptor_responses,
