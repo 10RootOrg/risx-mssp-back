@@ -284,7 +284,7 @@ async function GetAllVeloConfig(req, res, next) {
           EncryptionScheme: "None",
           EncryptionSchemeValue: "",
           CollectorFileName: "Collector-ChangeName",
-          OutputsFileName: "Collector-Lite-Outputs-%FQDN%-%TIMESTAMP%",
+          OutputsFileName: "Collector-ChangeName-Outputs",
         },
       },
     };

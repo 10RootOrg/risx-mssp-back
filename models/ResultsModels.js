@@ -171,31 +171,18 @@ function string_to_date(dateString) {
   }
 }
 
-
-
 function roundIfDecimal(number) {
   // Check if the number has a decimal point
   if (number % 1 !== 0) {
-      // Round to one decimal place and return as a number
-      return parseFloat(number.toFixed(1));
+    // Round to one decimal place and return as a number
+    return parseFloat(number.toFixed(1));
   }
   // Return the number as is if it doesn't have a decimal point
   return number;
 }
 
-
-
-
 function compare_dates(end_date, start_date) {
   try {
-
-
-
-
-
-
-
-
     const compare = (end_date - start_date) / 60000;
     if (compare > 0) {
       // console.log("in time");
@@ -208,7 +195,7 @@ function compare_dates(end_date, start_date) {
         // console.log("pass by", -compare, "Min");
         const return_this = "+" + roundIfDecimal(-compare) + " Min";
         console.log("return_this", return_this);
-        
+
         return return_this;
       }
 
@@ -583,7 +570,44 @@ async function find_latest_response_and_request(module_id) {
   }
 }
 
+async function ImportVeloResultModal(command) {
+  try {
+    console.log(command, "command for ImportVeloResultModal");
+
+    return new Promise((resolve, reject) => {
+      try {
+
+        exec(command, { shell: "/bin/bash" }, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error executing command: ${error.message}`);
+            reject(false);
+            return;
+          }
+
+          if (stderr) {
+            console.error(`Error: ${stderr}`);
+            reject(false);
+            return;
+          }
+
+          // Check if any line contains the file name
+          const lines = stdout?.trim()?.split("\n");
+
+          // console.log(lines);
+
+          resolve(true);
+        });
+      } catch (error) {
+        console.log("Error in exec ImportVeloResultModal ", error);
+      }
+    });
+  } catch (err) {
+    console.error("Error ImportVeloResultModal", err);
+  }
+}
+
 module.exports = {
+  ImportVeloResultModal,
   // get_all_velociraptor_results_model,
   get_all_velociraptor_artifacts_model,
   get_single_velociraptor_result_model,

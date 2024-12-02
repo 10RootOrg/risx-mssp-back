@@ -12,12 +12,8 @@ exports.seed = async function (knex) {
       config: JSON.stringify({
         Artifacts: [
           {
-            name: "Custom.Windows.DensityScout",
-            parameters: { RecursiveRun: false, FileSuffix: "exe,cpl,dll,kkk" },
-          },
-          {
-            name: "Custom.Windows.GoldFinger.TGT.Analyzer",
-            parameters: {},
+            name: "Windows.KapeFiles.Targets",
+            parameters: { _KapeTriage: true },
           },
         ],
         Resources: {
@@ -29,7 +25,7 @@ exports.seed = async function (knex) {
           EncryptionScheme: "None",
           EncryptionSchemeValue: "",
           CollectorFileName: "Collector-Lite",
-          OutputsFileName: "Collector-Lite-Outputs-%FQDN%-%TIMESTAMP%",
+          OutputsFileName: "Collector-Lite-Outputs",
         },
       }),
     },
@@ -39,11 +35,79 @@ exports.seed = async function (knex) {
       config: JSON.stringify({
         Artifacts: [
           {
-            name: "Custom.Windows.DensityScout",
+            name: "DetectRaptor.Server.StartHunts",
             parameters: {},
           },
           {
-            name: "Custom.Windows.GoldFinger.TGT.Analyzer",
+            name: "Generic.Forensic.SQLiteHunter",
+            parameters: {},
+          },
+          {
+            name: "Windows.Analysis.EvidenceOfDownload",
+            parameters: {},
+          },
+          {
+            name: "Windows.Analysis.EvidenceOfExecution",
+            parameters: {},
+          },
+          {
+            name: "Windows.NTFS.MFT",
+            parameters: {},
+          },
+          {
+            name: "Windows.Forensics.Usn",
+            parameters: {},
+          },
+          {
+            name: "Windows.Network.NetstatEnriched",
+            parameters: {},
+          },
+          {
+            name: "Generic.Scanner.ThorZIP",
+            parameters: {},
+          },
+          {
+            name: "Exchange.Custom.Windows.Nirsoft.LastActivityView",
+            parameters: {},
+          },
+          {
+            name: "Custom.Windows.System.Powershell.PSReadline.QuickWins",
+            parameters: {},
+          },
+          {
+            name: "Windows.Forensics.Lnk",
+            parameters: {},
+          },
+          {
+            name: "Exchange.PSList.VTLookup.ServerMetaData",
+            parameters: {},
+          },
+          {
+            name: "Generic.System.Pstree",
+            parameters: {},
+          },
+          {
+            name: "Windows.System.UntrustedBinaries",
+            parameters: {},
+          },
+          {
+            name: "Windows.Detection.Yara.Process",
+            parameters: {},
+          },
+          {
+            name: "Windows.EventLogs.RDPAuth",
+            parameters: {},
+          },
+          {
+            name: "Windows.Attack.UnexpectedImagePath",
+            parameters: {},
+          },
+          {
+            name: "Windows.Sys.AllUsers",
+            parameters: {},
+          },
+          {
+            name: "Windows.Registry.Sysinternals.Eulacheck",
             parameters: {},
           },
         ],
@@ -56,7 +120,7 @@ exports.seed = async function (knex) {
           EncryptionScheme: "None",
           EncryptionSchemeValue: "",
           CollectorFileName: "Collector-Best-Practice",
-          OutputsFileName: "Collector-Best-Practice-Outputs-%FQDN%-%TIMESTAMP%",
+          OutputsFileName: "Collector-Best-Practice-Outputs",
         },
       }),
     },
