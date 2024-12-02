@@ -11,6 +11,7 @@ const {
   get_velociraptor_aggregate_macro_model,
   order_result_aggregate_macro_model,
   delete_json_results_file_model,
+  ImportVeloResultModal,
 } = require("../models/ResultsModels");
 const {
   get_all_Modules_model,
@@ -253,9 +254,30 @@ async function ImportVeloResult(req, res, next) {
   try {
     console.log(
       req.body,
+      req.body.PathOfFile,
       "ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult "
     );
-    res.send(true)
+    const PYTHON_SCRIPTS_RELATIVE_PATH =
+      process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const RELATIVE_PATH = path.resolve(__dirname, "..", "..");
+    const PYTHON_SCRIPT_PATH = path.resolve(
+      RELATIVE_PATH,
+      PYTHON_SCRIPTS_RELATIVE_PATH,
+      "modules",
+      "Collector",
+      "import_collection_file.py"
+    );
+    const Hostname = req.body?.fileName?.split("-r___r-")?.[1]?.split("_")?.[0];
+    console.log(Hostname, "Hostname For VeloCiraptor Client");
+
+    const command =
+      "python " +
+      PYTHON_SCRIPT_PATH +
+      ` "${req.body.PathOfFile}" "${Hostname ? Hostname : "offline_host"}"`;
+    const response = await ImportVeloResultModal(command);
+    if (response) {
+      res.send(response);
+    }
   } catch (error) {
     console.log("Error in ImportVeloResult");
   }
