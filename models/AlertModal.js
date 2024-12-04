@@ -1,14 +1,14 @@
 const fs = require("fs"); // Import 'fs' with Promise-based API
 const path = require("path");
 const DBConnection = require("../db.js");
-
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 async function GetAlertsFile() {
   try {
     const DashBoardFile = await path.resolve(
       __dirname,
       "..",
       "..",
-      "risx-mssp-python-script",
+      relativePath,
       "response_folder",
       "alerts.json"
     );
@@ -66,7 +66,7 @@ async function UpdateAlertFile(Info) {
       __dirname,
       "..",
       "..",
-      "risx-mssp-python-script",
+      relativePath,
       "response_folder",
       "alerts.json"
     );

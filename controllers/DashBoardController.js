@@ -1,6 +1,6 @@
 const path = require("path");
 const { GetDashFile, GetClientName } = require("../models/DashboardModals");
-
+const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 async function GetDashBoardFile(req, res, next) {
   try {
     console.log("req.params req.params req.params", req.params);
@@ -8,7 +8,7 @@ async function GetDashBoardFile(req, res, next) {
       __dirname,
       "..",
       "..",
-      "risx-mssp-python-script",
+      relativePath,
       "response_folder",
       "dashboard.json"
     );
@@ -52,7 +52,7 @@ async function GetDashBoardClientIdVelo(req, res, next) {
       __dirname,
       "..",
       "..",
-      "risx-mssp-python-script",
+      relativePath,
       "response_folder",
       "velociraptor_clients.json"
     );
