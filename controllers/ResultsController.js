@@ -277,6 +277,8 @@ async function ImportVeloResult(req, res, next) {
     const response = await ImportVeloResultModal(command);
     if (response) {
       res.send(response);
+    }else {
+      res.status(500)
     }
   } catch (error) {
     console.log("Error in ImportVeloResult");

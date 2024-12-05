@@ -227,7 +227,6 @@ async function GetSpecificCollectorModal(command) {
     console.log("start GetSpecificCollectorModal");
     return new Promise((resolve, reject) => {
       try {
-        console.log("flipo the hipo is dipo");
 
         exec(command, { shell: "/bin/bash" }, (error, stdout, stderr) => {
           if (error) {

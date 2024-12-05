@@ -576,7 +576,6 @@ async function ImportVeloResultModal(command) {
 
     return new Promise((resolve, reject) => {
       try {
-
         exec(command, { shell: "/bin/bash" }, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error executing command: ${error.message}`);
@@ -603,6 +602,7 @@ async function ImportVeloResultModal(command) {
     });
   } catch (err) {
     console.error("Error ImportVeloResultModal", err);
+    return false;
   }
 }
 
