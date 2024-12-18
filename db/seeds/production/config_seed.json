@@ -27,9 +27,9 @@
       }
     },
     "AgentLinks": {
-      "Mac": "~/setup_platform/workdir/velociraptor/velociraptor/clients/mac/velociraptor_client_repacked",
-      "Linux": "~/setup_platform/workdir/velociraptor/velociraptor/clients/linux/velociraptor_client_repacked",
-      "Windows": "~/setup_platform/workdir/velociraptor/velociraptor/clients/windows/velociraptor_client_repacked.msi"
+      "Mac": "/velociraptor/clients/mac/velociraptor_client_repacked",
+      "Linux": "/velociraptor/clients/linux/velociraptor_client_repacked",
+      "Windows": "/velociraptor/clients/windows/velociraptor_client_repacked.msi"
     },
     "IntervalConfigurations": {
       "IntervalTimes": {
