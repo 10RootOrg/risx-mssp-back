@@ -231,14 +231,14 @@ async function GetSpecificCollectorModal(command) {
         exec(command, { shell: "/bin/bash" }, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error executing command: ${error.message}`);
-            reject(false);
-            return;
+            // reject(false);
+            // return;
           }
 
           if (stderr) {
             console.error(`Error: ${stderr}`);
-            reject(false);
-            return;
+            // reject(false);
+            // return;
           }
 
           // Check if any line contains the file name
