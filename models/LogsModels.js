@@ -20,6 +20,7 @@ async function get_log_model(logName, fileName) {
     "log_daily_update_interval",
     "log_dashboard",
     "log_resource_usage",
+    "log_collector",
   ];
 
   try {
