@@ -255,7 +255,7 @@ async function ImportVeloResult(req, res, next) {
     console.log(
       req.body,
       req.body.PathOfFile,
-      "ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult "
+      "ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult ImportVeloResult s"
     );
     const PYTHON_SCRIPTS_RELATIVE_PATH =
       process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
@@ -268,17 +268,19 @@ async function ImportVeloResult(req, res, next) {
       "import_collection_file.py"
     );
     const Hostname = req.body?.fileName?.split("-r___r-")?.[1]?.split("_")?.[0];
-    console.log(Hostname, "Hostname For VeloCiraptor Client");
-
+    console.log(Hostname, "Hostname For Velociraptor Client");
+    return;
     const command =
       "python " +
       PYTHON_SCRIPT_PATH +
       ` "${req.body.PathOfFile}" "${Hostname ? Hostname : "offline_host"}"`;
+    // console.log("Command for Python in velo upload: ",command);
+
     const response = await ImportVeloResultModal(command);
     if (response) {
       res.send(response);
-    }else {
-      res.status(500)
+    } else {
+      res.status(500);
     }
   } catch (error) {
     console.log("Error in ImportVeloResult");

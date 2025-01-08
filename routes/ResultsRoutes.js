@@ -1,13 +1,34 @@
 const router = require("express").Router();
 const multer = require("multer");
 const path = require("path");
-
-const directoryPath = path.join("/tmp");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    req.body.PathOfFile = path.join("/tmp", file.originalname);
-    cb(null, directoryPath);
+  destination: async function (req, file, cb) {
+    try {
+      const directoryPath = path.join(
+        "/tmp",
+        path.parse(file.originalname).name.split("-split-")[0]
+      );
+
+      console.log(
+        "file.originalnamefile .originalnamefile .originalnamefile.originalname ",
+        req.body,
+        directoryPath,
+        fs.existsSync(directoryPath)
+      );
+      if (!fs.existsSync(directoryPath)) {
+        console.log(12);
+        await fs.mkdirSync(directoryPath);
+        console.log(22);
+      }
+      req.body.PathOfFile = path.join(directoryPath, file.originalname);
+      req.body.FileFolder = directoryPath;
+
+      cb(null, directoryPath);
+    } catch (error) {
+      console.log("Error in File Upload Multer  :  ", error);
+    }
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
