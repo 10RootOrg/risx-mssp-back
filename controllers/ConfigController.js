@@ -24,6 +24,8 @@ const {
   getFullCategoryAndEntitiesListModal,
   GetAllEntitiesAndAssetsModal,
 } = require("../models/ResourcesModels.js");
+const { ImportVeloResultModal } = require("../models/ResultsModels.js");
+const { mergeJSONData } = require("../helpers/jsonOp.js");
 
 async function Get_Config(req, res, next) {
   try {
@@ -392,6 +394,31 @@ async function GetSpecificCollector(req, res, next) {
   }
 }
 
+async function DeleteCollectorFolders(req, res, next) {
+  try {
+    console.log(req.body);
+
+    const PYTHON_SCRIPTS_RELATIVE_PATH =
+      process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
+    const RELATIVE_PATH = path.resolve(__dirname, "..", "..");
+    const PYTHON_SCRIPT_PATH = path.resolve(
+      RELATIVE_PATH,
+      PYTHON_SCRIPTS_RELATIVE_PATH,
+      "Collector",
+      "*"
+    );
+
+    const command = "rm -rf " + PYTHON_SCRIPT_PATH;
+    console.log(command);
+    const response = await ImportVeloResultModal(command);
+
+    console.log(response, "response flip");
+    res.send(true);
+  } catch (error) {
+    console.error("Error in  GetSpecificCollector", error);
+  }
+}
+
 async function CreateStorageVeloDiskAgent(req, res, next) {
   try {
     console.log(req.body);
@@ -452,7 +479,42 @@ async function SaveSpecificConfig(req, res, next) {
   }
 }
 
+async function ImportConfigM(req, res, next) {
+  try {
+    console.log("start ImportConfigM");
+    const filePath = path.join(
+      __dirname,
+      "..",
+      "db",
+      "seeds",
+      "production",
+      "config_seed.json"
+    );
+    console.log("filePath 55555", filePath);
+
+    const BasicConfig = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    const ImportedConfig = req.body;
+    // console.log(
+    //   "ttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+    //   ImportedConfig.General,
+    //   "ssssssssssssss",
+    //   ImportedConfig
+    // );
+    const mergedJson = await mergeJSONData(BasicConfig, ImportedConfig);
+    // console.log("mergedJson 55555", mergedJson);
+    const put = await put_full_config_model(mergedJson);
+    // console.log("Put ", put);
+
+    res.send("Imported successfully");
+    console.log("End ImportConfigM");
+  } catch (err) {
+    console.error("Error in ImportConfigM ", err);
+    res.send("Error");
+  }
+}
+
 module.exports = {
+  ImportConfigM,
   SaveSpecificConfig,
   BringSpecificConfig,
   CreateStorageVeloDiskAgent,
@@ -471,4 +533,5 @@ module.exports = {
   ImportAllAssets,
   DeleteResultHistory,
   GetAllVeloConfig,
+  DeleteCollectorFolders,
 };

@@ -389,7 +389,48 @@ async function SaveSpecificConfigModal(name, bool, cho) {
   }
 }
 
+async function UpdateTimeSketchTagsInConfigModal(tagName) {
+  try {
+    const the_config_json = await DBConnection.raw(
+      `UPDATE configjson SET config = JSON_SET(config,
+'$.General.IntervalConfigurations.DashBoardsConfiguration.TimeSketchIgnoreTagsList',
+JSON_ARRAY_APPEND(JSON_EXTRACT(config,
+"$.General.IntervalConfigurations.DashBoardsConfiguration.TimeSketchIgnoreTagsList")
+, "$", "${tagName}")),lastupdated = now()`
+    );
+    console.log(the_config_json, "UpdateTimeSketchTagsInConfigModal");
+
+    return true;
+  } catch (err) {
+    const error_m = {
+      error: "Error find UpdateTimeSketchTagsInConfigModal",
+      DiscrError: [err],
+    };
+    console.error("Error find UpdateTimeSketchTagsInConfigModal:", err);
+    return error_m;
+  }
+}
+async function ClearTimeSketchTagsInConfigModal() {
+  try {
+    const the_config_json = await DBConnection.raw(
+      `UPDATE configjson SET config = JSON_SET(config,
+'$.General.IntervalConfigurations.DashBoardsConfiguration.TimeSketchIgnoreTagsList',
+cast("[]" as json)),lastupdated = now()`
+    );
+    console.log(the_config_json, "UpdateTimeSketchTagsInConfigModal");
+
+    return true;
+  } catch (err) {
+    const error_m = {
+      error: "Error find UpdateTimeSketchTagsInConfigModal",
+      DiscrError: [err],
+    };
+    console.error("Error find UpdateTimeSketchTagsInConfigModal:", err);
+    return error_m;
+  }
+}
 module.exports = {
+  UpdateTimeSketchTagsInConfigModal,
   SaveSpecificConfigModal,
   BringSpecificConfigModal,
   StartExecProcessVeloDisk,
@@ -405,4 +446,5 @@ module.exports = {
   PostImportedAssets,
   GetAllVeloConfigModel,
   GetISTimeSketchRun,
+  ClearTimeSketchTagsInConfigModal,
 };

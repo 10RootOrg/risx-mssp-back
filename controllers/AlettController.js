@@ -7,6 +7,7 @@ const {
   GetAllAlertsMonitorMod,
   GetSortDateBool,
   ClearAlertDataChangeMod,
+  UpdateAlertFileMany,
 } = require("../models/AlertModal");
 const { get_full_config_model } = require("../models/ConfigModels");
 const { RunAlertHelperModal } = require("../models/ProcessModels");
@@ -19,6 +20,7 @@ async function GetAlertFileData(req, res, next) {
 
     const Item = {
       New: 0,
+      Unreviewed: 0,
       InProgress: 0,
       "False Positive": 0,
       "True Positive": 0,
@@ -52,6 +54,14 @@ async function GetAlertFileData(req, res, next) {
           Artifact[
             data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
           ].Show = data?.AletDic[x?.Artifact?.trim()]?.Show;
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].NewNum = [];
+        }
+        if (x?.UserInput?.Status === "New") {
+          Artifact[
+            data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact
+          ].NewNum.push(x?.AlertID);
         }
         Artifact[data?.AletDic[x?.Artifact?.trim()]?.Name ?? x?.Artifact].Num++;
 
@@ -77,6 +87,24 @@ async function UpdateAlertFileData(req, res, next) {
     Info.UserInput.UserId = "User";
 
     const up = await UpdateAlertFile(Info);
+    if (up) {
+      res.send(up);
+    } else {
+      res.status(404).send("No Such alert");
+    }
+  } catch (err) {
+    console.error("Error In Update alert file ", err);
+    res.status(404).send({ msg: "Error in update", error: err });
+  }
+}
+
+async function UpdateAlertFileDataMany(req, res, next) {
+  try {
+    console.log("hello update ", req.body);
+    const { Info } = req.body;
+    // Info.UserInput.UserId = "User";
+
+    const up = await UpdateAlertFileMany(Info);
     if (up) {
       res.send(up);
     } else {
@@ -165,5 +193,5 @@ module.exports = {
   GetAlertsConfig,
   UpdateAlertState,
   GetAlertFileData,
-  UpdateAlertFileData,
+  UpdateAlertFileData,UpdateAlertFileDataMany
 };

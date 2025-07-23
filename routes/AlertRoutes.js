@@ -6,6 +6,7 @@ const {
   UpdateAlertConfig,
   GetAllAlertsMonitor,
   ClearAlertDataChange,
+  UpdateAlertFileDataMany,
 } = require("../controllers/AlettController");
 
 const router = require("express").Router();
@@ -14,6 +15,7 @@ router.get("/GetAllAlertsMonitor", GetAllAlertsMonitor); //Update the Alert conf
 router.get("/GetAlertFileData", GetAlertFileData); //get the config file
 
 router.post("/UpdateAlertFileData", UpdateAlertFileData); //Update the config file
+router.post("/UpdateAlertFileDataMany", UpdateAlertFileDataMany); //Update the config file
 router.post("/UpdateAlertState", UpdateAlertState); //Update the config file
 router.post("/GetAlertsConfig", GetAlertsConfig); //Update the Alert config file
 router.post("/UpdateAlertConfig", UpdateAlertConfig); //Update the Alert config file

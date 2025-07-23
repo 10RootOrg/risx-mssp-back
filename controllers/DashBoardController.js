@@ -4,6 +4,11 @@ const {
   GetClientName,
   ClearResultsDataDashboardMod,
 } = require("../models/DashboardModals");
+const {
+  UpdateTimeSketchTagsInConfigModal,
+  get_full_config_model,
+  ClearTimeSketchTagsInConfigModal,
+} = require("../models/ConfigModels");
 const relativePath = process.env.PYTHON_SCRIPTS_RELATIVE_PATH;
 async function GetDashBoardFile(req, res, next) {
   try {
@@ -22,6 +27,17 @@ async function GetDashBoardFile(req, res, next) {
     if (file) {
       switch (req.params.DashBoardName) {
         case "Forensics":
+          console.log("Start Forensics DashBoard");
+
+          const configFull = await get_full_config_model();
+
+          console.log();
+
+          configFull?.General?.IntervalConfigurations?.DashBoardsConfiguration?.TimeSketchIgnoreTagsList?.forEach(
+            (tg) => delete file.TimeSketch.tag_counts[tg]
+          );
+          console.log("Pre Send Forensics DashBoard", file.TimeSketch);
+
           res.send({
             Velociraptor: file.Velociraptor,
             TimeSketch: file.TimeSketch,
@@ -85,8 +101,35 @@ async function ClearResultsDataDashboard(req, res, next) {
   }
 }
 
+async function UpdateTimeSketchTagsInConfig(req, res, next) {
+  try {
+    console.log(
+      "start UpdateTimeSketchTagsInConfig",
+      req.body.tagName,
+      req.body
+    );
+    const rer = await UpdateTimeSketchTagsInConfigModal(req.body.tagName);
+    res.send(rer);
+  } catch (error) {
+    console.error("Error in UpdateTimeSketchTagsInConfig: ", error);
+  }
+}
+async function ClearTimeSketchTagsInConfig(req, res, next) {
+  try {
+    console.log(
+      "start ClearTimeSketchTagsInConfig",
+      req.body
+    );
+    const rer = await ClearTimeSketchTagsInConfigModal();
+    res.send(rer);
+  } catch (error) {
+    console.error("Error in ClearTimeSketchTagsInConfig: ", error);
+  }
+}
 module.exports = {
   GetDashBoardFile,
   GetDashBoardClientIdVelo,
   ClearResultsDataDashboard,
+  UpdateTimeSketchTagsInConfig,
+  ClearTimeSketchTagsInConfig,
 };

@@ -19,6 +19,8 @@ router.get("/GetAllLeakAsset", ConfigController.GetAllLeakAsset); //get from env
 router.get("/ExportAllAssets", ConfigController.ExportAllAssets);
 
 router.post("/ImportAllAssets", ConfigController.ImportAllAssets);
+router.post("/ImportConfigM", ConfigController.ImportConfigM);
+
 router.get("/DeleteResultHistory", ConfigController.DeleteResultHistory);
 router.get("/GetAllVeloConfig", ConfigController.GetAllVeloConfig);
 router.post("/SaveConfigVelo", ConfigController.SaveConfigVelo);
@@ -34,5 +36,9 @@ router.post(
 );
 router.post("/BringSpecificConfig", ConfigController.BringSpecificConfig);
 router.post("/SaveSpecificConfig", ConfigController.SaveSpecificConfig);
+router.delete(
+  "/DeleteCollectorFolders",
+  ConfigController.DeleteCollectorFolders
+);
 
 module.exports = router;

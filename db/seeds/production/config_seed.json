@@ -168,6 +168,9 @@
       "MispConfiguration": {
         "RecentHostTimeMispInHours": 24
       },
+      "DashBoardsConfiguration": {
+        "TimeSketchIgnoreTagsList": []
+      },
       "AlertsConfiguration": {
         "LastTimeStampInterval": 1,
         "AlertResultPerArtifactLimit": 200,

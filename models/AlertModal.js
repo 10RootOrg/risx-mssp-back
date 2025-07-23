@@ -44,21 +44,68 @@ async function UpdateAlertFile(Info) {
   try {
     console.log("hello UpdateAlertFile");
 
-    const dataraw = await GetAlertsFile();
-    const data = dataraw.Alerts;
+    const dataRaw = await GetAlertsFile();
+    const data = dataRaw.Alerts;
     console.log(data, "AlertsAlertsAlertsAlerts");
 
-    let yy;
+    // let yy;
     data?.every((x, index) => {
       if (x.AlertID == Info.AlertID) {
         // x = Info;
         x.UserInput = Info.UserInput;
         console.log("hello", index);
-        yy = index;
+        // yy = index;
         return false;
       } else {
         console.log("bye", index);
 
+        return true;
+      }
+    });
+    const DashBoardFile = await path.resolve(
+      __dirname,
+      "..",
+      "..",
+      relativePath,
+      "response_folder",
+      "alerts.json"
+    );
+    const file = await fs.writeFileSync(
+      DashBoardFile,
+      JSON.stringify(data),
+      "utf-8"
+    );
+
+    return true;
+  } catch (err) {
+    console.error(err, "update alerts.json gon bad");
+    return false;
+  }
+}
+async function UpdateAlertFileMany(Info) {
+  try {
+    console.log("hello UpdateAlertFileMany");
+
+    const dataRaw = await GetAlertsFile();
+    const data = dataRaw.Alerts;
+    // console.log(data, "AlertsAlertsAlertsAlerts");
+    const DateUpdateYES = new Date();
+    // let yy;
+    data?.forEach((x, index) => {
+      console.log(index, Info.AlertIDs.includes(x.AlertID));
+
+      if (Info.AlertIDs.includes(x.AlertID)) {
+        // x = Info;
+        x.UserInput = {
+          UserId: Info.User ?? "",
+          Status: "Unreviewed",
+          ChangedAt: DateUpdateYES,
+        };
+        console.log("hello", index);
+        // yy = index;
+        return false;
+      } else {
+        console.log("bye", index);
         return true;
       }
     });
@@ -197,4 +244,5 @@ module.exports = {
   UpdateAlertFile,
   GetSortDate,
   GetSortDateBool,
+  UpdateAlertFileMany,
 };
