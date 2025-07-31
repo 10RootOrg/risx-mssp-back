@@ -15,7 +15,7 @@ setupLogger();
 console.log(
   "Start Server ...............******************************************"
 );
-console.log("Server Version is 0.9.0");
+console.log("Server Version is 0.9.1");
 
 const front_ip = process.env.FRONT_IP || "";
 const front_port = process.env.FRONT_PORT || 3003;

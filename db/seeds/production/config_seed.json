@@ -210,7 +210,7 @@
       "LeakCheck": "APIKey",
       "Shodan": "APIKey",
       "Dehashed": "APIKey",
-      "LLM": "APIKey",
+      "VulnerabilityLLM": "APIKey",
       "MISP": "APIKey",
       "OpenCTI": "APIKey"
     }
