@@ -181,7 +181,7 @@
   },
   "ClientInfrastructure": {
     "Assets": {
-      "Example": {
+      "rExample": {
         "AssetString": "Example@Example",
         "AssetParentId": "",
         "AssetEnable": 0,
