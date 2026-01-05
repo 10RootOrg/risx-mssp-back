@@ -156,9 +156,8 @@
       "ModulesUpdates": {
         "UpdateVelociraptorModules": [
           "Server.Import.ArtifactExchange",
-          "Server.Import.CuratedSigma",
-          "Exchange.Server.Import.DetectRaptor",
-          "Server.Import.RegistryHunter"
+          "Server.Import.DetectRaptor",
+          "Server.Import.Extras"
         ],
         "GeneralModulesToUpdate": []
       },
