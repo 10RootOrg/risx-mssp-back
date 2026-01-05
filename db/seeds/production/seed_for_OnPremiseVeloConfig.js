@@ -12,8 +12,12 @@ exports.seed = async function (knex) {
       config: JSON.stringify({
         Artifacts: [
           {
-            name: "Windows.KapeFiles.Targets",
-            parameters: { _KapeTriage: true },
+            name: "Windows.Triage.Targets",
+            parameters: {
+              Targets: ["_SANS_Triage"],
+              Devices: ["C:"],
+              VSS_MAX_AGE_DAYS: 0
+            },
           },
         ],
         Resources: {
