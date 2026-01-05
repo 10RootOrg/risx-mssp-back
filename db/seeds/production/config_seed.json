@@ -156,8 +156,9 @@
       "ModulesUpdates": {
         "UpdateVelociraptorModules": [
           "Server.Import.ArtifactExchange",
-          "Server.Import.DetectRaptor",
-          "Server.Import.Extras"
+          "Server.Import.CuratedSigma",
+          "Exchange.Server.Import.DetectRaptor",
+          "Server.Import.RegistryHunter"
         ],
         "GeneralModulesToUpdate": []
       },
@@ -198,12 +199,12 @@
   "ClientData": {
     "API": {
       "Timesketch": {
-        "Password": "importing",
-        "Username": "import",
-        "IP": "localhost"
+        "Password": "oEjxt4klz13E7E6LyIbHp0V5JEHd7Vmo",
+        "Username": "10admin",
+        "IP": "192.168.1.156"
       },
       "Elastic": {
-        "Ip": "localhost"
+        "Ip": "192.168.1.156"
       },
       "NVD": "APIKey",
       "LeakCheck": "APIKey",
@@ -408,7 +409,7 @@
         "CPUThrottling": "75",
         "MemoryThrottling": "75",
         "ArtifactTimeOutInMinutes": 7200,
-        "KapeCollection": "KapeTriage"
+        "KapeCollection": "_SANS_Triage"
       }
     },
     "TimeSketch": {
@@ -419,7 +420,7 @@
         "Analyzers": [],
         "CPUThrottling": "75",
         "MemoryThrottling": "75",
-        "KapeCollection": "KapeTriage"
+        "KapeCollection": "_SANS_Triage"
       },
       "ModuleName": "TimeSketch",
       "ExpireDate": "480",
