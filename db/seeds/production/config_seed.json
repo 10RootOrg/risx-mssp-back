@@ -196,24 +196,24 @@
     }
   },
   "ClientData": {
-    "API": {
-      "Timesketch": {
+      "API": {
+        "Timesketch": {
           "Password": "importing",
           "Username": "import",
           "IP": "localhost"
-      },
-      "Elastic": {
+        },
+        "Elastic": {
           "Ip": "localhost"
-      },
-      "NVD": "APIKey",
-      "LeakCheck": "APIKey",
-      "Shodan": "APIKey",
-      "Dehashed": "APIKey",
-      "VulnerabilityLLM": "APIKey",
-      "MISP": "APIKey",
-      "OpenCTI": "APIKey"
-    }
-  },
+        },
+        "NVD": "APIKey",
+        "LeakCheck": "APIKey",
+        "Shodan": "APIKey",
+        "Dehashed": "APIKey",
+        "VulnerabilityLLM": "APIKey",
+        "MISP": "APIKey",
+        "OpenCTI": "APIKey"
+      }
+    },
   "Modules": {
     "AIVulnerability": {
       "id": "2001018",
