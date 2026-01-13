@@ -18,7 +18,7 @@ BEGIN
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end Tools table triger",now());
-        else 	
+        else
 			insert logtable values("cant start Tools table triger as other trigers are running",now());
     END IF;
 END$$
@@ -43,7 +43,7 @@ BEGIN
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("end artifact table triger",now());
-		else 	
+		else
 			insert logtable values("cant start artifact table triger as other trigers are running",now());
     END IF;
 END$$
@@ -53,7 +53,7 @@ CREATE TRIGGER AssetChange BEFORE UPDATE ON all_resources
 FOR EACH ROW
 BEGIN
 
-		DECLARE Toolss, Tool, typess, typr VARCHAR(4000);
+		DECLARE Toolss, Tool, typess, typr TEXT;
         DECLARE ToolList, typelist JSON DEFAULT "[]";
         DECLARE i, z INT DEFAULT 0;
 		DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
@@ -78,6 +78,12 @@ BEGIN
             SET z = z + 1;
         END WHILE;
 
+        -- Initialize ClientInfrastructure.Assets if NULL
+        IF (SELECT JSON_EXTRACT(config, "$.ClientInfrastructure.Assets") FROM configjson) IS NULL THEN
+            UPDATE configjson SET config = JSON_SET(config, "$.ClientInfrastructure.Assets", JSON_OBJECT());
+        END IF;
+
+        -- Check if specific asset exists, create if not
         IF NOT (select json_contains_path(config ,"one",concat("$.ClientInfrastructure.Assets.",new.resource_id))
         from configjson) THEN
             UPDATE configjson SET config = JSON_SET(config, CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id)
@@ -94,7 +100,7 @@ BEGIN
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table update triger",now());
-		else 	
+		else
 			insert logtable values("cant start asset table update triger as other trigers are running",now());
     END IF;
 END$$
@@ -106,7 +112,7 @@ CREATE TRIGGER AssetAdd BEFORE insert ON all_resources
 FOR EACH ROW
 BEGIN
 
-		DECLARE Toolss, Tool, typess, typr VARCHAR(4000);
+		DECLARE Toolss, Tool, typess, typr TEXT;
         DECLARE ToolList, typelist JSON DEFAULT "[]";
         DECLARE i, z INT DEFAULT 0;
 		DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
@@ -131,6 +137,12 @@ BEGIN
             SET z = z + 1;
         END WHILE;
 
+        -- Initialize ClientInfrastructure.Assets if NULL
+        IF (SELECT JSON_EXTRACT(config, "$.ClientInfrastructure.Assets") FROM configjson) IS NULL THEN
+            UPDATE configjson SET config = JSON_SET(config, "$.ClientInfrastructure.Assets", JSON_OBJECT());
+        END IF;
+
+        -- Check if specific asset exists, create if not
         IF NOT (select json_contains_path(config ,"one",concat("$.ClientInfrastructure.Assets.",new.resource_id)) from configjson) THEN
             UPDATE configjson SET config = JSON_SET(config, CONCAT("$.ClientInfrastructure.Assets.", NEW.resource_id), JSON_OBJECT());
         END IF;
@@ -145,7 +157,7 @@ BEGIN
             lastupdated = now();
         SET @trigger_disabled = NULL;
         insert logtable values("End all_resources table insert triger",now());
-		else 	
+		else
 			insert logtable values("cant start asset table insert triger as other trigers are running",now());
     END IF;
 END$$
@@ -157,7 +169,7 @@ CREATE TRIGGER ChangeFromConfig AFTER UPDATE ON configjson
 FOR EACH ROW
 BEGIN
 
-	DECLARE json, jsonAsset, Assets, Asset, products, product, submods, submod ,AssetModulesList,AssetTypeList VARCHAR(4000);
+	DECLARE json, jsonAsset, Assets, Asset, products, product, submods, submod ,AssetModulesList,AssetTypeList TEXT;
     declare ToolList,typelist json default "[]";
 	DECLARE i, z, q,w INT DEFAULT 0;
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION begin
@@ -176,14 +188,14 @@ BEGIN
             IF JSON_LENGTH(JSON_KEYS(JSON_EXTRACT(product, "$.SubModules"))) > 0 THEN
                 SELECT JSON_KEYS(JSON_EXTRACT(product, "$.SubModules")) INTO submods;
                 WHILE z < JSON_LENGTH(submods) DO
-					
+
 
                     SELECT JSON_EXTRACT(config, CONCAT("$.Modules.", JSON_EXTRACT(products, CONCAT('$[', i, ']')),
                         ".SubModules.", JSON_EXTRACT(submods, CONCAT('$[', z, ']')))) INTO submod FROM configjson;
-				
+
                     UPDATE artifacts SET isActive = JSON_EXTRACT(submod, "$.Enable"),
                         threshold_time = JSON_EXTRACT(submod, "$.ExpireDate"),
-                        LastRun = cast(JSON_EXTRACT(submod, "$.LastRunDate") as datetime) 
+                        LastRun = JSON_EXTRACT(submod, "$.LastRunDate")
                         WHERE artifact_id = JSON_EXTRACT(submod, "$.id");
                     SET z = z + 1;
                 END WHILE;
@@ -199,27 +211,33 @@ BEGIN
         END WHILE;
 
         SELECT JSON_EXTRACT(config, "$.ClientInfrastructure.Assets") INTO jsonAsset FROM configjson;
-        SELECT JSON_KEYS(jsonAsset) INTO Assets;
 
-        WHILE q < JSON_LENGTH(Assets) DO
+        -- Check if Assets is NULL or empty, skip processing if so
+        IF jsonAsset IS NOT NULL AND JSON_TYPE(jsonAsset) = 'OBJECT' THEN
+            SELECT JSON_KEYS(jsonAsset) INTO Assets;
+        ELSE
+            SET Assets = NULL;
+        END IF;
+
+        WHILE Assets IS NOT NULL AND q < JSON_LENGTH(Assets) DO
             SELECT JSON_EXTRACT(jsonAsset, CONCAT("$.", JSON_EXTRACT(Assets, CONCAT('$[', q, ']')))) INTO Asset;
 			select JSON_EXTRACT(asset,'$.AssetModules') into AssetModulesList;
 			select JSON_EXTRACT(asset,'$.AssetType') into AssetTypeList;
-            
+
             while w <JSON_LENGTH(AssetModulesList) do
 				SET ToolList = JSON_ARRAY_APPEND(ToolList, "$", (SELECT tool_id from tools where
                 Tool_name= JSON_EXTRACT(AssetModulesList, CONCAT('$[', w, ']'))));
 				set w=w+1;
             end while;
-            
-            set w = 0 ; 
-            
+
+            set w = 0 ;
+
 			while w <JSON_LENGTH(AssetTypeList) do
 				SET typelist = JSON_ARRAY_APPEND(typelist, "$", (SELECT resource_type_id from resource_type where
                 resource_type_name= JSON_EXTRACT(AssetTypeList, CONCAT('$[', w, ']'))));
 				set w=w+1;
             end while;
-            
+
             UPDATE all_resources SET monitoring = JSON_EXTRACT(Asset, "$.AssetEnable"),
                 resource_string = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetString")),
                 parent_id = JSON_UNQUOTE(JSON_EXTRACT(Asset, "$.AssetParentId")),
@@ -237,8 +255,8 @@ BEGIN
 
         SET @trigger_disabled = NULL;
         insert logtable values("JSON Trigger End",now());
-	else 
-		insert logtable values("cant start config table triger as other trigers are running",now());  
+	else
+		insert logtable values("cant start config table triger as other trigers are running",now());
 	END IF;
 END$$
 
@@ -248,9 +266,9 @@ create Function ReturnArrayTool
 ( stringLonf varchar(500)
 )
      returns json
-     DETERMINISTIC 
+     DETERMINISTIC
   begin
-   DECLARE Toolss, Tool VARCHAR(4000);
+   DECLARE Toolss, Tool TEXT;
      DECLARE ToolList JSON DEFAULT "[]";
         DECLARE i INT DEFAULT 0;
         SELECT CAST(CONCAT('["', REPLACE(stringLonf, ',', '","'), '"]') AS JSON) INTO Toolss;
@@ -260,7 +278,7 @@ create Function ReturnArrayTool
             SET i = i + 1;
         END WHILE;
         return ToolList;
-end$$   
+end$$
 
 DROP FUNCTION IF EXISTS ReturnArrayType$$
 
@@ -268,9 +286,9 @@ create Function ReturnArrayType
 ( stringLonf varchar(500)
 )
      returns json
-     DETERMINISTIC 
+     DETERMINISTIC
   begin
-		DECLARE typess, typr VARCHAR(4000);
+		DECLARE typess, typr TEXT;
         DECLARE typelist JSON DEFAULT "[]";
         DECLARE  z INT DEFAULT 0;
         SELECT CAST(CONCAT('["', REPLACE(stringLonf, ',', '","'), '"]') AS JSON) INTO typess;
@@ -280,7 +298,7 @@ create Function ReturnArrayType
             SET z = z + 1;
 		END WHILE;
         return typelist;
-end$$   
+end$$
 
 DROP PROCEDURE IF EXISTS addAllAssetsToConfig$$
 create PROCEDURE addAllAssetsToConfig ()
@@ -294,6 +312,6 @@ create PROCEDURE addAllAssetsToConfig ()
   "AssetParentId",parent_id,"AssetModules",ReturnArrayTool(tools),"AssetType",ReturnArrayType(type),
   "AssetEnable",monitoring,"LastRunDate",ifNull(checked,"1999-06-02 10:15:17"))) from all_resources));
 
-  
-  end$$   
+
+  end$$
 

@@ -22,12 +22,12 @@ exports.up = function(knex) {
     const getTriggerNamesSQL = `
       SELECT trigger_name
       FROM information_schema.triggers
-      WHERE trigger_schema = 'public'; -- Adjust 'public' to match your schema
+      WHERE trigger_schema = DATABASE();
     `;
-    
+
     return knex.raw(getTriggerNamesSQL)
       .then((result) => {
-        const triggerNames = result.rows.map(row => row.trigger_name);
+        const triggerNames = result[0].map(row => row.trigger_name);
         const dropTriggerPromises = triggerNames.map(triggerName => {
           const dropTriggerSQL = `DROP TRIGGER IF EXISTS \`${triggerName}\``;
           return knex.raw(dropTriggerSQL);
