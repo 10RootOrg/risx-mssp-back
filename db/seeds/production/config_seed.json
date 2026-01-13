@@ -278,7 +278,6 @@
             "Modules": {
               "Generic.Forensic.SQLiteHunter": {},
               "Windows.Analysis.EvidenceOfDownload": {},
-              "Windows.Analysis.EvidenceOfExecution": {},
               "Windows.NTFS.MFT": {},
               "Windows.Forensics.Usn": {},
               "Windows.Network.NetstatEnriched": {},
@@ -295,7 +294,7 @@
               "Windows.Registry.Sysinternals.Eulacheck": {},
               "DetectRaptor.Generic.Detection.YaraFile": {},
               "DetectRaptor.Generic.Detection.YaraWebshell": {},
-              "DetectRaptor.Windows.Detection.Acmache": {},
+              "DetectRaptor.Windows.Detection.Amcache": {},
               "DetectRaptor.Windows.Detection.Applications": {},
               "DetectRaptor.Windows.Detection.BinaryRename": {},
               "DetectRaptor.Windows.Detection.Bootloaders": {},

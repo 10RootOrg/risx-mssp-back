@@ -48,10 +48,6 @@ exports.seed = async function (knex) {
             parameters: {},
           },
           {
-            name: "Windows.Analysis.EvidenceOfExecution",
-            parameters: {},
-          },
-          {
             name: "Windows.NTFS.MFT",
             parameters: {},
           },
@@ -65,7 +61,7 @@ exports.seed = async function (knex) {
           },
 
           {
-            name: "Exchange.Windows.Nirsoft.LastActivityView",
+            name: "Windows.Nirsoft.LastActivityView",
             parameters: {},
           },
           {
