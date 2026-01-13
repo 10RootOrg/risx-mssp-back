@@ -282,7 +282,7 @@
               "Windows.NTFS.MFT": {},
               "Windows.Forensics.Usn": {},
               "Windows.Network.NetstatEnriched": {},
-              "Exchange.Custom.Windows.Nirsoft.LastActivityView": {},
+              "Windows.Nirsoft.LastActivityView": {},
               "Custom.Windows.System.Powershell.PSReadline.QuickWins": {},
               "Windows.Forensics.Lnk": {},
               "Exchange.PSList.VTLookup.ServerMetaData": {},
