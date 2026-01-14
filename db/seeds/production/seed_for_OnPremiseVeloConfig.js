@@ -22,8 +22,8 @@ exports.seed = async function (knex) {
         ],
         Resources: {
           CpuLimit: 30,
-          MaxExecutionTimeInSeconds: 600,
-          MaxIdleTimeInSeconds: 600,
+          MaxExecutionTimeInSeconds: 6000,
+          MaxIdleTimeInSeconds: 6000,
         },
         Configuration: {
           EncryptionScheme: "None",
@@ -183,8 +183,8 @@ exports.seed = async function (knex) {
         ],
         Resources: {
           CpuLimit: 30,
-          MaxExecutionTimeInSeconds: 600,
-          MaxIdleTimeInSeconds: 600,
+          MaxExecutionTimeInSeconds: 6000,
+          MaxIdleTimeInSeconds: 6000,
         },
         Configuration: {
           EncryptionScheme: "None",
