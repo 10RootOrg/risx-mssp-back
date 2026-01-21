@@ -406,7 +406,7 @@
         "KapeCollection": "_KapeTriage",
         "DateRangeStart": "2000-01-01",
         "DateRangeEnd": "*",
-        "Parsers": "win7"
+        "Parsers": "win7_slow"
       },
       "ModuleName": "TimeSketch",
       "ExpireDate": "480",
@@ -414,4 +414,5 @@
     }
   },
   "RequestStatus": []
+
 }
