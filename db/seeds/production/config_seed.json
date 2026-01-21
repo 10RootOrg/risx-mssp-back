@@ -394,31 +394,19 @@
         "NucleiArgumentFlags": []
       }
     },
-    "Kape": {
-      "id": "",
-      "ModuleName": "Kape",
-      "Enable": 0,
-      "ExpireDate": "60",
-      "TimeInterval": "5",
-      "LastRunDate": "2024-06-02 10:15:17",
-      "Arguments": {
-        "SketchName": "Timelines",
-        "Analyzers": [],
-        "CPUThrottling": "75",
-        "MemoryThrottling": "75",
-        "ArtifactTimeOutInMinutes": 7200,
-        "KapeCollection": "_KapeTriage"
-      }
-    },
     "TimeSketch": {
       "id": "2001002",
       "Enable": 0,
+      "ArtifactTimeOutInMinutes": 7200,
       "Arguments": {
         "SketchName": "Timelines",
         "Analyzers": [],
         "CPUThrottling": "75",
         "MemoryThrottling": "75",
-        "KapeCollection": "_KapeTriage"
+        "KapeCollection": "_KapeTriage",
+        "DateRangeStart": "2000-01-01",
+        "DateRangeEnd": "*",
+        "Parsers": "win7"
       },
       "ModuleName": "TimeSketch",
       "ExpireDate": "480",
