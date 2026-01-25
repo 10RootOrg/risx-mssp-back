@@ -200,7 +200,7 @@
       "Timesketch": {
         "Password": "importing",
         "Username": "import",
-        "IP": "localhost"
+        "IP": "192.168.1.156"
       },
       "Elastic": {
         "Ip": "localhost"
@@ -414,5 +414,4 @@
     }
   },
   "RequestStatus": []
-
 }
